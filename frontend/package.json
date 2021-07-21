@@ -29,7 +29,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "relay": "relay-compiler --schema schema.graphql --src src --extensions tsx --language typescript"
+    "relay": "relay-compiler --schema schema.graphql --src src --extensions tsx --language typescript",
+    "lint": "eslint . --ext .ts,.tsx"
   },
   "eslintConfig": {
     "extends": [
@@ -53,6 +54,9 @@
     "@types/react-helmet": "^6.1.2",
     "@types/react-relay": "^11.0.2",
     "@types/react-router-dom": "^5.1.8",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
+    "eslint": "^7.31.0",
     "relay-compiler": "^11.0.2",
     "relay-compiler-language-typescript": "^13.0.9"
   }
