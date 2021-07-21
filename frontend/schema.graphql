@@ -1,0 +1,163 @@
+# source: http://localhost:3010/graphql
+# timestamp: Wed Jul 21 2021 22:35:19 GMT+0200 (Central European Summer Time)
+
+directive @formatDate(format: String! = "YYYY-mm-dd H:i:s") on FIELD
+
+"""The ordering direction."""
+enum Direction {
+  """Specifies an ascending order for a given orderBy argument."""
+  ASC
+
+  """Specifies a descending order for a given orderBy argument."""
+  DESC
+}
+
+type Game {
+  id: ID!
+  _id: ID!
+  sets: [Set]!
+  note: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+type GameConnection {
+  """Identifies the total count of items in the connection."""
+  totalCount: Int!
+
+  """A list of edges."""
+  edges: [GameEdge]
+  pageInfo: PageInfo!
+}
+
+"""List of edges."""
+type GameEdge {
+  """The item at the end of the edge."""
+  node: Game
+
+  """A cursor for pagination."""
+  cursor: String
+}
+
+input GamesOrder {
+  field: GamesOrderField!
+  direction: Direction!
+}
+
+enum GamesOrderField {
+  CREATED_AT
+}
+
+type Mutation {
+  createPlayer(input: NewPlayer!): Player
+  createGame(input: NewGame!): Game
+}
+
+input NewGame {
+  sets: [NewSet]
+  note: String
+}
+
+input NewPlayer {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+input NewSet {
+  team1Players: [NewSetPlayer]!
+  team2Players: [NewSetPlayer]!
+  team1Score: Int!
+  team2Score: Int!
+}
+
+input NewSetPlayer {
+  id: ID
+  firstName: String
+  lastName: String
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """The item at the end of the edge."""
+  endCursor: String
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+}
+
+type Player {
+  id: ID!
+  _id: ID!
+  firstName: String!
+  lastName: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type PlayerConnection {
+  """Identifies the total count of items in the connection."""
+  totalCount: Int!
+
+  """A list of edges."""
+  edges: [PlayerEdge]
+  pageInfo: PageInfo!
+}
+
+"""List of edges."""
+type PlayerEdge {
+  """The item at the end of the edge."""
+  node: Player
+
+  """A cursor for pagination."""
+  cursor: String
+}
+
+input PlayersOrder {
+  field: PlayersOrderField!
+  direction: Direction!
+}
+
+enum PlayersOrderField {
+  FIRST_NAME
+  LAST_NAME
+  CREATED_AT
+}
+
+type Query {
+  player(id: ID!): Player
+  players(
+    """Limits the number of results returned in the page. Defaults to 10."""
+    first: Int = 10
+
+    """
+    The cursor value of an item returned in previous page. An alternative to in integer offset.
+    """
+    after: String = "Y3Vyc29yMA=="
+    firstName: String
+    lastName: String
+    orderBy: [PlayersOrder]
+  ): PlayerConnection
+  games(
+    """Limits the number of results returned in the page. Defaults to 10."""
+    first: Int = 10
+
+    """
+    The cursor value of an item returned in previous page. An alternative to in integer offset.
+    """
+    after: String = "Y3Vyc29yMA=="
+    orderBy: [GamesOrder]
+  ): GameConnection
+}
+
+type Set {
+  team1Score: Int!
+  team2Score: Int!
+}

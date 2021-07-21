@@ -1,0 +1,12 @@
+{
+  "projects":{
+    "hrambedminton":{
+      "schemaPath":"schema.graphql",
+      "extensions":{
+        "endpoints":{
+          "default":"http://localhost:3010/graphql"
+        }
+      }
+    }
+  }
+}
