@@ -1,0 +1,69 @@
+import { GraphQLInt, GraphQLString, GraphQLList, GraphQLID } from 'graphql';
+import GraphQLDateTime from '../types/GraphQLDateTime';
+import playerOrder from '../inputs/orders/playerOrder';
+import Context from '../../context/Context';
+import playerConnection from '../types/connections/playerConnection';
+import nodesToEdges from './nodesToEdges';
+import toConnection from './toConnection';
+import logger from '../../logger';
+
+interface PlayersQueryArguments {
+  first: number;
+  after: string;
+  firstName: string;
+  lastName: string;
+  createdAt: {
+    from: string;
+    to: string;
+  };
+  orderBy: OrderBy[];
+}
+
+export default {
+  players: {
+    type: playerConnection,
+    args: {
+      first: {
+        defaultValue: 10,
+        description: 'Limits the number of results returned in the page. Defaults to 10.',
+        type: GraphQLInt,
+      },
+      after: {
+        defaultValue: 'Y3Vyc29yMA==', // base64encode('cursor0')
+        description: 'The cursor value of an item returned in previous page. An alternative to in integer offset.',
+        type: GraphQLString,
+      },
+      firstName: {
+        type: GraphQLString,
+      },
+      lastName: {
+        type: GraphQLString,
+      },
+      orderBy: {
+        type: GraphQLList(playerOrder),
+      },
+    },
+    resolve: async (_, args: PlayersQueryArguments, context: Context): Promise<any> => {
+      logger.debug('PlayersQuery', args);
+
+      const after = typeof args.after === 'undefined' || args.after === null ? 0 : parseInt(Buffer.from(args.after, 'base64').toString('ascii').replace('cursor', ''), 10);
+
+      const players = await context.repositories.player.find({
+        first: args.first,
+        offset: after,
+        firstName: args.firstName,
+        lastName: args.lastName,
+        orderBy: args.orderBy,
+      });
+
+      const playersCount = await context.repositories.player.count({
+        firstName: args.firstName,
+        lastName: args.lastName,
+      });
+
+      const edges = nodesToEdges(players, after);
+
+      return toConnection(edges, playersCount, edges.length === args.first, after > 0);
+    },
+  },
+};

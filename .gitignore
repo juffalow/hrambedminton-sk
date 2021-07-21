@@ -1,0 +1,4 @@
+/backend/node_modules
+/backend/src/config.ts
+/backend/dist
+.DS_Store
