@@ -31,7 +31,7 @@ async function onShutdown (): Promise<void> {
 }
 
 async function onHealthCheck(): Promise<void> {
-
+  return;
 }
 
 createTerminus(server, {
