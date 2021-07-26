@@ -4,9 +4,11 @@ import Menu from './components/Menu';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
+import Confirmation from './pages/Confirmation';
 import Trainers from './pages/Trainers';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Player from './pages/Player';
 import './App.css';
 
 const App: React.FC = () => {
@@ -34,7 +36,9 @@ const App: React.FC = () => {
           <Route path="/" component={Home} exact />
 
           <Route path="/kontakt" component={Contact} />
+          <Route path="/potvrdenie" component={Confirmation} />
           <Route path="/treneri" component={Trainers} />
+          <Route path="/hrac/*" component={Player} />
         </main>
         <Footer />
       </>

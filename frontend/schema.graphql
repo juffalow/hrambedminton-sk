@@ -1,5 +1,5 @@
 # source: http://localhost:3010/graphql
-# timestamp: Mon Jul 26 2021 14:52:50 GMT+0200 (Central European Summer Time)
+# timestamp: Mon Jul 26 2021 19:21:27 GMT+0200 (Central European Summer Time)
 
 directive @formatDate(format: String! = "YYYY-mm-dd H:i:s") on FIELD
 
@@ -59,6 +59,7 @@ enum GamesOrderField {
 
 type Mutation {
   createPlayer(input: NewPlayer!): Player
+  updatePlayer(input: UpdatePlayerInput!): Player
   createGame(input: NewGame!): Game
   createContactMessage(input: NewContactMessage!): ContactMessage
 }
@@ -176,4 +177,11 @@ type Query {
 type Set {
   team1Score: Int!
   team2Score: Int!
+}
+
+input UpdatePlayerInput {
+  firstName: String
+  lastName: String
+  password: String
+  isVerified: Boolean
 }

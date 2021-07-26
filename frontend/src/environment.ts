@@ -14,7 +14,7 @@ async function fetchGraphQL(params: RequestParameters, variables: Variables) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + localStorage.getItem('user-token'),
+      Authorization: 'Bearer ' +localStorage.getItem('user-token'),
     },
     body: JSON.stringify({
       query: params.text,
