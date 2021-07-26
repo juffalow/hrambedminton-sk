@@ -30,6 +30,7 @@ export interface UpdateParameters {
   id: string;
   firstName?: string;
   lastName?: string;
+  isVerified?: boolean;
 }
 
 export default interface PlayerRepository {

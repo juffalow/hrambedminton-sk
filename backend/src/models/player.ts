@@ -3,7 +3,14 @@ import mongoose from 'mongoose';
 const player = new mongoose.Schema({
   firstName: String,
   lastName: String,
-  email: String,
+  email: {
+    type: String,
+    unique: true,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
   password: String,
   createdAt: {
     type: Date,

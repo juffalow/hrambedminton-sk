@@ -43,7 +43,7 @@ createTerminus(server, {
 });
 
 async function start(): Promise<void> {
-  mongoose.connect(config.database.connection.url, { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true, tlsInsecure: true });
+  mongoose.connect(config.database.connection.url, { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true, tlsInsecure: true, useCreateIndex: true, });
   mongoose.connection.on('error', (error) => {
     logger.error('Mongoose has problems with the connection!', error);
     console.error(error);

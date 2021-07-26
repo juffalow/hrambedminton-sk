@@ -27,11 +27,12 @@ export default class MongoosePlayerRepository implements PlayerRepository {
   }
 
   public async update(params: UpdateParameters): Promise<Player> {
-    const player = <any> await PlayerModel.findOneAndUpdate({ _id: params.id }, params, { new: true }).lean();
+    const { id, ...data } = params;
+    const player = <any> await PlayerModel.findByIdAndUpdate({ _id: id }, data, { new: true }).lean();
 
     return {
       id: player._id,
-      ...player._doc,
+      ...player,
     };
   }
 

@@ -14,4 +14,9 @@ export default {
       url : process.env.DATABASE_CONNECTION_URL || '',
     },
   },
+  mail: {
+    sendgrid: {
+      apiKey: process.env.MAIL_SENDGRID_APIKEY || '',
+    },
+  },
 }

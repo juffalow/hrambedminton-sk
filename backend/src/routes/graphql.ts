@@ -9,7 +9,7 @@ import auth from '../middlewares/auth';
 const router = express.Router();
 
 router.use('/', auth, graphqlHTTP(async (req: any, res) => {
-  // context.account = req.account;
+  context.player = req.player;
 
   return {
     context,

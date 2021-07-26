@@ -13,8 +13,12 @@ const createPlayer = {
   },
   resolve: async (_, { input }, context: Context): Promise<Player> => {
     logger.debug('CreatePlayerMutation', input);
+
+    const player = await context.repositories.player.create(input);
+
+    await context.notifications.newPlayer(player);
     
-    return context.repositories.player.create(input);
+    return player;
   },
 };
 

@@ -6,14 +6,21 @@ export default function auth(req, res, next): void {
     next();
   }
 
-  const token = 'authorization' in req.headers ? req.headers.authorization.replace('Bearer ', '') : null;
+  if ('authorization' in req.headers) {
+    const token = req.headers.authorization.replace('Bearer ', '');
 
-  try {
-    const account = jwt.verify(token, config.jwt.secret);
-    req.account = account;
-  } catch (err) {
-    // res.status(401);
-    // return res.json({ error: 'Unauthorized!' });
+    try {
+      const player = jwt.verify(token, config.jwt.secret);
+      req.player = player;
+    } catch (error) {
+      res.status(401);
+      return res.json({ error: 'Unauthorized!' });
+    }
+  } else {
+    req.player = {
+      id: null,
+      role: 'PUBLIC',
+    }
   }
 
   next();

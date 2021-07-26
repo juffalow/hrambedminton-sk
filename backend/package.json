@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "@godaddy/terminus": "^4.9.0",
+    "@sendgrid/mail": "^7.4.5",
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",

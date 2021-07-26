@@ -1,4 +1,6 @@
 import { GraphQLResolveInfo } from 'graphql';
+import jwt from 'jsonwebtoken';
+import config from '../config';
 
 export function formatDate(date: Date, format = 'yyyy-MM-dd hh:mm:ss'): string {
   const dd = `0${date.getDate() + 1}`.slice(-2);
@@ -46,4 +48,8 @@ export function getStringId(value: string, name: string): string | null {
 
 export function shouldFilterBy(variable: any): boolean {
   return typeof variable !== 'undefined' && variable !== null;
+}
+
+export const generateToken = (data: Record<string, unknown>): string => {
+  return jwt.sign(data, config.jwt.secret, { algorithm: 'HS512' });
 }
