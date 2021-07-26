@@ -101,12 +101,12 @@ const Home: React.FC = () => {
         </Row>
         <Row style={{ marginTop: 25 }}>
           <Col>
-            <p>Tréningy si potom môžeš pozrieť v dennom prehlade.</p>
+            <p>Tréningy si potom môžeš pozrieť v dennom prehľade.</p>
           </Col>
         </Row>
         <Row>
           <Col lg={{ span: 10, offset: 1 }}>
-            <span style={{ fontSize: '0.9em' }}><i>Ukážka prehladu treningov</i></span>
+            <span style={{ fontSize: '0.9em' }}><i>Ukážka prehľadu tréningov</i></span>
             <p><strong>14.7.2021</strong></p>
             <Table striped bordered responsive hover>
               <thead>

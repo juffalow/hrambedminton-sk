@@ -14,6 +14,7 @@ const Menu = ({ isLogged, onLogout }: MenuProps) => (
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
+        <Nav.Link as={Link} to="/treneri">Tréneri</Nav.Link>
       {/*
         <Nav.Link as={Link} to="/obrazky">Obrazky</Nav.Link>
         <Nav.Link as={Link} to="/video">Video</Nav.Link>
@@ -28,6 +29,7 @@ const Menu = ({ isLogged, onLogout }: MenuProps) => (
             <Nav.Link as={Link} to="/prihlasit-sa">Prihlásiť sa</Nav.Link>
           )
         }
+        <Nav.Link as={Link} to="/kontakt">Kontakt</Nav.Link>
       </Nav>
     </Navbar.Collapse>
   </Navbar>

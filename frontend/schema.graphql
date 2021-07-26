@@ -1,7 +1,16 @@
 # source: http://localhost:3010/graphql
-# timestamp: Wed Jul 21 2021 22:35:19 GMT+0200 (Central European Summer Time)
+# timestamp: Mon Jul 26 2021 14:52:50 GMT+0200 (Central European Summer Time)
 
 directive @formatDate(format: String! = "YYYY-mm-dd H:i:s") on FIELD
+
+type ContactMessage {
+  id: ID!
+  _id: ID!
+  name: String!
+  email: String!
+  message: String!
+  createdAt: String!
+}
 
 """The ordering direction."""
 enum Direction {
@@ -51,6 +60,13 @@ enum GamesOrderField {
 type Mutation {
   createPlayer(input: NewPlayer!): Player
   createGame(input: NewGame!): Game
+  createContactMessage(input: NewContactMessage!): ContactMessage
+}
+
+input NewContactMessage {
+  name: String!
+  email: String!
+  message: String!
 }
 
 input NewGame {
