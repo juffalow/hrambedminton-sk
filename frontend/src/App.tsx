@@ -7,7 +7,6 @@ import Contact from './pages/Contact';
 import Trainers from './pages/Trainers';
 import Register from './pages/Register';
 import Login from './pages/Login';
-import Player from './pages/Player';
 import './App.css';
 
 const App: React.FC = () => {
@@ -36,7 +35,6 @@ const App: React.FC = () => {
 
           <Route path="/kontakt" component={Contact} />
           <Route path="/treneri" component={Trainers} />
-          <Route path="/hrac/*" component={Player} />
         </main>
         <Footer />
       </>
