@@ -10,12 +10,15 @@ import { Variables } from 'relay-runtime/lib/util/RelayRuntimeTypes';
 import config from './config';
 
 async function fetchGraphQL(params: RequestParameters, variables: Variables) {
+  const headers = new Headers({ 'Content-Type': 'application/json' });
+
+  if (localStorage.getItem('user-token') !== null) {
+    headers.set('Authorization', 'Bearer ' + localStorage.getItem('user-token'));
+  }
+
   const response = await fetch(`${config.api.url}/graphql`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' +localStorage.getItem('user-token'),
-    },
+    headers,
     body: JSON.stringify({
       query: params.text,
       variables,
