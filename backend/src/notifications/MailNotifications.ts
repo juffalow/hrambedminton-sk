@@ -16,8 +16,8 @@ export default class MailNotifications implements NotificationInterface {
     const message = {
       to: player.email,
       from: 'bedminton@juffalow.com',
-      subject: 'Registrácia na HramBedminton.sk',
-      html: registration(player.firstName, `https://hrambedminton.sk/hrac/potvrdenie?id=${player.id}&token=${token}`),
+      subject: 'Registrácia | HramBedminton.sk',
+      html: registration('Registrácia | HramBedminton.sk', player.firstName, `https://hrambedminton.sk/hrac/potvrdenie?id=${player.id}&token=${token}`),
     };
 
     return sgMail.send(message)

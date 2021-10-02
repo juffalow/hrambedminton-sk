@@ -1,11 +1,16 @@
-export default function layout(content: string): string {
+export default function layout(title: string, content: string): string {
   return `
   <!DOCTYPE html>
   <html lang="sk">
     <head>
       <meta charset="UTF-8">
       <meta name="x-apple-disable-message-reformatting">
-      <title></title>
+      <title>${title}</title>
+      <style>
+        body {
+          font-family: sans-serif;
+        }
+      </style>
     </head>
     <body style="margin:0;padding:0;">
       <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;">
