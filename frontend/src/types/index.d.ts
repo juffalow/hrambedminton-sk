@@ -10,4 +10,7 @@ interface Trainer {
   email: string;
   phone: string;
   description: string;
+  image: string;
+  cities: string[];
+  halls: string[];
 }

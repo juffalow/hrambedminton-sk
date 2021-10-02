@@ -3,18 +3,34 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
-import SEO from '../components/SEO';
+import Badge from 'react-bootstrap/Badge';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
+import trainers from '../trainers';
 
 const TrainerDetail: React.FC<Trainer> = (props: Trainer) => (
-  <Row>
+  <Row className="mb-4 mt-4">
     <Col md={3}>
-      <Image src="https://www.badmintonland.sk/images/trener.png" thumbnail />
+      <Image src={props.image} thumbnail />
     </Col>
     <Col>
       <h4>{props.name}</h4>
+      <div className="mb-1">
+        {
+          props.cities.map((city) => (
+            <>
+              <Badge variant="primary">{city}</Badge>{' '}
+            </>
+          ))
+        }
+        {
+          props.halls.map((hall) => (
+            <Badge variant="info">{hall}</Badge>
+          ))
+        }
+      </div>
       <p>e-mail: <a href={`mailto:${props.email}`}>{props.email}</a>, telefón: <a href={`tel:${props.phone.replaceAll(' ', '')}`}>{props.phone}</a></p>
-      <p>{props.description}</p>
+      <p dangerouslySetInnerHTML={{ __html: props.description }}></p>
     </Col>
   </Row>
 );
@@ -29,14 +45,28 @@ const Trainers: React.FC = () => {
             <p className="lead">Vyber si trénera a zlepši svoju hru! V zozname si môžeš vyhľadať trénera podľa mesta ale aj podľa haly, kde by si chcel trénovať.</p>
           </Col>
         </Row>
-        <Row className="mt-4">
+        <Row>
           <Col>
-            <TrainerDetail
-              name="Martin Schön"
-              email="badmintonland@badmintonland.sk"
-              phone="+421 903 900 570"
-              description="Profesionálny kouč, tréner s licenciou."
-            />
+            {
+              trainers.map((trainer, index) => (
+                <>
+                  <TrainerDetail
+                    name={`${trainer.firstName} ${trainer.lastName}`}
+                    email={trainer.email}
+                    phone={trainer.phone}
+                    description={trainer.shortDescription}
+                    image={trainer.image}
+                    cities={trainer.cities}
+                    halls={trainer.halls}
+                  />
+                  {
+                    index !== trainers.length - 1 ? (
+                      <hr />
+                    ) : null
+                  }
+                </>
+              ))
+            }
           </Col>
         </Row>
         <Row className="mt-4">
