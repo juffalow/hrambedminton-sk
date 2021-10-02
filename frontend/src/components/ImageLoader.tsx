@@ -5,6 +5,7 @@ interface ImageLoaderProps {
   src: string;
   alt?: string;
   alternativeImage?: string;
+  as?: React.ElementType;
   [x:string]: any;
 }
 
@@ -28,11 +29,19 @@ const ImageLoader: React.FC<ImageLoaderProps> = ({ src, alt, alternativeImage, .
   }, []);
 
   if (isLoading) {
-    return <Spinner animation="border" />;
+    return (
+      <div style={{ width: '100%', height: '100%' }}>
+        <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
+          <Spinner animation="border" />
+        </div>
+      </div>
+    );
   }
 
+  const Component = ('as' in rest ? rest.as : 'img') as React.ElementType;
+
   return (
-    <img src={src} alt={alt} {...rest} />
+    <Component src={src} alt={alt} {...rest} />
   );
 }
 

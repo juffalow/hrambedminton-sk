@@ -6,12 +6,13 @@ import Image from 'react-bootstrap/Image';
 import Badge from 'react-bootstrap/Badge';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import ImageLoader from '../components/ImageLoader';
 import trainers from '../trainers';
 
 const TrainerDetail: React.FC<Trainer> = (props: Trainer) => (
   <Row className="mb-4 mt-4">
     <Col md={3}>
-      <Image src={props.image} thumbnail />
+      <ImageLoader as={Image} src={props.image} thumbnail />
     </Col>
     <Col>
       <h4>{props.name}</h4>
