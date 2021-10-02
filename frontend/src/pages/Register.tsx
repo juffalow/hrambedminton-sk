@@ -17,6 +17,12 @@ const Register: React.FC = () => {
     <SEO title="Registrácia" description="">
       <Container className="main" style={{ marginTop: 50 }}>
         <Row>
+          <Col>
+            <h1>Registrácia</h1>
+            <p className="lead">Vytvor si účet a sleduj svoj progress! Ulož si poznámky k hráčom, plánuj zápasy s leduj ako hrajú tvoji kamaráti.</p>
+          </Col>
+        </Row>
+        <Row className="mt-4">
           <Col md={{ span: 6, offset: 3 }}>
             {
               isSuccess ? (
