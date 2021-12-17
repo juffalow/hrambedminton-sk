@@ -10,7 +10,11 @@ export default class MongooseGameRepository implements GameRepository {
   }
 
   public async create(params: CreateParameters): Promise<Game> {
-    const game = new GameModel(params);
+
+    const game = new GameModel({
+      ...params,
+      playedAt: new Date(params.playedAt),
+    });
 
     const document: any = await game.save();
 
@@ -32,14 +36,19 @@ export default class MongooseGameRepository implements GameRepository {
   public async find(params: FindParameters): Promise<Game[]> {
     const findParameters = {};
 
-    /*
-    if (shouldFilterBy(params.firstName)) {
-      findParameters['firstName'] = {
-        $options: 'i',
-        $regex: params.firstName,
-      };
+    if (shouldFilterBy(params.playedAt)) {
+      if (shouldFilterBy(params.playedAt.from)) {
+        findParameters['playedAt'] = {
+          $gt: params.playedAt.from,
+        };
+      }
+
+      if (shouldFilterBy(params.playedAt.to)) {
+        findParameters['playedAt'] = {
+          $lt: params.playedAt.to,
+        };
+      }
     }
-    */
     
     const games = await GameModel.find(findParameters).skip(params.offset).limit(params.first);
 
@@ -52,14 +61,19 @@ export default class MongooseGameRepository implements GameRepository {
   public async count(params: CountParameters): Promise<number> {
     const findParameters = {};
 
-    /*
-    if (shouldFilterBy(params.firstName)) {
-      findParameters['firstName'] = {
-        $options: 'i',
-        $regex: params.firstName,
-      };
+    if (shouldFilterBy(params.playedAt)) {
+      if (shouldFilterBy(params.playedAt.from)) {
+        findParameters['playedAt'] = {
+          $gt: params.playedAt.from,
+        };
+      }
+
+      if (shouldFilterBy(params.playedAt.to)) {
+        findParameters['playedAt'] = {
+          $lt: params.playedAt.to,
+        };
+      }
     }
-    */
     
     const count = await GameModel.count(findParameters);
 

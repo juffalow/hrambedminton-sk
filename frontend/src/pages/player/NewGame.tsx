@@ -7,10 +7,37 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import SEO from '../../components/SEO';
 
+interface PlayerProps {
+  number: number;
+}
+
+const Player: React.FC<PlayerProps> = (props: PlayerProps) => (
+  <Card className="mt-4">
+    <Card.Header>{props.number}. hrac <Button size="sm" variant="danger" className="float-right">-</Button></Card.Header>
+    <Card.Body>
+      <Row>
+        <Col>
+          <Form.Group className="mb-3" controlId={`player${props.number}FirstName`}>
+            <Form.Label>Meno</Form.Label>
+            <Form.Control type="text" placeholder="meno" />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group className="mb-3" controlId={`player${props.number}LastName`}>
+            <Form.Label>Priezvisko</Form.Label>
+            <Form.Control type="text" placeholder="priezvisko" />
+          </Form.Group>
+        </Col>
+      </Row>
+    </Card.Body>
+  </Card>
+);
+
 interface GameSetProps {
   number: number;
   type: 'singles' |'doubles' | 'mix';
 }
+
 
 const GameSet: React.FC<GameSetProps> = (props: GameSetProps) => (
   <Card className="mt-4">
@@ -84,6 +111,16 @@ const NewGame: React.FC = () => {
                 <Form.Label>Poznámka</Form.Label>
                 <Form.Control as="textarea" placeholder="poznámka" />
               </Form.Group>
+
+              <h4>Hráči</h4>
+
+              <Player number={1} />
+
+              <div className="text-center mt-4 mb-4">
+                <Button variant="outline-success" size="sm">Pridať hraca</Button>
+              </div>
+
+              <h4>Sety</h4>
 
               <GameSet number={1} type={'singles'} />
 

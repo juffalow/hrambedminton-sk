@@ -6,5 +6,8 @@ export default new GraphQLEnumType({
     CREATED_AT: {
       value: 'createdAt',
     },
+    PLAYED_AT: {
+      value: 'playedAt',
+    },
   },
 });

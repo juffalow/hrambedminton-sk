@@ -2,28 +2,26 @@ import { GraphQLResolveInfo } from 'graphql';
 import jwt from 'jsonwebtoken';
 import config from '../config';
 
-export function formatDate(date: Date, format = 'yyyy-MM-dd hh:mm:ss'): string {
-  const dd = `0${date.getDate() + 1}`.slice(-2);
-  const MM = `0${date.getMonth() + 1}`.slice(-2);
-  const yy = date.getFullYear().toString().substring(2, 4);
-  const yyyy = date.getFullYear().toString();
-  const hh = `0${date.getHours()}`.slice(-2);
-  const mm = `0${date.getMinutes()}`.slice(-2);
-  const ss = `0${date.getSeconds()}`.slice(-2);
-  const SSS = `00${date.getMilliseconds()}`.slice(-3);
+export function formatDate(date: Date, format = 'YYYY-MM-dd HH:mm:ss'): string {
+  const year: string = date.getFullYear().toString();
+  const month: string = (date.getMonth() + 1).toString();
+  const day: string = date.getDate().toString();
+  const hours: string = date.getHours().toString();
+  const minutes: string = date.getMinutes().toString();
+  const seconds: string = date.getSeconds().toString();
 
-  return format.replace(/dd/g, dd)
-    .replace(/MM/g, MM)
-    .replace(/yy/g, yy)
-    .replace(/yyyy/g, yyyy)
-    .replace(/hh/g, hh)
-    .replace(/mm/g, mm)
-    .replace(/ss/g, ss)
-    .replace(/SSS/g, SSS);
+  format = format.replace('YYYY', year);
+  format = format.replace('MM', ('0' + month).slice(-2));
+  format = format.replace('dd', ('0' + day).slice(-2));
+  format = format.replace('HH', ('0' + hours).slice(-2));
+  format = format.replace('mm', ('0' + minutes).slice(-2));
+  format = format.replace('ss', ('0' + seconds).slice(-2));
+
+  return format;
 }
 
-export function getDateFormat(info: GraphQLResolveInfo, defaultFormat = 'yyyy-MM-dd hh:mm:ss'): string {
-  const directive = info.fieldNodes[0].directives.find(directive => directive.name.value ==='formatDate');
+export function getDateFormat(info: GraphQLResolveInfo, defaultFormat = 'YYYY-MM-dd HH:mm:ss'): string {
+  const directive = info.fieldNodes[0].directives.find(directive => directive.name.value === 'formatDate');
 
   if (typeof directive === 'undefined') {
     return defaultFormat;
@@ -46,7 +44,7 @@ export function getStringId(value: string, name: string): string | null {
   return value;
 }
 
-export function shouldFilterBy(variable: any): boolean {
+export function shouldFilterBy(variable: unknown): boolean {
   return typeof variable !== 'undefined' && variable !== null;
 }
 

@@ -93,7 +93,7 @@ const Contact: React.FC = () => {
     
                   <Form.Group className="mb-3" controlId="note">
                     <Form.Label>Správa</Form.Label>
-                    <Form.Control as="textarea" name="message" placeholder="správa" value={contactForm.message} onChange={onChange} />
+                    <Form.Control as="textarea" name="message" placeholder="správa" rows={5} value={contactForm.message} onChange={onChange} />
                   </Form.Group>
     
                   <Button variant="primary" type="submit">

@@ -13,8 +13,12 @@ const createContactMessage = {
   },
   resolve: async (_, { input }, context: Context): Promise<ContactMessage> => {
     logger.debug('CreateContactMessageMutation', input);
+
+    const contactMessage = await context.repositories.contactMessage.create(input);
+
+    await context.notifications.newContactMessage(contactMessage);
     
-    return context.repositories.contactMessage.create(input);
+    return contactMessage;
   },
 };
 

@@ -1,5 +1,5 @@
-import { GraphQLInt, GraphQLString, GraphQLList, GraphQLID } from 'graphql';
-import GraphQLDateTime from '../types/GraphQLDateTime';
+import { GraphQLInt, GraphQLString, GraphQLList } from 'graphql';
+import dateFilter from '../inputs/dateFilter';
 import gameOrder from '../inputs/orders/gameOrder';
 import Context from '../../context/Context';
 import gameConnection from '../types/connections/gameConnection';
@@ -11,6 +11,10 @@ interface GamesQueryArguments {
   first: number;
   after: string;
   createdAt: {
+    from: string;
+    to: string;
+  };
+  playedAt: {
     from: string;
     to: string;
   };
@@ -31,6 +35,9 @@ export default {
         description: 'The cursor value of an item returned in previous page. An alternative to in integer offset.',
         type: GraphQLString,
       },
+      playedAt: {
+        type: dateFilter,
+      },
       orderBy: {
         type: GraphQLList(gameOrder),
       },
@@ -43,16 +50,17 @@ export default {
       const games = await context.repositories.game.find({
         first: args.first,
         offset: after,
+        playedAt: args.playedAt,
         orderBy: args.orderBy,
       });
 
-      const gamesCount = await context.repositories.game.count({
-
+      const count = await context.repositories.game.count({
+        playedAt: args.playedAt,
       });
 
       const edges = nodesToEdges(games, after);
 
-      return toConnection(edges, gamesCount, edges.length === args.first, after > 0);
+      return toConnection(edges, count, edges.length === args.first, after > 0);
     },
   },
 };

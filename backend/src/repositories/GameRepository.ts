@@ -1,7 +1,11 @@
 export interface CreateParameters {
   id: string;
-  placeId: string;
-  sets: {
+  title: string;
+  place: string;
+  court: string;
+  description: string;
+  players: Array<{ playerId: string } | { name: string; email: string }>;
+  sets?: {
     team1Players: {
       id?: string;
       firstName?: string;
@@ -15,14 +19,16 @@ export interface CreateParameters {
     team1Score: number;
     team2Score: number;
   };
-  note: string;
-  createdAt: string;
-  updatedAt: string;
+  playedAt: string;
 }
 
 export interface FindParameters {
   first: number;
   offset: number;
+  playedAt?: {
+    from?: string;
+    to?: string;
+  };
   createdAt?: {
     from?: string;
     to?: string;
@@ -31,6 +37,10 @@ export interface FindParameters {
 }
 
 export interface CountParameters {
+  playedAt?: {
+    from?: string;
+    to?: string;
+  };
   createdAt?: {
     from?: string;
     to?: string;

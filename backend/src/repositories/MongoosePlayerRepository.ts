@@ -45,6 +45,20 @@ export default class MongoosePlayerRepository implements PlayerRepository {
         $regex: params.firstName,
       };
     }
+
+    if (shouldFilterBy(params.lastName)) {
+      findParameters['lastName'] = {
+        $options: 'i',
+        $regex: params.lastName,
+      };
+    }
+
+    if (shouldFilterBy(params.email)) {
+      findParameters['email'] = {
+        $options: 'i',
+        $regex: params.email,
+      };
+    }
     
     const players = await PlayerModel.find(findParameters).skip(params.offset).limit(params.first);
 
@@ -61,6 +75,20 @@ export default class MongoosePlayerRepository implements PlayerRepository {
       findParameters['firstName'] = {
         $options: 'i',
         $regex: params.firstName,
+      };
+    }
+
+    if (shouldFilterBy(params.lastName)) {
+      findParameters['lastName'] = {
+        $options: 'i',
+        $regex: params.lastName,
+      };
+    }
+
+    if (shouldFilterBy(params.email)) {
+      findParameters['email'] = {
+        $options: 'i',
+        $regex: params.email,
       };
     }
     

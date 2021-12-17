@@ -12,7 +12,7 @@ const updatePlayer = {
     },
   },
   resolve: async (_, { input }, context: Context): Promise<Player> => {
-    logger.debug('UpdatePlayerMutation', input);
+    logger.debug('UpdatePlayerMutation', { player: context.player, input });
 
     if (context.player.role === 'PUBLIC' || (context.player.role === 'PLAYER' && context.player.id !== input.id)) {
       throw 'Unable to run this mutation!';

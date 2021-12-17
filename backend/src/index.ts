@@ -1,5 +1,6 @@
 import express from 'express';
 import http from 'http';
+import cookieParser from 'cookie-parser';
 import { createTerminus } from '@godaddy/terminus';
 import config from './config';
 import routes from './routes';
@@ -12,6 +13,7 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.set('trust proxy', true);
 app.use(cors);

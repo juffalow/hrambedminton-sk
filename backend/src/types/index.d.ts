@@ -3,6 +3,12 @@ interface Player {
   firstName: string;
   lastName: string;
   email: string;
+  password: string;
+  isVerified: boolean;
+  refreshTokens: [{
+    expiresAt: string;
+    token: string;
+  }];
   createdAt: string;
   updatedAt: string;
 }
@@ -34,11 +40,20 @@ interface GameSet {
 
 interface Game {
   id: string;
-  placeId: string;
+  title: string;
+  place: string;
+  court: string;
   sets: GameSet[];
-  note: string;
+  type: 'SINGLES' | 'DOUBLES' | 'MIX' | 'OTHER';
+  description: string;
+  hasNotifications: boolean;
+  privateNote: string;
   createdAt: string;
   updatedAt: string;
+  playedAt: string;
+
+  invitation: string;
+  isEmailNotificationEnabled: boolean;
 }
 
 interface ContactMessage {
@@ -47,4 +62,25 @@ interface ContactMessage {
   email: string;
   message: string;
   createdAt: string;
+}
+
+interface Place {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface MailLog {
+  id: string;
+  fromEmail: string;
+  fromName: string;
+  replyToEmail: string;
+  replyToName: string;
+  addresses: string[];
+  subject: string;
+  body: string;
+  isSent: boolean;
+  createdAt: string;
+  sentAt: string;
 }

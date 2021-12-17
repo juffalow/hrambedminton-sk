@@ -40,8 +40,8 @@ const Login: React.FC<Props> = ({ onSuccess }: Props) => {
 
     if (form.checkValidity()) {
       login(email, password)
-        .then((response: any) => {
-          onSuccess(response.data.user);
+        .then((response) => {
+          onSuccess(response.data);
           setShouldRedirect(true);
         })
         .catch(() => {

@@ -1,7 +1,7 @@
 # source: http://localhost:3010/graphql
-# timestamp: Mon Jul 26 2021 19:21:27 GMT+0200 (Central European Summer Time)
+# timestamp: Mon Oct 18 2021 18:10:24 GMT+0200 (Central European Summer Time)
 
-directive @formatDate(format: String! = "YYYY-mm-dd H:i:s") on FIELD
+directive @formatDate(format: String! = "yyyy-MM-dd H:i:s") on FIELD
 
 type ContactMessage {
   id: ID!
@@ -10,6 +10,11 @@ type ContactMessage {
   email: String!
   message: String!
   createdAt: String!
+}
+
+input DateFilter {
+  from: GraphQLDateTime
+  to: GraphQLDateTime
 }
 
 """The ordering direction."""
@@ -24,8 +29,13 @@ enum Direction {
 type Game {
   id: ID!
   _id: ID!
+  title: String
+  place: String
+  court: String
+  type: GameType!
+  description: String
   sets: [Set]!
-  note: String
+  playedAt: String!
   createdAt: String!
   updatedAt: String!
 }
@@ -55,12 +65,25 @@ input GamesOrder {
 
 enum GamesOrderField {
   CREATED_AT
+  PLAYED_AT
 }
+
+enum GameType {
+  SINGLES
+  DOUBLES
+  MIX
+  OTHER
+}
+
+"""Any valid date and time. For example 2020-05-14 13:33:43."""
+scalar GraphQLDateTime
 
 type Mutation {
   createPlayer(input: NewPlayer!): Player
   updatePlayer(input: UpdatePlayerInput!): Player
+  createPlace(input: NewPlace!): Place
   createGame(input: NewGame!): Game
+  scheduleGame(input: NewScheduledGame!): Game
   createContactMessage(input: NewContactMessage!): ContactMessage
 }
 
@@ -71,8 +94,17 @@ input NewContactMessage {
 }
 
 input NewGame {
+  title: String!
+  place: String!
+  court: String!
+  type: GameType!
+  description: String!
   sets: [NewSet]
-  note: String
+  playedAt: String!
+}
+
+input NewPlace {
+  name: String!
 }
 
 input NewPlayer {
@@ -80,6 +112,15 @@ input NewPlayer {
   lastName: String!
   email: String!
   password: String!
+}
+
+input NewScheduledGame {
+  title: String!
+  place: String!
+  court: String!
+  type: GameType!
+  playedAt: String!
+  invitation: String
 }
 
 input NewSet {
@@ -108,6 +149,32 @@ type PageInfo {
 
   """When paginating backwards, the cursor to continue."""
   startCursor: String
+}
+
+type Place {
+  id: ID!
+  _id: ID!
+  name: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type PlaceConnection {
+  """Identifies the total count of items in the connection."""
+  totalCount: Int!
+
+  """A list of edges."""
+  edges: [PlaceEdge]
+  pageInfo: PageInfo!
+}
+
+"""List of edges."""
+type PlaceEdge {
+  """The item at the end of the edge."""
+  node: Place
+
+  """A cursor for pagination."""
+  cursor: String
 }
 
 type Player {
@@ -162,6 +229,17 @@ type Query {
     lastName: String
     orderBy: [PlayersOrder]
   ): PlayerConnection
+  places(
+    """Limits the number of results returned in the page. Defaults to 10."""
+    first: Int = 10
+
+    """
+    The cursor value of an item returned in previous page. An alternative to in integer offset.
+    """
+    after: String = "Y3Vyc29yMA=="
+    name: String
+    orderBy: [PlayersOrder]
+  ): PlaceConnection
   games(
     """Limits the number of results returned in the page. Defaults to 10."""
     first: Int = 10
@@ -170,6 +248,7 @@ type Query {
     The cursor value of an item returned in previous page. An alternative to in integer offset.
     """
     after: String = "Y3Vyc29yMA=="
+    playedAt: DateFilter
     orderBy: [GamesOrder]
   ): GameConnection
 }
@@ -180,6 +259,7 @@ type Set {
 }
 
 input UpdatePlayerInput {
+  id: ID!
   firstName: String
   lastName: String
   password: String

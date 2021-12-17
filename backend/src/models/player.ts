@@ -11,6 +11,10 @@ const player = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  refreshTokens: [{
+    expiresAt: String,
+    token: String,
+  }],
   password: String,
   createdAt: {
     type: Date,

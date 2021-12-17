@@ -26,6 +26,10 @@ const ImageLoader: React.FC<ImageLoaderProps> = ({ src, alt, alternativeImage, .
     };
 
     image.src = src;
+
+    return () => {
+      image.src = "";
+    }
   }, []);
 
   if (isLoading) {

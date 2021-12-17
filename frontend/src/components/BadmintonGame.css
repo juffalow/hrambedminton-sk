@@ -1,0 +1,21 @@
+.game-detail {
+  background-color: #f8f9fa;
+  padding: 25px;
+  border-radius: 5px;
+}
+
+.list-of-sets {
+  overflow-y: hidden;
+  overflow-x: scroll;
+  display: block;
+  white-space: nowrap;
+}
+
+.list-of-sets .set {
+  position: relative;
+  display: inline-block;
+  width: 16%;
+  padding-left: 15px;
+  padding-right: 15px;
+  float: none;
+}

@@ -4,6 +4,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdatePlayerInput = {
+    id: string;
     firstName?: string | null;
     lastName?: string | null;
     password?: string | null;

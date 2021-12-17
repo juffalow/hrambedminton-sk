@@ -10,6 +10,7 @@ export interface FindParameters {
   offset: number;
   firstName?: string;
   lastName?: string;
+  email?: string;
   createdAt?: {
     from?: string;
     to?: string;
@@ -20,6 +21,7 @@ export interface FindParameters {
 export interface CountParameters {
   firstName?: string;
   lastName?: string;
+  email?: string;
   createdAt?: {
     from?: string;
     to?: string;
@@ -31,6 +33,10 @@ export interface UpdateParameters {
   firstName?: string;
   lastName?: string;
   isVerified?: boolean;
+  refreshTokens?: {
+    expiresAt: string;
+    token: string;
+  }[];
 }
 
 export default interface PlayerRepository {

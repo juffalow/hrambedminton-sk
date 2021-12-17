@@ -14,7 +14,6 @@ class BaseError extends Error {
   }
 }
 
-
 async function handleErrors(response: any): Promise<any> {
   if (!response.ok) {
     if (response.headers.get('Content-Type').startsWith('application/json')) {
@@ -39,6 +38,12 @@ function handleSuccess(response: any) {
 
 export async function get(endpoint: string): Promise<any> {
   return fetch(endpoint)
+    .then(handleErrors)
+    .then(handleSuccess);
+}
+
+export async function getWithCredentials(endpoint: string): Promise<any> {
+  return fetch(endpoint, { credentials: 'same-origin' })
     .then(handleErrors)
     .then(handleSuccess);
 }

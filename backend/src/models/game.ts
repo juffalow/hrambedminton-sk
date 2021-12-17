@@ -16,9 +16,20 @@ const gameSet = new mongoose.Schema({
 });
 
 const game = new mongoose.Schema({
-  placeId: mongoose.Schema.Types.ObjectId,
+  title: String,
+  place: String,
+  court: String,
+  type: {
+    type: String,
+    enum: [ 'SINGLES', 'DOUBLES', 'MIX', 'OTHER' ],
+  },
+  description: String,
+  invitation: String,
+  isEmailNotificationEnabled: Boolean,
   sets: [gameSet],
-  note: String,
+  playedAt: {
+    type: Date,
+  },
   createdAt: {
     type: Date,
     default: Date.now

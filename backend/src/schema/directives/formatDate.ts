@@ -15,7 +15,7 @@ const formatDate = new GraphQLDirective({
     format: {
       type: new GraphQLNonNull(GraphQLString),
       description: '',
-      defaultValue: 'YYYY-mm-dd H:i:s',
+      defaultValue: 'yyyy-MM-dd H:i:s',
     }
   },
 });

@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import BadmintonGame from '../components/BadmintonGame';
 
 const Home: React.FC = () => {
   return (
@@ -15,69 +16,28 @@ const Home: React.FC = () => {
           <Col>
             <h1>Hrávaš?</h1>
             <p className="lead">Hrávaš bedminton ale tiež nevieš ako si hral rok dozadu? <Link to="/registracia">Zaregistruj sa</Link>, ulož si svoje hry a zisti či dosahujes lepšie skóre ako pred tým!</p>
-            <p>Všetko budeš mať v prehľadnej tabulke a ku každej hre si môžeš pridať aj vlastné poznámky. Môžeš si pridať hry z minulosti ale aj plánovať zápasy, ktoré ešte len budeš hrať.</p>
+            <p>Všetko budeš mať v prehľadnon zozname a ku každej hre si môžeš pridať aj vlastné poznámky. Môžeš si pridať hry z minulosti ale aj plánovať zápasy, ktoré ešte len budeš hrať.</p>
           </Col>
         </Row>
         <Row>
           <Col lg={{ span: 10, offset: 1 }}>
-            <span style={{ fontSize: '0.9em' }}><i>Ukážka tabuľky zápasov</i></span>
-            <Table striped bordered responsive hover>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Team 1</th>
-                  <th>Team 2</th>
-                  <th>Skóre</th>
-                  <th>Miesto</th>
-                  <th>Dátum</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style={{ filter: 'blur(4px)' }}>13</td>
-                  <td style={{ filter: 'blur(4px)' }}>Meno Priezvisko</td>
-                  <td style={{ filter: 'blur(4px)' }}>Meno Priezvisko</td>
-                  <td style={{ filter: 'blur(4px)' }}>1:1</td>
-                  <td style={{ filter: 'blur(4px)' }}>Slavia Agrofert</td>
-                  <td style={{ filter: 'blur(4px)' }}>20.7.2021</td>
-                </tr>
-                <tr>
-                  <td>14</td>
-                  <td>Marián Mišt</td>
-                  <td>Matej Jelluš</td>
-                  <td>4:4</td>
-                  <td>Slávia Agrofert</td>
-                  <td>21.7.2021</td>
-                </tr>
-                <tr>
-                  <td>15</td>
-                  <td>
-                    Filip Gajdoš
-                    <br />
-                    Nguyen Tien Minh
-                  </td>
-                  <td>
-                    Kundan Kumar
-                    <br />
-                    Matej Jelluš
-                  </td>
-                  <td>5:3</td>
-                  <td>Slávia Agrofert</td>
-                  <td>22.7.2021</td>
-                </tr>
-                <tr>
-                  <td style={{ filter: 'blur(4px)' }}>16</td>
-                  <td style={{ filter: 'blur(4px)' }}>Meno Priezvisko</td>
-                  <td style={{ filter: 'blur(4px)' }}>Meno Priezvisko</td>
-                  <td style={{ filter: 'blur(4px)' }}>1:1</td>
-                  <td style={{ filter: 'blur(4px)' }}>Slavia Agrofert</td>
-                  <td style={{ filter: 'blur(4px)' }}>23.7.2021</td>
-                </tr>
-              </tbody>
-            </Table>
+            <span style={{ fontSize: '0.9em' }}><i>Ukážka zápasu</i></span>
+            <BadmintonGame
+              game={{
+                id: '1',
+                _id: '1',
+                type: 'SINGLES',
+                title: 'Pondeľkový priateľský zápas, Majo',
+                place: 'Slávia Agrofert',
+                court: '5',
+                playedAt: '2021-10-12 19:00:00',
+                description: 'Opäť veľmi náročná hra, behavý súper, ktorý mi to zadarmo rozhodne nepustí.',
+                players: [],
+              }}
+            />
           </Col>
         </Row>
-        <Row>
+        <Row className="mt-4">
           <Col>
             <h3>Si tréner?</h3>
             <p>Vytvor si tréning a pozvi ľudí. Pred tréningom im príde e-mail, kde budú môcť jedným klikom odpovedať, či sa tréningu zúčastnia alebo nie. Takto môžeš včas zrušiť kurt, alebo zohnať náhradníka.</p>
