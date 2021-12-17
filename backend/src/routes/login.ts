@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
   res.cookie("refreshToken", refreshToken, {
     secure: config.env !== 'DEVELOPMENT',
     httpOnly: true,
-    sameSite: false
+    domain: config.domain,
   });
   res.json({
     error: null,

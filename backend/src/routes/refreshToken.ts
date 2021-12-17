@@ -10,7 +10,7 @@ router.get('/:playerId', async (req, res) => {
   const playerRepository = new PlayerRepository();
   const player = await playerRepository.get(req.params.playerId);
 
-  if('refreshTokens' in player === false || 'refreshToken' in req.cookies === false || !player.refreshTokens.includes(req.cookies('refreshToken'))) {
+  if('refreshTokens' in player === false || 'refreshToken' in req.cookies === false || !player.refreshTokens.find(refreshToken => refreshToken.token === req.cookies.refreshToken)) {
     res.status(401);
     res.json({
       error: {

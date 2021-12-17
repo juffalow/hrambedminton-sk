@@ -1,6 +1,7 @@
 export default {
   port: 3010,
-  env: process.env.NODE_ENV || 'DEVELOPMENT',
+  env: process.env.ENV || 'DEVELOPMENT',
+  domain: process.env.DOMAIN || 'localhost',
   graphql: {
     graphiql: (process.env.GRAPHQL_GRAPHIQL && process.env.GRAPHQL_GRAPHIQL === 'true') || false,
   },

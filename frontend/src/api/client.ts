@@ -63,6 +63,7 @@ export async function post(endpoint: string, data: unknown): Promise<any> {
 
   return fetch(endpoint, {
     method: 'POST',
+    credentials: 'same-origin',
     headers,
     body: JSON.stringify(data),
   })
