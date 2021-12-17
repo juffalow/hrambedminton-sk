@@ -1,15 +1,15 @@
-import ical from 'ical-generator';
+import { default as ics } from 'ics';
 
 export function createEvent(summary: string, description: string, location: string, url: string, dateFrom: Date, dateTo: Date): string {
-  const calendar = ical({name: 'HramBedminton.sk' });
-  calendar.createEvent({
-    summary,
-    description,
-    location,
-    url,
-    start: dateFrom,
-    end: dateTo,
+  const { error, value } = ics.createEvent({
+    calName: 'HramBedminton.sk',
+    start: [ dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate(), dateFrom.getHours(), dateFrom.getMinutes() ],
+    end: [ dateTo.getFullYear(), dateTo.getMonth(), dateTo.getDate(), dateTo.getHours(), dateTo.getMinutes() ],
+    title: 'Example Event',
+    description: 'It works ;)',
+    location: 'Slavia Agrofert',
+    url: 'https://hrambedminton.sk/'
   });
 
-  return calendar.toString();
+  return value;
 }
