@@ -12,7 +12,7 @@
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
     "graphql": "^15.5.1",
-    "ical-generator": "^3.1.1",
+    "ics": "^2.35.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.2",
     "nodemailer": "^6.7.2",

@@ -14,7 +14,7 @@ const setToken = (response: { id: string, expiresAt: string, token: string | nul
   }
 
   setTimeout(async () => {
-    refreshToken(response.id).then(res => setToken(res.data));
+    refreshToken(response.id).then(res => setToken(res.data)).catch(() => setToken({ id: '', expiresAt: '', token: null }));
   }, 1 * 60 * 1000);
 }
 
