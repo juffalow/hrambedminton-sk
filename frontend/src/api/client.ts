@@ -43,7 +43,7 @@ export async function get(endpoint: string): Promise<any> {
 }
 
 export async function getWithCredentials(endpoint: string): Promise<any> {
-  return fetch(endpoint, { credentials: 'same-origin' })
+  return fetch(endpoint, { credentials: 'include' })
     .then(handleErrors)
     .then(handleSuccess);
 }
@@ -63,7 +63,7 @@ export async function post(endpoint: string, data: unknown): Promise<any> {
 
   return fetch(endpoint, {
     method: 'POST',
-    credentials: 'same-origin',
+    credentials: 'include',
     headers,
     body: JSON.stringify(data),
   })
