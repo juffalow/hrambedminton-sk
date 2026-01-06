@@ -26,9 +26,5 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.52.0"
-  },
-  "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.956.0",
-    "@aws-sdk/util-dynamodb": "^3.956.0"
   }
 }
