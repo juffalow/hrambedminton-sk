@@ -10,6 +10,7 @@ export default defineConfig(
     ignores: [
       'node_modules',
       'cdk.out',
+      'jest.config.js',
     ],
   },
 );

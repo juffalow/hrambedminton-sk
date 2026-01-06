@@ -4,6 +4,6 @@ import { EmptyStack } from '../lib/stacks/EmptyStack';
 import { Tags } from 'aws-cdk-lib';
 
 const app = new cdk.App();
-const emptyStack = new EmptyStack(app, 'EmptyStack', {});
+new EmptyStack(app, 'EmptyStack', {});
 
 Tags.of(app).add('project', 'hrambedminton-sk');
