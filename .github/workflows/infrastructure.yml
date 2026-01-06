@@ -1,0 +1,38 @@
+name: Infrastructure
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  release:
+    types:
+      - published
+
+defaults:
+  run:
+    working-directory: ./infrastructure
+
+jobs:
+  check:
+    name: Check infrastructure
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+    - name: Enable corepack
+      run: corepack enable
+    - uses: actions/setup-node@v4
+      env:
+        yarn: 4.12.0
+      with:
+        node-version: 24
+        cache: 'yarn'
+        cache-dependency-path: './infrastructure/yarn.lock'
+    - name: Install dependencies
+      run: yarn install
+    - name: Lint
+      run: yarn run lint
