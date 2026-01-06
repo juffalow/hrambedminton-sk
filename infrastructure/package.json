@@ -8,7 +8,8 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "deploy:all": "cdk deploy --all"
+    "deploy:all": "cdk deploy --all",
+    "lint": "eslint ."
   },
   "engines": {
     "node": ">=24.0.0 <25.0.0",
