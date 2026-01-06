@@ -1,14 +1,5 @@
 import { gql, useQuery } from 'urql';
-import {
-  Button,
-  Chip,
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-} from '@heroui/react';
+import { Button, Chip, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@heroui/react';
 
 const MatchDetailQuery = gql`
   query MatchDetailQuery($id: ID!) {
@@ -28,7 +19,7 @@ const Detail = ({ id }: Props) => {
   const [result] = useQuery({
     query: MatchDetailQuery,
     variables: {
-      'id': id,
+      id: id,
     },
   });
 
@@ -40,9 +31,15 @@ const Detail = ({ id }: Props) => {
 
       <div className="flex justify-center mb-4">
         <Chip color="default">4 hraci</Chip>
-        <Chip color="default" className="ms-2">2026-01-15</Chip>
-        <Chip color="default" className="ms-2">10:00</Chip>
-        <Chip color="default" className="ms-2">Slavia Agrofert</Chip>
+        <Chip color="default" className="ms-2">
+          2026-01-15
+        </Chip>
+        <Chip color="default" className="ms-2">
+          10:00
+        </Chip>
+        <Chip color="default" className="ms-2">
+          Slavia Agrofert
+        </Chip>
       </div>
 
       <p className="text-center text-gray-500 mb-4">Match description</p>
@@ -67,10 +64,14 @@ const Detail = ({ id }: Props) => {
           </TableRow>
           <TableRow key="4">
             <TableCell>
-              <Button color="primary" variant="flat">Pridat sa</Button>
+              <Button color="primary" variant="flat">
+                Pridat sa
+              </Button>
             </TableCell>
             <TableCell>
-              <Button color="primary" variant="flat">Pridat sa</Button>
+              <Button color="primary" variant="flat">
+                Pridat sa
+              </Button>
             </TableCell>
           </TableRow>
         </TableBody>
@@ -79,6 +80,6 @@ const Detail = ({ id }: Props) => {
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </>
   );
-}
+};
 
 export default Detail;

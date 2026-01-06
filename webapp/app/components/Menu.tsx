@@ -56,12 +56,7 @@ export default function menu() {
     navigate(redirectPathname);
   };
 
-  const lang =
-    i18n.language === 'sk' ? (
-      <>&#x1F1F8;&#x1F1F0; SK</>
-    ) : (
-      <>&#x1F1F8;&#x1F1F0; SK</>
-    );
+  const lang = i18n.language === 'sk' ? <>&#x1F1F8;&#x1F1F0; SK</> : <>&#x1F1F8;&#x1F1F0; SK</>;
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen} isMenuOpen={isMenuOpen} position="static" maxWidth="full" isBordered>

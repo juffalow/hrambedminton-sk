@@ -16,9 +16,7 @@ export function meta({ location }: Route.MetaArgs) {
 }
 
 export function links() {
-  return [
-    { rel: 'alternate', href: 'https://hrambedminton.sk/sk', hrefLang: 'sk' },
-  ];
+  return [{ rel: 'alternate', href: 'https://hrambedminton.sk/sk', hrefLang: 'sk' }];
 }
 
 export default function Match() {

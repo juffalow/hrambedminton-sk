@@ -1,20 +1,23 @@
 import { useActionState } from 'react';
-import {
-  Form,
-  Input,
-  Textarea,
-  DatePicker,
-  TimeInput,
-  Button,
-  Alert,
-  Select,
-  SelectItem,
-} from '@heroui/react';
+import { Form, Input, Textarea, DatePicker, TimeInput, Button, Alert, Select, SelectItem } from '@heroui/react';
 
 export default function NewMatchForm({
   onSubmit,
 }: {
-  onSubmit: (prevState: unknown, state: FormData) => Promise<{ name: string; description: string; eventType: string; maxPlayers: number; date: string; time: string; place: string; courts: string; error: string | null }>;
+  onSubmit: (
+    prevState: unknown,
+    state: FormData
+  ) => Promise<{
+    name: string;
+    description: string;
+    eventType: string;
+    maxPlayers: number;
+    date: string;
+    time: string;
+    place: string;
+    courts: string;
+    error: string | null;
+  }>;
 }) {
   const [state, formAction, isPending] = useActionState(onSubmit, {
     name: '',
@@ -79,16 +82,10 @@ export default function NewMatchForm({
           label="Datum zapasu"
           labelPlacement="outside"
           name="date"
-          value={state.date as any || null}
+          value={(state.date as any) || null}
         />
 
-        <TimeInput
-          isRequired
-          label="Cas zapasu"
-          labelPlacement="outside"
-          name="time"
-          hourCycle={24}
-        />
+        <TimeInput isRequired label="Cas zapasu" labelPlacement="outside" name="time" hourCycle={24} />
       </div>
 
       <Input

@@ -17,9 +17,7 @@ export function meta({ location }: Route.MetaArgs) {
 }
 
 export function links() {
-  return [
-    { rel: 'alternate', href: 'https://hrambedminton.sk/sk', hrefLang: 'sk' },
-  ];
+  return [{ rel: 'alternate', href: 'https://hrambedminton.sk/sk', hrefLang: 'sk' }];
 }
 
 export default function Home() {
@@ -36,20 +34,22 @@ export default function Home() {
 
       <div className="grid place-items-center">
         <div className="w-full md:w-2/3 p-4 mt-5">
-          <NewMatchForm onSubmit={async (prevState, state) => {
-            const name = state.get('name') as string;
-            const description = state.get('description') as string;
-            const eventType = state.get('eventType') as string;
-            const maxPlayers = Number(state.get('maxPlayers') as string);
-            const date = state.get('date') as string;
-            const time = state.get('time') as string;
-            const place = state.get('place') as string;
-            const courts = state.get('courts') as string;
+          <NewMatchForm
+            onSubmit={async (prevState, state) => {
+              const name = state.get('name') as string;
+              const description = state.get('description') as string;
+              const eventType = state.get('eventType') as string;
+              const maxPlayers = Number(state.get('maxPlayers') as string);
+              const date = state.get('date') as string;
+              const time = state.get('time') as string;
+              const place = state.get('place') as string;
+              const courts = state.get('courts') as string;
 
-            console.log(name, description, maxPlayers, date, time, place, courts);
+              console.log(name, description, maxPlayers, date, time, place, courts);
 
-            return { name, description, eventType, maxPlayers, date, time, place, courts, error: null };
-          }} />
+              return { name, description, eventType, maxPlayers, date, time, place, courts, error: null };
+            }}
+          />
         </div>
       </div>
 
@@ -62,7 +62,7 @@ export default function Home() {
               <li>Historia zapasov</li>
             </ul>
           </div>
-          
+
           <Button
             as={Link}
             color="primary"
@@ -72,8 +72,8 @@ export default function Home() {
             className="mt-4"
             data-tracking-id="home_sign_up_click"
           >
-          {t('signUpButton')}
-        </Button>
+            {t('signUpButton')}
+          </Button>
         </div>
         <div>
           <p className="text-center mt-10 font-semibold text-xl">Moznosti zapasu:</p>
