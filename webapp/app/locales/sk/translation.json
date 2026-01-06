@@ -1,0 +1,244 @@
+{
+  "routes": {
+    "prefix": "sk/",
+    "signIn": "prihlasit-sa",
+    "signUp": "registracia",
+    "passwordReset": "obnovenie-hesla",
+    "privacyPolicy": "ochrana-osobnych-udajov",
+    "userData": "udaje-pouzivatela",
+    "profile": "profil",
+    "connectStrava": "pripojit-strava",
+    "authorizeStrava": "autorizovat-strava",
+    "home": ""
+  },
+  "components": {
+    "menu": {
+      "signIn": "Prihlásiť sa",
+      "signUp": "Registrovať sa",
+      "signOut": "Odhlásiť sa",
+      "profile": "Profil",
+      "activities": "Aktivity",
+      "subscription": "Predplatné",
+      "navbarToggleOpen": "Otvoriť menu",
+      "navbarToggleClose": "Zavrieť menu"
+    },
+    "footer": {
+      "about": "O aplikácii",
+      "contact": "Kontakt",
+      "description": "Aplikácia vám pomáha sledovať štatistiky a výkon vášho klubu.",
+      "home": "Domov",
+      "links": "Odkazy",
+      "register": "Registrovať",
+      "privacyPolicy": "Ochrana osobných údajov",
+      "status": "Stav"
+    }
+  },
+  "meta": {
+    "title": "hramBedminton.sk",
+    "home": {
+      "description": ""
+    }
+  },
+  "home": {
+    "title": "Bedmintonove zapasy prehladne a jednoducho",
+    "subtitle": "Začnite plánovať svoje bedmintonové zapasy a majte všetko pod kontrolou!",
+    "signInButton": "Prihlásiť sa",
+    "signUpButton": "Registrovať sa"
+  },
+  "connectStrava": {
+    "title": "Pripojiť Strava",
+    "subtitle": "Pripojte svoj účet Strava k vášmu účtu StravaClubStats.com.",
+    "connectButton": "Pripojiť účet Strava",
+    "disconnectStravaInfo": "Svoj účet Strava môžete kedykoľvek odpojiť buď na svojej profilovej stránke, alebo priamo zo Stravy.",
+    "permissionsTitle": "Oprávnenia",
+    "permissionsDescription": "Potrebujeme tieto oprávnenia, aby sme mohli získať údaje o športovcovi a detaily aktivít.",
+    "permissions.read": "čítanie",
+    "permissions.activityRead": "activity:read",
+    "howItWorksTitle": "Ako to funguje",
+    "howItWorksDescription": "Po každej aktivite stiahne detaily aktivity a uložíme ich do našej databázy",
+    "howItWorksStep1": "Po každej aktivite stiahne detaily aktivity a uložíme ich do našej databázy",
+    "howItWorksStep2": "Použijeme detaily aktivity na aktualizáciu štatistík klubu",
+    "howItWorksStep3": "Čakáme 7 dní",
+    "howItWorksStep3Description": "To znamená, že máte nejaký čas\nna úpravu vašej aktivity (názov, popis, skrátenie, atď.)\na ostatní športovci majú čas dať vám Kudos.",
+    "howItWorksStep4": "Stiahne aktivitu znovu a aktualizujeme ju v našej databáze",
+    "howItWorksStep5": "Použijeme detaily aktivity na aktualizáciu štatistík klubu"
+  },
+  "authorizeStrava": {
+    "title": "Autorizácia Strava",
+    "subtitle": "Autorizujte svoj účet Strava, aby ste mohli získať detaily svojich aktivít.",
+    "returnedCode": "Vrátený kód",
+    "returnedScope": "Vrátené oprávnenie/oprávnenia",
+    "echangeCodeForAccessTokenProcess": "Výmena kódu za prístupový token...",
+    "exchangedCodeForAccessToken": "Kód vymenený za prístupový token",
+    "permissionsDescription": "Potrebujeme tieto oprávnenia, aby sme mohli získať údaje o športovcovi a detaily aktivít.",
+    "nextStepsTitle": "Ďalšie kroky",
+    "nextStepsList": [
+      "Vymeníme kód za prístupový token",
+      "Stiahneme údaje o športovcovi",
+      "Stiahneme štatistiky športovca",
+      "Stiahneme kluby športovca",
+      "Stiahneme detaily klubov"
+    ],
+    "nextStepsInfo": "Dokončenie môže trvať niekoľko sekúnd.\nPo dokončení budete môcť vidieť svoje dáta na stránke profilu."
+  },
+  "signIn": {
+    "title": "Prihlásiť sa",
+    "noAccount": "Ešte nemáte účet?",
+    "signUp": "Registrovať sa",
+    "form": {
+      "email": "E-mail",
+      "emailPlaceholder": "Zadajte váš e-mail",
+      "requiredField": "Toto pole je povinné.",
+      "password": "Heslo",
+      "passwordPlaceholder": "Zadajte vaše heslo",
+      "forgotPassword": "Zabudli ste heslo?",
+      "signInButton": "Prihlásiť sa"
+    },
+    "google": {
+      "dividerText": "Alebo pokračovať s",
+      "signInButton": "Prihlásiť sa cez Google"
+    },
+    "totp": {
+      "totpCode": "Kód",
+      "confirmSignInButton": "Potvrdiť prihlásenie"
+    }
+  },
+  "signUp": {
+    "title": "Registrovať sa",
+    "form": {
+      "name": "Meno",
+      "namePlaceholder": "Zadajte vaše meno",
+      "email": "E-mail",
+      "emailPlaceholder": "Zadajte váš e-mail",
+      "requiredField": "Toto pole je povinné.",
+      "password": "Heslo",
+      "passwordPlaceholder": "Zadajte vaše heslo",
+      "passwordRules": {
+        "minEightCharacters": "Aspoň 8 znakov",
+        "atLeastOneUppercase": "Aspoň jedno veľké písmeno",
+        "atLeastOneLowercase": "Aspoň jedno malé písmeno",
+        "atLeastOneSpecialCharacter": "Aspoň jeden špeciálny znak",
+        "atLeastOneNumber": "Aspoň jedno číslo"
+      },
+      "signUpButton": "Registrovať sa",
+      "errors": {
+        "userAlreadyExists": "Používateľ s touto e-mailovou adresou už existuje!",
+        "default": "Nepodarilo sa zaregistrovať!"
+      }
+    },
+    "confirmForm": {
+      "code": "Kód",
+      "requiredField": "Toto pole je povinné.",
+      "confirmSignUpButton": "Potvrdiť registráciu",
+      "errors": {
+        "codeMismatch": "Nesprávny overovací kód, skúste to prosím znova.",
+        "default": "Nepodarilo sa potvrdiť registráciu!"
+      }
+    },
+    "thankYou": {
+      "subtitle": "Úspešne ste vytvorili svoj účet. Teraz sa môžete prihlásiť do svojho účtu.",
+      "subtitleLink": "Prihlásiť sa"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "detail": {
+      "title": "Detaily účtu",
+      "email": "E-mail"
+    },
+    "athlete": {
+      "title": "Detaily športovca",
+      "id": "ID",
+      "name": "Meno",
+      "city": "Mesto",
+      "sex": "Pohlavie",
+      "male": "Muž",
+      "female": "Žena"
+    },
+    "clubs": {
+      "title": "Kluby"
+    },
+    "changePassword": {
+      "title": "Zmeniť heslo",
+      "currentPassword": "Aktuálne heslo",
+      "currentPasswordPlaceholder": "1ZastaraleHeslo!",
+      "newPassword": "Nové heslo",
+      "newPasswordPlaceholder": "Nove1TazkeHeslo!",
+      "confirmPassword": "Potvrdiť nové heslo",
+      "button": "Zmeniť heslo"
+    },
+    "mfa": {
+      "title": "Viacfaktorová autentizácia",
+      "activate": {
+        "title": "Aktivovať viacfaktorovú autentizáciu",
+        "subtitle": "Po aktivácii viacfaktorovej autentizácie sa budete môcť prihlásiť pomocou kódu zaslaného na váš e-mail."
+      },
+      "confirm": {
+        "title": "Potvrdiť viacfaktorovú autentizáciu",
+        "subtitle": "Zadajte kód zaslaný na váš e-mail na potvrdenie viacfaktorovej autentizácie.",
+        "submitButton": "Potvrdiť"
+      }
+    },
+    "statistics": {
+      "title": "Štatistiky",
+      "yearToDateRideTotals": "Celkové jazdy za rok do dnešného dňa",
+      "numberOfRides": "Počet jázd",
+      "totalDistance": "Celková vzdialenosť",
+      "totalElevationGain": "Celkové prevýšenie",
+      "totalMovingTime": "Celkový čas v pohybe",
+      "yearToDateRunTotals": "Celkové behy za rok do dnešného dňa",
+      "numberOfRuns": "Počet behov"
+    },
+    "deleteProfile": {
+      "title": "Zmazať účet",
+      "subtitle": "Všetky dáta súvisiace s vaším účtom budú zmazané.",
+      "submitButton": "Zmazať profil",
+      "clarifyingText": "Táto funkcia zatiaľ nie je podporovaná. Ak chcete zmazať svoj účet, kontaktujte nás prosím na nasledujúcej e-mailovej adrese"
+    }
+  },
+  "club": {
+    "detail": {
+      "title": "Detaily klubu",
+      "statistics": "Štatistiky",
+      "months": "Január,Február,Marec,Apríl,Máj,Jún,Júl,August,September,Október,November,December"
+    }
+  },
+  "privacyPolicy": {
+    "title": "Ochrana osobných údajov",
+    "subtitle": "Ak ste návštevníkom webovej stránky Zdielaj.si alebo zákazníkom služby Zdielaj.si, potom sa na vaše používanie tejto webovej stránky alebo služby vzťahujú \"zásady ochrany osobných údajov\".",
+    "firstSection": {
+      "title": "Aký typ informácií zhromažďujeme?",
+      "paragraph1": "Na poskytovanie služieb Zdielaj.si potrebujeme spracovávať informácie o vás. Typy informácií, ktoré zhromažďujeme, závisia od toho, ako používate naše služby."
+    },
+    "secondSection": {
+      "title": "Ako tieto informácie používame?",
+      "paragraph1": "<strong>Na poskytovanie, personalizáciu a zlepšovanie našich služieb.</strong> Informácie, ktoré máme, používame na poskytovanie našich služieb, prispôsobenie funkcií a vytváranie návrhov pre vás.",
+      "paragraph2": "<strong>Výskum a vývoj produktov.</strong> Informácie, ktoré máme, používame na vývoj, testovanie a zlepšovanie našich služieb. Takéto spracovanie je nevyhnutné pre naše oprávnené záujmy pri poskytovaní inovatívnych služieb našim používateľom.",
+      "paragraph3": "<strong>Na podporu bezpečnosti a integrity.</strong> Informácie, ktoré máme, používame na overovanie účtov a aktivít, boj proti škodlivému správaniu, odhaľovanie a predchádzanie spamu a iným negatívnym skúsenostiam a udržiavanie integrity našich služieb.",
+      "paragraph4": "<strong>Komunikácia s vami.</strong> Informácie, ktoré máme, používame na zasielanie marketingových oznámení, relevantných noviniek a aktualizácií, o ktorých si myslíme, že by vás mohli zaujímať."
+    },
+    "thirdSection": {
+      "title": "Ako chránime vaše informácie?",
+      "paragraph1": "Vaše osobné údaje sú šifrované, uložené za zabezpečenými sieťami a prístupné len obmedzenému počtu osôb, ktoré majú špeciálne prístupové práva k takýmto systémom a sú povinné zachovávať mlčanlivosť o informáciách."
+    },
+    "fourthSection": {
+      "title": "Ako sú tieto informácie zdieľané?",
+      "paragraph1": "Nepredávame, neobchodujeme ani inak neprenášame vaše osobné údaje tretím stranám. To nezahŕňa partnerov pre hosting webových stránok a ďalšie strany, ktoré nám pomáhajú prevádzkovať našu webovú stránku, vykonávať naše podnikanie alebo obsluhovať našich používateľov, pokiaľ tieto strany súhlasia s utajením týchto informácií."
+    },
+    "fifthSection": {
+      "title": "Uchovávanie údajov, deaktivácia a odstránenie účtu",
+      "paragraph1": "Údaje uchovávame tak dlho, ako je to potrebné na poskytovanie našich služieb alebo až do odstránenia vášho účtu - podľa toho, čo nastane skôr."
+    },
+    "sixthSection": {
+      "title": "Ako vás budeme informovať o zmenách týchto zásad?",
+      "paragraph1": "Tieto zásady môžeme čas od času aktualizovať. Kde je to možné, budeme vás informovať o zmenách alebo vás pravidelne upozorňovať na preskúmanie týchto zásad prostredníctvom e-mailu."
+    },
+    "seventhSection": {
+      "title": "Ako kontaktovať Zdielaj.si s otázkami?",
+      "paragraph1": "Môžete nás kontaktovať zaslaním e-mailu na <mailto>info@zdielaj.si</mailto>."
+    }
+  },
+  "subscription": {
+    "title": "Predplatné"
+  }
+}

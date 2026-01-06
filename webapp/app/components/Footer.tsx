@@ -1,0 +1,77 @@
+import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
+
+export default function Footer() {
+  const { t } = useTranslation('', { keyPrefix: 'components.footer' });
+
+  return (
+    <footer className="bg-white dark:bg-gray-900">
+      <div className="mx-auto w-full p-4 py-6 lg:py-8">
+        <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+        <div className="md:flex md:justify-between">
+          <div className="mb-6 md:mb-0">
+            <a href="https://hrambedminton.sk/" className="flex items-center">
+              <img src="/favicon.png" width="auto" height={40} className="h-10 me-3" alt="HramBedminton.sk logo" />
+              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+                HramBedminton.sk
+              </span>
+            </a>
+            <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">{import.meta.env.VITE_APP_VERSION}</p>
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{new Date().getFullYear()}</p>
+            <p className="mt-2" style={{ fontSize: '0.9rem' }}>
+              {t('description')}
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-8 sm:gap-6">
+            <div className="px-5">
+              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">{t('links')}</h2>
+              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                <li className="mb-4">
+                  <Link
+                    className="nav-link text-light"
+                    to={`${t('prefix', { keyPrefix: 'routes' })}${t('home', { keyPrefix: 'routes' })}`}
+                    data-tracking-id="footer_link_home_click"
+                  >
+                    {t('home')}
+                  </Link>
+                </li>
+                <li className="mb-4">
+                  <Link
+                    className="nav-link text-light"
+                    to={`${t('prefix', { keyPrefix: 'routes' })}${t('signUp', { keyPrefix: 'routes' })}`}
+                    data-tracking-id="footer_link_register_click"
+                  >
+                    {t('register')}
+                  </Link>
+                </li>
+                <li className="mb-4">
+                  <Link
+                    className="nav-link text-light"
+                    to={`${t('prefix', { keyPrefix: 'routes' })}${t('privacyPolicy', { keyPrefix: 'routes' })}`}
+                    data-tracking-id="footer_link_privacypolicy_click"
+                  >
+                    {t('privacyPolicy')}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="px-5">
+              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">{t('contact')}</h2>
+              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                <li>
+                  <a
+                    className="nav-link text-light"
+                    href="mailto:matej.jellus@gmail.com"
+                    data-tracking-id="footer_link_email_click"
+                  >
+                    matej.jellus@gmail.com
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
