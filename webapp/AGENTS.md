@@ -14,16 +14,19 @@
 ```
 hrambedminton-sk/webapp/
 ├── public/                 # Static assets
-│   ├── favicon.ico
-│   └── index.html
+│   ├── favicon.png
+│   └── robots.txt
 ├── app/
 |   |-- api/               # API services
 │   ├── components/        # Reusable components
 │   ├── routes/            # Page components
 │   ├── hooks/             # Custom Hooks
+│   ├── locales/           # Translation files
+│   ├── logger/            # Logger
 │   ├── utils/             # Utility functions
 │   ├── types/             # TypeScript type definitions
-│   ├── constants/         # Constants
+|   |-- app.css
+|   |-- constants.ts       # Constants
 |   |-- hero.ts
 |   |-- i18n.ts
 │   ├── root.tsx
