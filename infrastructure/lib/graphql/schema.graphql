@@ -1,0 +1,134 @@
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  createdAt: AWSDateTime!
+}
+
+type Event {
+  id: ID!
+  eventType: EventType!
+  name: String!
+  description: String
+  date: AWSDate!
+  time: AWSTime!
+  maxPlayers: Int!
+  place: String!
+  court: String
+  ownerId: ID!
+  owner: User
+  players: [EventPlayer!]
+  createdAt: AWSDateTime!
+}
+
+type EventPlayer {
+  userId: ID
+  userName: String
+  guestId: ID
+  guestName: String
+  guestEmail: String
+  team: String
+  role: PlayerRole!
+  status: PlayerStatus!
+  joinedAt: AWSDateTime!
+}
+
+enum EventType {
+  singles
+  doubles
+}
+
+enum PlayerRole {
+  owner
+  invited
+  attendee
+}
+
+enum PlayerStatus {
+  pending
+  confirmed
+  declined
+}
+
+input CreateUserInput {
+  id: ID!
+  email: String!
+  name: String!
+}
+
+input CreateEventInput {
+  eventType: EventType!
+  name: String!
+  description: String
+  date: AWSDate!
+  time: AWSTime!
+  maxPlayers: Int!
+  place: String!
+  court: String
+}
+
+input UpdateEventInput {
+  id: ID!
+  name: String
+  description: String
+  date: AWSDate
+  time: AWSTime
+  maxPlayers: Int
+  place: String
+  court: String
+}
+
+input AddPlayerInput {
+  eventId: ID!
+  userId: ID
+  guestName: String
+  guestEmail: String
+  team: String
+}
+
+input UpdatePlayerStatusInput {
+  eventId: ID!
+  userId: ID
+  guestId: ID
+  status: PlayerStatus!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type EventEdge {
+  node: Event!
+  cursor: String!
+}
+
+type EventConnection {
+  edges: [EventEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type Query {
+  getUser(id: ID!): User
+  getEvent(id: ID!): Event
+  listUserEvents(userId: ID!, first: Int, after: String): EventConnection
+  listUpcomingEvents(first: Int, after: String): EventConnection
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User
+  createEvent(input: CreateEventInput!): Event
+  updateEvent(input: UpdateEventInput!): Event
+  deleteEvent(id: ID!): Event
+  addPlayer(input: AddPlayerInput!): EventPlayer
+  removePlayer(eventId: ID!, userId: ID, guestId: ID): EventPlayer
+  updatePlayerStatus(input: UpdatePlayerStatusInput!): EventPlayer
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
