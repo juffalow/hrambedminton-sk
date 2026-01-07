@@ -1,0 +1,37 @@
+import { util } from '@aws-appsync/utils';
+
+export function request(ctx) {
+  const { id } = ctx.args;
+  return {
+    operation: 'GetItem',
+    key: util.dynamodb.toMapValues({
+      PK: `event#${id}`,
+      SK: `event#${id}`,
+    }),
+  };
+}
+
+export function response(ctx) {
+  if (ctx.error) {
+    util.error(ctx.error.message, ctx.error.type);
+  }
+
+  const item = ctx.result;
+  if (!item) {
+    return null;
+  }
+
+  return {
+    id: item.id,
+    eventType: item.eventType,
+    name: item.name,
+    description: item.description,
+    date: item.date,
+    time: item.time,
+    maxPlayers: item.maxPlayers,
+    place: item.place,
+    court: item.court,
+    ownerId: item.ownerId,
+    createdAt: item.createdAt,
+  };
+}
