@@ -8,6 +8,14 @@ export function request(ctx) {
   const expressionNames = {};
   const expressionValues = {};
 
+  // If date or time is updated, require both to be provided
+  if ((updates.date && !updates.time) || (updates.time && !updates.date)) {
+    util.error(
+      'Both date and time must be provided when updating either one',
+      'ValidationError'
+    );
+  }
+
   Object.entries(updates).forEach(([key, value]) => {
     if (value !== undefined && value !== null) {
       expressionParts.push(`#${key} = :${key}`);
@@ -20,12 +28,11 @@ export function request(ctx) {
     util.error('No fields to update', 'ValidationError');
   }
 
-  // If date or time is updated, also update GSI1SK
-  if (updates.date || updates.time) {
+  // If date and time are updated, also update GSI1SK
+  if (updates.date && updates.time) {
     expressionParts.push('#gsi1sk = :gsi1sk');
     expressionNames['#gsi1sk'] = 'GSI1SK';
-    // We need to fetch current values for date/time if not provided
-    // For simplicity, require both if either is updated
+    expressionValues[':gsi1sk'] = `date#${updates.date}#time#${updates.time}`;
   }
 
   return {

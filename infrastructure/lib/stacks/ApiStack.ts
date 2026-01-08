@@ -55,11 +55,44 @@ export class ApiStack extends cdk.Stack {
       code: appsync.Code.fromAsset(path.join(resolversPath, 'getEvent.js')),
     });
 
-    dataSource.createResolver('ListUserEventsResolver', {
+    // Pipeline resolver for listUserEvents
+    const queryPlayersFunction = new appsync.AppsyncFunction(
+      this,
+      'QueryPlayersFunction',
+      {
+        name: 'QueryPlayersFunction',
+        api: this.api,
+        dataSource: dataSource,
+        runtime: appsync.FunctionRuntime.JS_1_0_0,
+        code: appsync.Code.fromAsset(
+          path.join(resolversPath, 'listUserEvents.queryPlayers.js')
+        ),
+      }
+    );
+
+    const batchGetEventsFunction = new appsync.AppsyncFunction(
+      this,
+      'BatchGetEventsFunction',
+      {
+        name: 'BatchGetEventsFunction',
+        api: this.api,
+        dataSource: dataSource,
+        runtime: appsync.FunctionRuntime.JS_1_0_0,
+        code: appsync.Code.fromAsset(
+          path.join(resolversPath, 'listUserEvents.batchGetEvents.js')
+        ),
+      }
+    );
+
+    new appsync.Resolver(this, 'ListUserEventsResolver', {
+      api: this.api,
       typeName: 'Query',
       fieldName: 'listUserEvents',
       runtime: appsync.FunctionRuntime.JS_1_0_0,
-      code: appsync.Code.fromAsset(path.join(resolversPath, 'listUserEvents.js')),
+      code: appsync.Code.fromAsset(
+        path.join(resolversPath, 'listUserEvents.pipeline.js')
+      ),
+      pipelineConfig: [queryPlayersFunction, batchGetEventsFunction],
     });
 
     // Mutation resolvers

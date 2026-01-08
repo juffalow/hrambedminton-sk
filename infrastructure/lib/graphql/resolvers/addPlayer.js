@@ -2,7 +2,7 @@ import { util } from '@aws-appsync/utils';
 
 export function request(ctx) {
   const { input } = ctx.args;
-  const { eventId, userId, guestName, guestEmail, team } = input;
+  const { eventId, userId, userName, guestName, guestEmail, team } = input;
   const now = util.time.nowISO8601();
 
   // Determine if this is a registered user or guest
@@ -29,6 +29,7 @@ export function request(ctx) {
       GSI1PK: `user#${userId}`,
       GSI1SK: `event#${eventId}`,
       userId: userId,
+      userName: userName || null,
       team: team || null,
       role: 'attendee',
       status: 'confirmed',
@@ -45,8 +46,8 @@ export function request(ctx) {
       GSI1PK: `email#${guestEmail}`,
       GSI1SK: `event#${eventId}`,
       guestId: guestId,
-      guestName: guestName,
-      guestEmail: guestEmail,
+      name: guestName,
+      email: guestEmail,
       team: team || null,
       role: 'attendee',
       status: 'confirmed',
@@ -77,8 +78,8 @@ export function response(ctx) {
     userId: item.userId || null,
     userName: item.userName || null,
     guestId: item.guestId || null,
-    guestName: item.guestName || null,
-    guestEmail: item.guestEmail || null,
+    guestName: item.name || null,
+    guestEmail: item.email || null,
     team: item.team,
     role: item.role,
     status: item.status,

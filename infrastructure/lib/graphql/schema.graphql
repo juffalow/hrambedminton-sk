@@ -81,6 +81,7 @@ input UpdateEventInput {
 input AddPlayerInput {
   eventId: ID!
   userId: ID
+  userName: String
   guestName: String
   guestEmail: String
   team: String

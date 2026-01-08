@@ -21,7 +21,8 @@ export function request(ctx) {
   };
 
   if (after) {
-    query.nextToken = after;
+    const cursor = JSON.parse(util.base64Decode(after));
+    query.exclusiveStartKey = util.dynamodb.toMapValues(cursor);
   }
 
   return query;
@@ -43,7 +44,9 @@ export function response(ctx) {
   });
 
   const hasNextPage = items.length > first;
-  const edges = items.slice(0, first).map((item) => ({
+  const resultItems = items.slice(0, first);
+
+  const edges = resultItems.map((item) => ({
     node: {
       id: item.id,
       eventType: item.eventType,
@@ -60,13 +63,18 @@ export function response(ctx) {
     cursor: util.base64Encode(JSON.stringify({ PK: item.PK, SK: item.SK })),
   }));
 
+  const lastItem = resultItems[resultItems.length - 1];
+  const endCursor = lastItem
+    ? util.base64Encode(JSON.stringify({ PK: lastItem.PK, SK: lastItem.SK }))
+    : null;
+
   return {
     edges,
     pageInfo: {
       hasNextPage,
       hasPreviousPage: !!ctx.args.after,
       startCursor: edges.length > 0 ? edges[0].cursor : null,
-      endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null,
+      endCursor,
     },
     totalCount: null,
   };
