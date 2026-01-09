@@ -40,15 +40,15 @@ Event:
 * Get user by ID
 * Get event by ID
 * Get all events for a user (owned, invited, attending)
+* Get upcoming events (sorted by date) for a user (owned, invited, attending)
 * Get all events for a guest user (invited, attending)
 * Get all players (registered and guests) for an event
-* Get upcoming events (sorted by date)
 * Convert guest to registered user (link accounts)
 
 ## Tech Stack
 
 **Frontend**: React 19 + TypeScript
-**Backend**: AWS AppSync + AWS DynamoDB
+**Backend**: AWS AppSync + AWS DynamoDB + AWS Cognito
 
 ## Project Structure
 

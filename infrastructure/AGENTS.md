@@ -6,11 +6,13 @@ AWS CDK infrastructure for the Badminton Match Planner application. Deploys:
 * AWS AppSync GraphQL API
 * AWS DynamoDB table (single-table design)
 * AWS Lambda functions (if needed for custom resolvers)
+* AWS Cognito (for user management)
 
 ## Tech Stack
 
 **Backend**: AWS AppSync + JavaScript resolvers
 **Database**: AWS DynamoDB
+**Authentication**: Cognito
 **Code Quality**: ESLint + Prettier
 
 ## Project Structure
