@@ -1,0 +1,45 @@
+enum EventType {
+  SINGLES
+  DOUBLES
+}
+
+type Event {
+  id: ID!
+  _id: ID!
+  eventType: EventType!
+  name: String!
+  description: String
+  date: String!
+  time: String!
+  maxPlayers: Int!
+  place: String!
+  court: String!
+  ownerId: ID!
+  createdAt: String!
+}
+
+input CreateGuestEventInput {
+  eventType: EventType!
+  name: String!
+  description: String
+  date: String!
+  time: String!
+  maxPlayers: Int!
+  place: String!
+  court: String!
+  guestEmail: String!
+  guestName: String!
+}
+
+type Query {
+  placeholder: String
+}
+
+type Mutation {
+  createGuestEvent(input: CreateGuestEventInput!): Event!
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

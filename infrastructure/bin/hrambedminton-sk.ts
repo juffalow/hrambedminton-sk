@@ -1,12 +1,17 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
 import { Tags } from 'aws-cdk-lib';
+import { ApiStack } from '../lib/stacks/ApiStack';
 import { AuthStack } from '../lib/stacks/AuthStack';
 import { DatabaseStack } from '../lib/stacks/DatabaseStack';
 
 const app = new cdk.App();
 const databaseStack = new DatabaseStack(app, 'DatabaseStack', {});
-new AuthStack(app, 'AuthStack', {
+const authStack = new AuthStack(app, 'AuthStack', {
+  table: databaseStack.table,
+});
+new ApiStack(app, 'ApiStack', {
+  userPool: authStack.userPool,
   table: databaseStack.table,
 });
 
