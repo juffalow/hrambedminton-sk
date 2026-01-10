@@ -11,6 +11,8 @@ export default defineConfig(
       'node_modules',
       'cdk.out',
       'jest.config.js',
+      '**/*.js',
+      '**/*.d.ts',
     ],
   },
 );
