@@ -1,5 +1,5 @@
 import { PostConfirmationTriggerEvent, PostConfirmationTriggerHandler } from 'aws-lambda';
-import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
+import { ConditionalCheckFailedException, DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 
 const client = new DynamoDBClient({});
 
@@ -14,7 +14,7 @@ export const handler: PostConfirmationTriggerHandler = async (
 
   const userId = event.request.userAttributes.sub;
   const email = event.request.userAttributes.email;
-  const name = event.request.userAttributes.name;
+  const name = event.request.userAttributes.name || 'Unknown';
   const now = new Date().toISOString();
 
   try {
@@ -30,11 +30,16 @@ export const handler: PostConfirmationTriggerHandler = async (
           name: { S: name },
           createdAt: { S: now },
         },
+        ConditionExpression: 'attribute_not_exists(PK)',
       }),
     );
 
     console.log(`User ${userId} synced to DynamoDB`);
   } catch (error) {
+    if (error instanceof ConditionalCheckFailedException) {
+      console.log(`User ${userId} already exists in DynamoDB, skipping creation`);
+      return event;
+    }
     console.error('Error syncing user to DynamoDB:', error);
     throw error;
   }
