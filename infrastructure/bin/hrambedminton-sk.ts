@@ -5,7 +5,9 @@ import { AuthStack } from '../lib/stacks/AuthStack';
 import { DatabaseStack } from '../lib/stacks/DatabaseStack';
 
 const app = new cdk.App();
-new AuthStack(app, 'AuthStack', {});
-new DatabaseStack(app, 'DatabaseStack', {});
+const databaseStack = new DatabaseStack(app, 'DatabaseStack', {});
+new AuthStack(app, 'AuthStack', {
+  table: databaseStack.table,
+});
 
 Tags.of(app).add('project', 'hrambedminton-sk');
