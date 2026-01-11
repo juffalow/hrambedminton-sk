@@ -57,6 +57,12 @@ hrambedminton-sk/infrastructure/
 * Limited standard library
 * Must use @aws-appsync/utils package
 
+### Lint AppSync resolvers
+
+```bash
+yarn run lint:appsync
+```
+
 ### Evaluate AppSync resolvers code
 
 ```bash
