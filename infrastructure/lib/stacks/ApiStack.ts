@@ -77,5 +77,33 @@ export class ApiStack extends cdk.Stack {
       runtime: appsync.FunctionRuntime.JS_1_0_0,
       pipelineConfig: [createGuestEventFunction],
     });
+
+    const getEventFunction = new appsync.AppsyncFunction(
+      this,
+      'GetEventFunction',
+      {
+        name: 'getEvent',
+        api: this.api,
+        dataSource: dynamoDbDataSource,
+        code: appsync.Code.fromAsset('lib/graphql/resolvers/getEvent.js'),
+        runtime: appsync.FunctionRuntime.JS_1_0_0,
+      },
+    );
+
+    new appsync.Resolver(this, 'GetEventResolver', {
+      api: this.api,
+      typeName: 'Query',
+      fieldName: 'event',
+      code: appsync.Code.fromInline(`
+        export function request(ctx) {
+          return {};
+        }
+        export function response(ctx) {
+          return ctx.prev.result;
+        }
+      `),
+      runtime: appsync.FunctionRuntime.JS_1_0_0,
+      pipelineConfig: [getEventFunction],
+    });
   }
 }
