@@ -5,10 +5,10 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@aws-cdk/asset-awscli-v1@npm:2.2.242":
-  version: 2.2.242
-  resolution: "@aws-cdk/asset-awscli-v1@npm:2.2.242"
-  checksum: 10c0/bf0d1694de559accb4dc28257eccbd959d37d5d2c5572aa77bc3a01612796b6fcf616e6b5fbb52f0212f61ee36e7eba333ba3a387142789eaf6b3a98e819c814
+"@aws-cdk/asset-awscli-v1@npm:2.2.258":
+  version: 2.2.258
+  resolution: "@aws-cdk/asset-awscli-v1@npm:2.2.258"
+  checksum: 10c0/7b65a788a5ec4563a4674ec5a21328210afb9068a3b5b64e118d8787802ed12167f78039a44f755ba76b87304a478cce87f833ce2a2c726e7675e4ebd2952744
   languageName: node
   linkType: hard
 
@@ -1573,15 +1573,15 @@ __metadata:
   linkType: hard
 
 "aws-cdk-lib@npm:^2.233.0":
-  version: 2.233.0
-  resolution: "aws-cdk-lib@npm:2.233.0"
+  version: 2.234.1
+  resolution: "aws-cdk-lib@npm:2.234.1"
   dependencies:
-    "@aws-cdk/asset-awscli-v1": "npm:2.2.242"
+    "@aws-cdk/asset-awscli-v1": "npm:2.2.258"
     "@aws-cdk/asset-node-proxy-agent-v6": "npm:^2.1.0"
     "@aws-cdk/cloud-assembly-schema": "npm:^48.20.0"
     "@balena/dockerignore": "npm:^1.0.2"
     case: "npm:1.6.3"
-    fs-extra: "npm:^11.3.2"
+    fs-extra: "npm:^11.3.3"
     ignore: "npm:^5.3.2"
     jsonschema: "npm:^1.5.0"
     mime-types: "npm:^2.1.35"
@@ -1592,13 +1592,13 @@ __metadata:
     yaml: "npm:1.10.2"
   peerDependencies:
     constructs: ^10.0.0
-  checksum: 10c0/ed970acc3ff6e057ae678f2a7509b8a06083bc73166f96f6f88c30d42986891ac11c9598615f3d85c7d82fb224348dc03a1410ab8b634123ab52b9d32fe9a2aa
+  checksum: 10c0/95e72752302daf6f089d22389ff09fecf48bef5fedf7818a159646664808f6283df10ad817f29aa305da219c225997845d138fbe7cd21c50d492d413e292de6b
   languageName: node
   linkType: hard
 
 "aws-cdk@npm:^2.1100.1":
-  version: 2.1100.2
-  resolution: "aws-cdk@npm:2.1100.2"
+  version: 2.1100.3
+  resolution: "aws-cdk@npm:2.1100.3"
   dependencies:
     fsevents: "npm:2.3.2"
   dependenciesMeta:
@@ -1606,7 +1606,7 @@ __metadata:
       optional: true
   bin:
     cdk: bin/cdk
-  checksum: 10c0/440c5d658be39c5abea87c3e9178148ea860f20b89e99c4848ca5071e34e6cc43db749753266b55db0c28f336d74c10c4c712a4343f691d887c36ff90a23e190
+  checksum: 10c0/7c7f3165b5fb26232f83a46cd4a881c157e02edd5bf0af55a8cf46016ab5d9c7bc3bddd6039dfb51b95197f1cd1d4654f5fa96153411e5cd0d936729eac3de4d
   languageName: node
   linkType: hard
 
@@ -2014,7 +2014,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:^11.3.2":
+"fs-extra@npm:^11.3.3":
   version: 11.3.3
   resolution: "fs-extra@npm:11.3.3"
   dependencies:
