@@ -4,17 +4,14 @@ export function request(ctx) {
   const { id } = ctx.args;
 
   // Decode the base64 ID to get the actual event ID
-  let eventId;
-  try {
-    const decoded = util.base64Decode(id);
-    // Expected format: "event-{uuid}"
-    if (!decoded.startsWith('event-')) {
-      util.error('Invalid event ID format', 'ValidationError');
-    }
-    eventId = decoded.substring(6); // Remove "event-" prefix
-  } catch (error) {
-    util.error(`Invalid event ID: ${error && error.message ? error.message : 'unable to decode base64'}`, 'ValidationError');
+  const decoded = util.base64Decode(id);
+
+  // Expected format: "event-{uuid}"
+  if (!decoded || !decoded.startsWith('event-')) {
+    util.error('Invalid event ID format', 'ValidationError');
   }
+
+  const eventId = decoded.substring(6); // Remove "event-" prefix
 
   return {
     operation: 'GetItem',
@@ -51,7 +48,7 @@ export function response(ctx) {
     description: item.description || '',
     date: item.date,
     time: item.time,
-    maxPlayers: parseInt(item.maxPlayers, 10),
+    maxPlayers: item.maxPlayers,
     place: item.place,
     court: item.court,
     ownerId: item.ownerId,
