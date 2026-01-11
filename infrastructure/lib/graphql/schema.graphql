@@ -36,7 +36,7 @@ type Query {
 }
 
 type Mutation {
-  createGuestEvent(input: CreateGuestEventInput!): Event!
+  createGuestEvent(input: CreateGuestEventInput!): Event! @aws_api_key
 }
 
 schema {
