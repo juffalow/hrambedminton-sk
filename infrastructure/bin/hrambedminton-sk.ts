@@ -6,11 +6,11 @@ import { AuthStack } from '../lib/stacks/AuthStack';
 import { DatabaseStack } from '../lib/stacks/DatabaseStack';
 
 const app = new cdk.App();
-const databaseStack = new DatabaseStack(app, 'DatabaseStack', {});
-const authStack = new AuthStack(app, 'AuthStack', {
+const databaseStack = new DatabaseStack(app, 'HBDatabaseStack', {});
+const authStack = new AuthStack(app, 'HBAuthStack', {
   table: databaseStack.table,
 });
-new ApiStack(app, 'ApiStack', {
+new ApiStack(app, 'HBApiStack', {
   userPool: authStack.userPool,
   table: databaseStack.table,
 });
