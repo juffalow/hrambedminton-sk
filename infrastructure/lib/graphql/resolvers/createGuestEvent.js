@@ -11,8 +11,8 @@ export function request(ctx) {
     util.error('Guest email and name are required', 'ValidationError');
   }
 
-  if (input.guestName.length > 64) {
-    util.error('guestName must be 64 characters or less', 'ValidationError');
+  if (input.guestName.length < 1 || input.guestName.length > 64) {
+    util.error('guestName must be between 1 and 64 characters', 'ValidationError');
   }
 
   // Validate email format
@@ -24,20 +24,20 @@ export function request(ctx) {
     util.error('maxPlayers must be between 2 and 32', 'ValidationError');
   }
 
-  if (input.name.length > 100) {
-    util.error('name must be 100 characters or less', 'ValidationError');
+  if (input.name.length < 1 || input.name.length > 100) {
+    util.error('name must be between 1 and 100 characters', 'ValidationError');
   }
 
   if (input.description && input.description.length > 255) {
     util.error('description must be 255 characters or less', 'ValidationError');
   }
 
-  if (input.place.length > 128) {
-    util.error('place must be 128 characters or less', 'ValidationError');
+  if (input.place.length < 1 || input.place.length > 128) {
+    util.error('place must be between 1 and 128 characters', 'ValidationError');
   }
 
-  if (input.court.length > 64) {
-    util.error('court must be 64 characters or less', 'ValidationError');
+  if (input.court.length < 1 || input.court.length > 64) {
+    util.error('court must be between 1 and 64 characters', 'ValidationError');
   }
 
   // Validate date format (YYYY-MM-DD)
@@ -48,6 +48,26 @@ export function request(ctx) {
   // Validate time format (HH:mm)
   if (!/^\d{2}:\d{2}$/.test(input.time)) {
     util.error('time must be in HH:mm format', 'ValidationError');
+  }
+
+  // Validate date is a valid calendar date
+  const [year, month, day] = input.date.split('-').map((n) => parseInt(n, 10));
+  const daysInMonth = [31, year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (month < 1 || month > 12 || day < 1 || day > daysInMonth[month - 1]) {
+    util.error('date must be a valid calendar date', 'ValidationError');
+  }
+
+  // Validate time is a valid clock time
+  const [hour, minute] = input.time.split(':').map((n) => parseInt(n, 10));
+  if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+    util.error('time must be a valid clock time (HH:mm)', 'ValidationError');
+  }
+
+  // Validate date and time are in the future
+  const eventDateTime = util.time.parseISO8601ToEpochMilliSeconds(`${input.date}T${input.time}:00.000Z`);
+  const nowMillis = util.time.nowEpochMilliSeconds();
+  if (eventDateTime <= nowMillis) {
+    util.error('Event date and time must be in the future', 'ValidationError');
   }
 
   const transactItems = [
