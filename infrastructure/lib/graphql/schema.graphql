@@ -32,6 +32,7 @@ input CreateGuestEventInput {
 }
 
 type Query {
+  event(id: ID!): Event! @aws_api_key
   placeholder: String
 }
 
