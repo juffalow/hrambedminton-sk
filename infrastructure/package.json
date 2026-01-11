@@ -9,13 +9,15 @@
     "test": "jest",
     "cdk": "cdk",
     "deploy:all": "cdk deploy --all",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lint:appsync": "eslint --config eslint-appsync.config.mjs ."
   },
   "engines": {
     "node": ">=24.0.0 <25.0.0",
     "yarn": ">=4.0.0 <5.0.0"
   },
   "dependencies": {
+    "@aws-appsync/eslint-plugin": "^2.0.2",
     "@aws-sdk/client-dynamodb": "^3.709.0"
   },
   "devDependencies": {
