@@ -11,12 +11,33 @@ export function request(ctx) {
     util.error('Guest email and name are required', 'ValidationError');
   }
 
+  if (input.guestName.length > 64) {
+    util.error('guestName must be 64 characters or less', 'ValidationError');
+  }
+
+  // Validate email format
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.guestEmail)) {
+    util.error('guestEmail must be a valid email address', 'ValidationError');
+  }
+
   if (input.maxPlayers < 2 || input.maxPlayers > 32) {
     util.error('maxPlayers must be between 2 and 32', 'ValidationError');
   }
 
   if (input.name.length > 100) {
     util.error('name must be 100 characters or less', 'ValidationError');
+  }
+
+  if (input.description && input.description.length > 255) {
+    util.error('description must be 255 characters or less', 'ValidationError');
+  }
+
+  if (input.place.length > 128) {
+    util.error('place must be 128 characters or less', 'ValidationError');
+  }
+
+  if (input.court.length > 64) {
+    util.error('court must be 64 characters or less', 'ValidationError');
   }
 
   // Validate date format (YYYY-MM-DD)
