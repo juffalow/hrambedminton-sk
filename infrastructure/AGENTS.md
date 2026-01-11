@@ -22,8 +22,12 @@ hrambedminton-sk/infrastructure/
 ├── bin/
 │   └── hrambedminton-sk.ts    # CDK app entry point
 ├── lib/
+│   ├── graphql/               # schema and resolvers
+│   ├── lambdas/               # Lambda functions
 │   ├── stacks/                # CDK stacks
-│   │   └── EmptyStack.ts
+│   │   └── ApiStack.ts
+│   │   └── AuthStack.ts
+│   │   └── DatabaseStack.ts
 │   ├── types/                 # TypeScript types
 │   │   ├── Region.ts
 │   │   └── Stage.ts
@@ -46,6 +50,23 @@ hrambedminton-sk/infrastructure/
 * Follow single-table design for DynamoDB
 * Use JavaScript resolvers for AppSync
 * Tag all resources with `project: hrambedminton-sk`
+
+### AppSync Resolver Constraints
+
+* No regex literals (use string methods instead)
+* Limited standard library
+* Must use @aws-appsync/utils package
+
+### Evaluate AppSync resolvers code
+
+```bash
+aws appsync evaluate-code \
+  --code file://lib/graphql/resolvers/createGuestEvent.js \
+  --function request \
+  --context file://test/contexts/createGuestEvent-context.json \
+  --region eu-central-1 \
+  --runtime name=APPSYNC_JS,runtimeVersion=1.0.0
+```
 
 ## Environment Setup
 
