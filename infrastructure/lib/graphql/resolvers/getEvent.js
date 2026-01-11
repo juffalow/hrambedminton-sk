@@ -13,7 +13,7 @@ export function request(ctx) {
     }
     eventId = decoded.substring(6); // Remove "event-" prefix
   } catch (error) {
-    util.error('Invalid event ID', 'ValidationError');
+    util.error(`Invalid event ID: ${error && error.message ? error.message : 'unable to decode base64'}`, 'ValidationError');
   }
 
   return {
@@ -36,6 +36,10 @@ export function response(ctx) {
     util.error('Event not found', 'NotFoundError');
   }
 
+  if (item.Type !== 'Event') {
+    util.error('Event not found', 'NotFoundError');
+  }
+
   // Generate base64 encoded id
   const base64Id = util.base64Encode(`event-${item.id}`);
 
@@ -47,7 +51,7 @@ export function response(ctx) {
     description: item.description || '',
     date: item.date,
     time: item.time,
-    maxPlayers: parseInt(item.maxPlayers),
+    maxPlayers: parseInt(item.maxPlayers, 10),
     place: item.place,
     court: item.court,
     ownerId: item.ownerId,
