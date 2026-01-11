@@ -50,46 +50,60 @@ export function request(ctx) {
     util.error('time must be in HH:mm format', 'ValidationError');
   }
 
-  const items = [
+  const transactItems = [
     // Event item
     {
-      PutRequest: {
-        Item: {
-          PK: { S: `event#${eventId}` },
-          SK: { S: `event#${eventId}` },
-          GSI1PK: { S: `owner#${guestId}` },
-          GSI1SK: { S: `date#${input.date}#time#${input.time}` },
-          Type: { S: 'Event' },
-          id: { S: eventId },
-          eventType: { S: input.eventType },
-          name: { S: input.name },
-          description: { S: input.description || '' },
-          date: { S: input.date },
-          time: { S: input.time },
-          maxPlayers: { N: input.maxPlayers.toString() },
-          place: { S: input.place },
-          court: { S: input.court },
-          ownerId: { S: guestId },
-          createdAt: { S: now },
-        },
+      table: ctx.stash.tableName,
+      operation: 'PutItem',
+      key: {
+        PK: { S: `event#${eventId}` },
+        SK: { S: `event#${eventId}` },
+      },
+      attributeValues: {
+        PK: { S: `event#${eventId}` },
+        SK: { S: `event#${eventId}` },
+        GSI1PK: { S: `owner#${guestId}` },
+        GSI1SK: { S: `date#${input.date}#time#${input.time}` },
+        Type: { S: 'Event' },
+        id: { S: eventId },
+        eventType: { S: input.eventType },
+        name: { S: input.name },
+        description: { S: input.description || '' },
+        date: { S: input.date },
+        time: { S: input.time },
+        maxPlayers: { N: input.maxPlayers.toString() },
+        place: { S: input.place },
+        court: { S: input.court },
+        ownerId: { S: guestId },
+        createdAt: { S: now },
+      },
+      condition: {
+        expression: 'attribute_not_exists(PK)',
       },
     },
     // EventPlayer item (guest as owner)
     {
-      PutRequest: {
-        Item: {
-          PK: { S: `event#${eventId}` },
-          SK: { S: `guest#${guestId}` },
-          GSI1PK: { S: `email#${input.guestEmail}` },
-          GSI1SK: { S: `event#${input.date}#${eventId}` },
-          Type: { S: 'EventPlayer' },
-          guestId: { S: guestId },
-          name: { S: input.guestName },
-          email: { S: input.guestEmail },
-          role: { S: 'owner' },
-          status: { S: 'confirmed' },
-          joinedAt: { S: now },
-        },
+      table: ctx.stash.tableName,
+      operation: 'PutItem',
+      key: {
+        PK: { S: `event#${eventId}` },
+        SK: { S: `guest#${guestId}` },
+      },
+      attributeValues: {
+        PK: { S: `event#${eventId}` },
+        SK: { S: `guest#${guestId}` },
+        GSI1PK: { S: `email#${input.guestEmail}` },
+        GSI1SK: { S: `event#${input.date}#${eventId}` },
+        Type: { S: 'EventPlayer' },
+        guestId: { S: guestId },
+        name: { S: input.guestName },
+        email: { S: input.guestEmail },
+        role: { S: 'owner' },
+        status: { S: 'confirmed' },
+        joinedAt: { S: now },
+      },
+      condition: {
+        expression: 'attribute_not_exists(PK)',
       },
     },
   ];
@@ -103,10 +117,8 @@ export function request(ctx) {
   };
 
   return {
-    operation: 'BatchWriteItem',
-    tables: {
-      [ctx.env.TABLE_NAME]: items,
-    },
+    operation: 'TransactWriteItems',
+    transactItems,
   };
 }
 

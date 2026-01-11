@@ -67,7 +67,7 @@ export class ApiStack extends cdk.Stack {
       fieldName: 'createGuestEvent',
       code: appsync.Code.fromInline(`
         export function request(ctx) {
-          ctx.env.TABLE_NAME = '${props.table.tableName}';
+          ctx.stash.tableName = "${props.table.tableName}";
           return {};
         }
         export function response(ctx) {
