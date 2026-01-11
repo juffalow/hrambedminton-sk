@@ -1,33 +1,33 @@
-enum EventType {
+enum EventType @aws_api_key {
   SINGLES
   DOUBLES
 }
 
-type Event {
+type Event @aws_api_key {
   id: ID!
   _id: ID!
   eventType: EventType!
   name: String!
   description: String
-  date: String!
-  time: String!
+  date: AWSDate!
+  time: AWSTime!
   maxPlayers: Int!
   place: String!
   court: String!
   ownerId: ID!
-  createdAt: String!
+  createdAt: AWSDateTime!
 }
 
 input CreateGuestEventInput {
   eventType: EventType!
   name: String!
   description: String
-  date: String!
-  time: String!
+  date: AWSDate!
+  time: AWSTime!
   maxPlayers: Int!
   place: String!
   court: String!
-  guestEmail: String!
+  guestEmail: AWSEmail!
   guestName: String!
 }
 
