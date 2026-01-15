@@ -15,6 +15,10 @@ defaults:
   run:
     working-directory: ./webapp
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   check:
     name: Check application
