@@ -62,16 +62,24 @@ const Detail = ({ id }: Props) => {
 
       <div className="flex justify-center mb-4">
         <Chip color="default">{data?.event?.maxPlayers} hraci</Chip>
-        {
-          data?.event?.eventType === 'SINGLES' ? (
-            <Chip color="default" className="ms-2">Dvojhra</Chip>
-          ) : (
-            <Chip color="default" className="ms-2">Stvorhra</Chip>
-          )
-        }
-        <Chip color="default" className="ms-2">{formatDate(`${data?.event?.date}T${data?.event?.time}`, 'dd. MM. YYYY')}</Chip>
-        <Chip color="default" className="ms-2">{formatDate(`${data?.event?.date}T${data?.event?.time}`, 'HH:mm')}</Chip>
-        <Chip color="default" className="ms-2">{data?.event?.place}</Chip>
+        {data?.event?.eventType === 'SINGLES' ? (
+          <Chip color="default" className="ms-2">
+            Dvojhra
+          </Chip>
+        ) : (
+          <Chip color="default" className="ms-2">
+            Stvorhra
+          </Chip>
+        )}
+        <Chip color="default" className="ms-2">
+          {formatDate(`${data?.event?.date}T${data?.event?.time}`, 'dd. MM. YYYY')}
+        </Chip>
+        <Chip color="default" className="ms-2">
+          {formatDate(`${data?.event?.date}T${data?.event?.time}`, 'HH:mm')}
+        </Chip>
+        <Chip color="default" className="ms-2">
+          {data?.event?.place}
+        </Chip>
       </div>
 
       <p className="text-center text-gray-500 mb-4">{data?.event?.description}</p>
@@ -84,7 +92,10 @@ const Detail = ({ id }: Props) => {
         </TableHeader>
         <TableBody>
           {data?.event?.players.map((player: any, index: number) => (
-            <TableRow key={player.id} className={index + 1 === data?.event?.maxPlayers ? 'border-t-2 border-t-orange-200' : ''}>
+            <TableRow
+              key={player.id}
+              className={index + 1 === data?.event?.maxPlayers ? 'border-t-2 border-t-orange-200' : ''}
+            >
               <TableCell>{player.name}</TableCell>
               <TableCell>{player.status}</TableCell>
               <TableCell>{formatDate(player.joinedAt, 'dd. MM. YYYY HH:mm')}</TableCell>
@@ -93,7 +104,11 @@ const Detail = ({ id }: Props) => {
           <TableRow>
             <TableCell colSpan={3}>
               <Divider className="my-4" />
-              <JoinGuestForm eventType={data?.event?.eventType} players={data?.event?.players} addGuestPlayer={handleAddGuestPlayer} />
+              <JoinGuestForm
+                eventType={data?.event?.eventType}
+                players={data?.event?.players}
+                addGuestPlayer={handleAddGuestPlayer}
+              />
             </TableCell>
           </TableRow>
         </TableBody>

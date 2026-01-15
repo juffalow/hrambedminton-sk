@@ -19,7 +19,11 @@ export default function JoinGuestForm({ eventType, players, addGuestPlayer }: Pr
 
       console.log('Adding guest player', { guestName, guestEmail, team });
 
-      const result = await addGuestPlayer(guestName, guestEmail, team === '' ? (Math.random() + 1).toString(36).substring(7) : team);
+      const result = await addGuestPlayer(
+        guestName,
+        guestEmail,
+        team === '' ? (Math.random() + 1).toString(36).substring(7) : team
+      );
 
       console.log(result);
 
@@ -46,7 +50,10 @@ export default function JoinGuestForm({ eventType, players, addGuestPlayer }: Pr
   );
 
   return (
-    <Form action={formAction} className={`grid grid-cols-1 ${eventType === 'DOUBLES' ? 'md:grid-cols-4' : 'md:grid-cols-2'} gap-4 w-full`}>
+    <Form
+      action={formAction}
+      className={`grid grid-cols-1 ${eventType === 'DOUBLES' ? 'md:grid-cols-4' : 'md:grid-cols-2'} gap-4 w-full`}
+    >
       <Input
         isRequired
         errorMessage="Toto pole je povinné."

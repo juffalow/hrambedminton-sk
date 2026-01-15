@@ -16,43 +16,51 @@ export default function NewMatchForm() {
   const [createGuestEventResult, createGuestEvent] = useMutation(CreateGuestEventMutation);
   const navigate = useNavigate();
 
-  const [state, formAction, isPending] = useActionState(async (prevState: unknown, state: FormData) => {
-    const name = state.get('name') as string;
-    const description = state.get('description') as string;
-    const eventType = state.get('eventType') as string;
-    const maxPlayers = Number(state.get('maxPlayers') as string);
-    const date = state.get('date') as string;
-    const time = state.get('time') as string;
-    const place = state.get('place') as string;
-    const court = state.get('court') as string;
+  const [state, formAction, isPending] = useActionState(
+    async (prevState: unknown, state: FormData) => {
+      const name = state.get('name') as string;
+      const description = state.get('description') as string;
+      const eventType = state.get('eventType') as string;
+      const maxPlayers = Number(state.get('maxPlayers') as string);
+      const date = state.get('date') as string;
+      const time = state.get('time') as string;
+      const place = state.get('place') as string;
+      const court = state.get('court') as string;
 
-    console.log(name, description, maxPlayers, date, time, place, court);
-    
-    const guestEmail = 'guest@example.com';
-    const guestName = 'Guest';
+      console.log(name, description, maxPlayers, date, time, place, court);
 
-    const result = await createGuestEvent({ input: { name, description, eventType, maxPlayers, date, time, place, court, guestEmail, guestName } });
+      const guestEmail = 'guest@example.com';
+      const guestName = 'Guest';
 
-    console.log(result);
+      const result = await createGuestEvent({
+        input: { name, description, eventType, maxPlayers, date, time, place, court, guestEmail, guestName },
+      });
 
-    if (createGuestEventResult.error) {
-      return { error: createGuestEventResult.error.message };
+      console.log(result);
+
+      if (createGuestEventResult.error) {
+        return { error: createGuestEventResult.error.message };
+      }
+
+      setTimeout(
+        () => navigate(generatePath(`/${ROUTES.sk.prefix}${ROUTES.sk.match}`, { id: result.data.createGuestEvent.id })),
+        100
+      );
+
+      return { name, description, eventType, maxPlayers, date, time, place, court, error: null };
+    },
+    {
+      name: '',
+      description: '',
+      eventType: '',
+      maxPlayers: 0,
+      date: '',
+      time: '',
+      place: '',
+      court: '',
+      error: null,
     }
-
-    setTimeout(() => navigate(generatePath(`/${ROUTES.sk.prefix}${ROUTES.sk.match}`, { id: result.data.createGuestEvent.id })), 100);
-
-    return { name, description, eventType, maxPlayers, date, time, place, court, error: null };
-  }, {
-    name: '',
-    description: '',
-    eventType: '',
-    maxPlayers: 0,
-    date: '',
-    time: '',
-    place: '',
-    court: '',
-    error: null,
-  });
+  );
 
   return (
     <Form action={formAction}>
@@ -93,13 +101,7 @@ export default function NewMatchForm() {
           />
 
           <div className="grid grid-cols-2 gap-4">
-            <DatePicker
-              isRequired
-              label="Datum zapasu"
-              labelPlacement="outside-top"
-              name="date"
-              defaultValue={null}
-            />
+            <DatePicker isRequired label="Datum zapasu" labelPlacement="outside-top" name="date" defaultValue={null} />
 
             <TimeInput isRequired label="Cas zapasu" labelPlacement="outside-top" name="time" hourCycle={24} />
           </div>
