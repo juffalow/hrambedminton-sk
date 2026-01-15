@@ -51,7 +51,7 @@ export default function SignUp() {
   return (
     <div className="flex min-h-full flex-col justify-center px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img src="/tri-logo.png" alt="ClubStats.app" className="mx-auto h-40 w-auto" />
+        <img src="/favicon.png" alt="HramBedminton.sk" className="mx-auto h-30 w-auto" />
         <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">{t('title')}</h2>
       </div>
 

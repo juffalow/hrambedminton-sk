@@ -57,6 +57,7 @@ export default function SignUpForm({
         placeholder={t('namePlaceholder')}
         defaultValue={state.name}
         type="text"
+        className="autofill:!bg-yellow-200"
       />
 
       <Input

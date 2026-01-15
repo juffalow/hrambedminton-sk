@@ -25,12 +25,12 @@ export const links: Route.LinksFunction = () => [
 ];
 
 const client = new Client({
-  url: 'https://graphql-api.juffalow.com/graphql',
+  url: 'https://snjopf47enfwlcozmpnxg65hiu.appsync-api.eu-central-1.amazonaws.com/graphql',
   suspense: true,
   exchanges: [cacheExchange, fetchExchange],
   fetchOptions: () => {
     return {
-      headers: { 'x-api-key': 'da2-dn7sjitqirdiff5g2jthgaln6a' },
+      headers: { 'x-api-key': 'da2-c4xaxud4hjhmdeerzi2oufjusa' },
     };
   },
 });
@@ -75,7 +75,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Provider value={client}>
                   <Menu />
 
-                  <main className="flex-grow container mx-auto pt-8 pb-8 px-2 md:px-0">{children}</main>
+                  <main className="light flex-grow container mx-auto pt-8 pb-8 px-2 md:px-0">{children}</main>
 
                   <Footer />
                 </Provider>

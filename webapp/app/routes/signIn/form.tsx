@@ -26,6 +26,7 @@ export default function SignInForm({
         defaultValue={state.email}
         type="text"
         autoComplete="email"
+        className="autofill:!bg-yellow-200"
       />
 
       <Input

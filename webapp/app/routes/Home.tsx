@@ -33,23 +33,8 @@ export default function Home() {
       <p className="text-center text-gray-500 mt-3 text-xl">{t('subtitle')}</p>
 
       <div className="grid place-items-center">
-        <div className="w-full md:w-2/3 p-4 mt-5">
-          <NewMatchForm
-            onSubmit={async (prevState, state) => {
-              const name = state.get('name') as string;
-              const description = state.get('description') as string;
-              const eventType = state.get('eventType') as string;
-              const maxPlayers = Number(state.get('maxPlayers') as string);
-              const date = state.get('date') as string;
-              const time = state.get('time') as string;
-              const place = state.get('place') as string;
-              const courts = state.get('courts') as string;
-
-              console.log(name, description, maxPlayers, date, time, place, courts);
-
-              return { name, description, eventType, maxPlayers, date, time, place, courts, error: null };
-            }}
-          />
+        <div className="w-full lg:w-3/4 xl:w-2/3 p-4 mt-5">
+          <NewMatchForm />
         </div>
       </div>
 
