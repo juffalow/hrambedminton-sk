@@ -38,3 +38,39 @@ jobs:
       run: yarn run lint
     - name: Prettier check
       run: yarn run prettier:check
+  deploy_application_prod:
+    name: Deploy application to production
+    needs: [ check ]
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v5.0.0
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE }}
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: ${{ secrets.AWS_REGION }}
+        audience: sts.amazonaws.com
+    - name: Set tag variable
+      id: version
+      run: echo ::set-output name=version::${GITHUB_REF#"refs/tags/"}
+    - uses: actions/setup-node@v4
+      env:
+        yarn: 4.12.0
+      with:
+        node-version: 24
+        cache: 'yarn'
+        cache-dependency-path: './webapp/yarn.lock'
+    - name: Install dependencies
+      run: yarn install
+    - name: Build
+      env:
+        VITE_APP_VERSION: ${{ steps.version.outputs.version }}
+      run: yarn run build
+    - name: Sync build folder with S3
+      run: aws s3 sync ./build/client s3://juffalow-my-projects/hrambedminton-sk
+    - name: Invalidate CloudFront cache
+      run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_PROD_DISTRIBUTION_ID }} --paths "/*"
