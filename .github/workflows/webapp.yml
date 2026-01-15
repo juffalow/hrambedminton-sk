@@ -61,6 +61,8 @@ jobs:
     - name: Set tag variable
       id: version
       run: echo ::set-output name=version::${GITHUB_REF#"refs/tags/"}
+    - name: Enable corepack
+      run: corepack enable
     - uses: actions/setup-node@v4
       env:
         yarn: 4.12.0
