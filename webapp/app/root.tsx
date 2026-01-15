@@ -53,14 +53,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
         {import.meta.env.VITE_NODE_ENV === 'production' && (
           <>
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-M192K4T1WN"></script>
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-22B1H6KBPT"></script>
             <script
               dangerouslySetInnerHTML={{
                 __html: `
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', 'G-M192K4T1WN');
+                gtag('config', 'G-22B1H6KBPT');
               `,
               }}
             />
