@@ -3,6 +3,16 @@ enum EventType @aws_api_key {
   DOUBLES
 }
 
+type Player @aws_api_key {
+  id: ID!
+  name: String!
+  email: AWSEmail!
+  role: String!
+  status: String!
+  team: String
+  joinedAt: AWSDateTime!
+}
+
 type Event @aws_api_key {
   id: ID!
   _id: ID!
@@ -16,6 +26,7 @@ type Event @aws_api_key {
   court: String!
   ownerId: ID!
   createdAt: AWSDateTime!
+  players: [Player!]!
 }
 
 input CreateGuestEventInput {
@@ -31,6 +42,18 @@ input CreateGuestEventInput {
   guestName: String!
 }
 
+input AddGuestPlayerInput {
+  eventId: ID!
+  guestEmail: AWSEmail!
+  guestName: String!
+  team: String
+}
+
+type AddGuestPlayerResponse @aws_api_key {
+  guestId: ID!
+  success: Boolean!
+}
+
 type Query {
   event(id: ID!): Event! @aws_api_key
   placeholder: String
@@ -38,6 +61,7 @@ type Query {
 
 type Mutation {
   createGuestEvent(input: CreateGuestEventInput!): Event! @aws_api_key
+  addGuestPlayer(input: AddGuestPlayerInput!): AddGuestPlayerResponse! @aws_api_key
 }
 
 schema {

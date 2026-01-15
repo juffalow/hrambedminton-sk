@@ -105,5 +105,73 @@ export class ApiStack extends cdk.Stack {
       runtime: appsync.FunctionRuntime.JS_1_0_0,
       pipelineConfig: [getEventFunction],
     });
+
+    const getEventForValidationFunction = new appsync.AppsyncFunction(
+      this,
+      'GetEventForValidationFunction',
+      {
+        name: 'getEventForValidation',
+        api: this.api,
+        dataSource: dynamoDbDataSource,
+        code: appsync.Code.fromAsset('lib/graphql/resolvers/getEventForValidation.js'),
+        runtime: appsync.FunctionRuntime.JS_1_0_0,
+      },
+    );
+
+    const addGuestPlayerFunction = new appsync.AppsyncFunction(
+      this,
+      'AddGuestPlayerFunction',
+      {
+        name: 'addGuestPlayer',
+        api: this.api,
+        dataSource: dynamoDbDataSource,
+        code: appsync.Code.fromAsset('lib/graphql/resolvers/addGuestPlayer.js'),
+        runtime: appsync.FunctionRuntime.JS_1_0_0,
+      },
+    );
+
+    new appsync.Resolver(this, 'AddGuestPlayerResolver', {
+      api: this.api,
+      typeName: 'Mutation',
+      fieldName: 'addGuestPlayer',
+      code: appsync.Code.fromInline(`
+        export function request(ctx) {
+          return {};
+        }
+        export function response(ctx) {
+          return ctx.prev.result;
+        }
+      `),
+      runtime: appsync.FunctionRuntime.JS_1_0_0,
+      pipelineConfig: [getEventForValidationFunction, addGuestPlayerFunction],
+    });
+
+    const getEventPlayersFunction = new appsync.AppsyncFunction(
+      this,
+      'GetEventPlayersFunction',
+      {
+        name: 'getEventPlayers',
+        api: this.api,
+        dataSource: dynamoDbDataSource,
+        code: appsync.Code.fromAsset('lib/graphql/resolvers/getEventPlayers.js'),
+        runtime: appsync.FunctionRuntime.JS_1_0_0,
+      },
+    );
+
+    new appsync.Resolver(this, 'EventPlayersResolver', {
+      api: this.api,
+      typeName: 'Event',
+      fieldName: 'players',
+      code: appsync.Code.fromInline(`
+        export function request(ctx) {
+          return {};
+        }
+        export function response(ctx) {
+          return ctx.prev.result;
+        }
+      `),
+      runtime: appsync.FunctionRuntime.JS_1_0_0,
+      pipelineConfig: [getEventPlayersFunction],
+    });
   }
 }

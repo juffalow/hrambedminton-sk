@@ -2,9 +2,7 @@ import { defineConfig } from 'eslint/config';
 import appsync from '@aws-appsync/eslint-plugin';
 
 export default defineConfig(
-  // appsync.configs.base,
-  { languageOptions: { parserOptions: { projectService: true } } },
-  appsync.configs.recommended,
+  appsync.configs.base,
   {
     ignores: [
       'node_modules',
