@@ -7,15 +7,30 @@ import logger from '../../logger';
 import { z, ZodError } from 'zod';
 
 export const newMatchFormSchema = z.object({
-  name: z.string().min(1, { message: 'Nazov zapasu musi mat aspon 1 znak!' }).max(100, { message: 'Nazov zapasu moze mat maximalne 100 znakov!' }),
+  name: z
+    .string()
+    .min(1, { message: 'Nazov zapasu musi mat aspon 1 znak!' })
+    .max(100, { message: 'Nazov zapasu moze mat maximalne 100 znakov!' }),
   description: z.string().max(255, { message: 'Popis zapasu moze mat maximalne 255 znakov!' }).optional(),
   eventType: z.enum(['SINGLES', 'DOUBLES']),
-  maxPlayers: z.number().min(2, { message: 'Maximalny pocet hracov musi byt aspon 2!' }).max(32, { message: 'Maximalny pocet hracov moze byt maximalne 32!' }),
+  maxPlayers: z
+    .number()
+    .min(2, { message: 'Maximalny pocet hracov musi byt aspon 2!' })
+    .max(32, { message: 'Maximalny pocet hracov moze byt maximalne 32!' }),
   date: z.string().min(1).max(10),
   time: z.string().min(1).max(10),
-  place: z.string().min(1, { message: 'Miesto musi mat aspon 1 znak!' }).max(128, { message: 'Miesto moze mat maximalne 128 znakov!' }),
-  court: z.string().min(1, { message: 'Kurt(y) musi mat aspon 1 znak!' }).max(64, { message: 'Kurt(y) moze mat maximalne 64 znakov!' }),
-  guestName: z.string().min(1, { message: 'Meno organizatora musi mat aspon 1 znak!' }).max(64, { message: 'Meno organizatora moze mat maximalne 64 znakov!' }),
+  place: z
+    .string()
+    .min(1, { message: 'Miesto musi mat aspon 1 znak!' })
+    .max(128, { message: 'Miesto moze mat maximalne 128 znakov!' }),
+  court: z
+    .string()
+    .min(1, { message: 'Kurt(y) musi mat aspon 1 znak!' })
+    .max(64, { message: 'Kurt(y) moze mat maximalne 64 znakov!' }),
+  guestName: z
+    .string()
+    .min(1, { message: 'Meno organizatora musi mat aspon 1 znak!' })
+    .max(64, { message: 'Meno organizatora moze mat maximalne 64 znakov!' }),
   guestEmail: z.email({ message: 'Email organizatora musi byt platny email!' }),
 });
 
@@ -72,7 +87,10 @@ export default function NewMatchForm() {
           guestName,
           guestEmail,
           error: 'Formular obsahuje chyby!',
-          errors: error instanceof ZodError ? error.issues.reduce((obj, current) => ({ ...obj, [current.path[0]]: current.message}), {}) : {},
+          errors:
+            error instanceof ZodError
+              ? error.issues.reduce((obj, current) => ({ ...obj, [current.path[0]]: current.message }), {})
+              : {},
         };
       }
 
@@ -102,7 +120,20 @@ export default function NewMatchForm() {
         100
       );
 
-      return { name, description, eventType, maxPlayers, date, time, place, court, guestName, guestEmail, error: null, errors: {} };
+      return {
+        name,
+        description,
+        eventType,
+        maxPlayers,
+        date,
+        time,
+        place,
+        court,
+        guestName,
+        guestEmail,
+        error: null,
+        errors: {},
+      };
     },
     {
       name: '',
@@ -119,8 +150,6 @@ export default function NewMatchForm() {
       errors: {},
     }
   );
-
-
 
   return (
     <Form action={formAction} validationErrors={state.errors}>
