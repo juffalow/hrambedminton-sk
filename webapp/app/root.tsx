@@ -25,12 +25,12 @@ export const links: Route.LinksFunction = () => [
 ];
 
 const client = new Client({
-  url: 'https://snjopf47enfwlcozmpnxg65hiu.appsync-api.eu-central-1.amazonaws.com/graphql',
+  url: import.meta.env.VITE_GRAPHQL_API_URL,
   suspense: true,
   exchanges: [cacheExchange, fetchExchange],
   fetchOptions: () => {
     return {
-      headers: { 'x-api-key': 'da2-c4xaxud4hjhmdeerzi2oufjusa' },
+      headers: { 'x-api-key': import.meta.env.VITE_GRAPHQL_API_KEY },
     };
   },
 });
