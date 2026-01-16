@@ -3,6 +3,21 @@ import { Form, Input, Textarea, DatePicker, TimeInput, Button, Alert, Select, Se
 import { useMutation } from 'urql';
 import { useNavigate, generatePath } from 'react-router';
 import { ROUTES } from '../../constants';
+import logger from '../../logger';
+import { z, ZodError } from 'zod';
+
+export const newMatchFormSchema = z.object({
+  name: z.string().min(1, { message: 'Nazov zapasu musi mat aspon 1 znak!' }).max(100, { message: 'Nazov zapasu moze mat maximalne 100 znakov!' }),
+  description: z.string().max(255, { message: 'Popis zapasu moze mat maximalne 255 znakov!' }).optional(),
+  eventType: z.enum(['SINGLES', 'DOUBLES']),
+  maxPlayers: z.number().min(2, { message: 'Maximalny pocet hracov musi byt aspon 2!' }).max(32, { message: 'Maximalny pocet hracov moze byt maximalne 32!' }),
+  date: z.string().min(1).max(10),
+  time: z.string().min(1).max(10),
+  place: z.string().min(1, { message: 'Miesto musi mat aspon 1 znak!' }).max(128, { message: 'Miesto moze mat maximalne 128 znakov!' }),
+  court: z.string().min(1, { message: 'Kurt(y) musi mat aspon 1 znak!' }).max(64, { message: 'Kurt(y) moze mat maximalne 64 znakov!' }),
+  guestName: z.string().min(1, { message: 'Meno organizatora musi mat aspon 1 znak!' }).max(64, { message: 'Meno organizatora moze mat maximalne 64 znakov!' }),
+  guestEmail: z.email({ message: 'Email organizatora musi byt platny email!' }),
+});
 
 const CreateGuestEventMutation = `
   mutation CreateGuestEvent($input: CreateGuestEventInput!) {
@@ -13,11 +28,11 @@ const CreateGuestEventMutation = `
 `;
 
 export default function NewMatchForm() {
-  const [createGuestEventResult, createGuestEvent] = useMutation(CreateGuestEventMutation);
+  const [, createGuestEvent] = useMutation(CreateGuestEventMutation);
   const navigate = useNavigate();
 
   const [state, formAction, isPending] = useActionState(
-    async (prevState: unknown, state: FormData) => {
+    async (_: unknown, state: FormData) => {
       const name = state.get('name') as string;
       const description = state.get('description') as string;
       const eventType = state.get('eventType') as string;
@@ -26,20 +41,60 @@ export default function NewMatchForm() {
       const time = state.get('time') as string;
       const place = state.get('place') as string;
       const court = state.get('court') as string;
+      const guestName = state.get('guestName') as string;
+      const guestEmail = state.get('guestEmail') as string;
 
-      console.log(name, description, maxPlayers, date, time, place, court);
+      try {
+        newMatchFormSchema.parse({
+          name,
+          description,
+          eventType,
+          maxPlayers,
+          date,
+          time,
+          place,
+          court,
+          guestName,
+          guestEmail,
+        });
+      } catch (error: ZodError | unknown) {
+        logger.error('Error validating new match form', { error });
 
-      const guestEmail = 'guest@example.com';
-      const guestName = 'Guest';
+        return {
+          name,
+          description,
+          eventType,
+          maxPlayers,
+          date,
+          time,
+          place,
+          court,
+          guestName,
+          guestEmail,
+          error: 'Formular obsahuje chyby!',
+          errors: error instanceof ZodError ? error.issues.reduce((obj, current) => ({ ...obj, [current.path[0]]: current.message}), {}) : {},
+        };
+      }
+
+      logger.info('Creating guest event', {
+        name,
+        description,
+        maxPlayers,
+        date,
+        time,
+        place,
+        court,
+        guestName,
+        guestEmail,
+      });
 
       const result = await createGuestEvent({
         input: { name, description, eventType, maxPlayers, date, time, place, court, guestEmail, guestName },
       });
 
-      console.log(result);
-
-      if (createGuestEventResult.error) {
-        return { error: createGuestEventResult.error.message };
+      if (result.error) {
+        logger.error('Error creating guest event', { error: result.error });
+        return { error: result.error.message };
       }
 
       setTimeout(
@@ -47,7 +102,7 @@ export default function NewMatchForm() {
         100
       );
 
-      return { name, description, eventType, maxPlayers, date, time, place, court, error: null };
+      return { name, description, eventType, maxPlayers, date, time, place, court, guestName, guestEmail, error: null, errors: {} };
     },
     {
       name: '',
@@ -58,17 +113,21 @@ export default function NewMatchForm() {
       time: '',
       place: '',
       court: '',
+      guestName: '',
+      guestEmail: '',
       error: null,
+      errors: {},
     }
   );
 
+
+
   return (
-    <Form action={formAction}>
+    <Form action={formAction} validationErrors={state.errors}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
         <div className="space-y-4">
           <Input
             isRequired
-            errorMessage="Toto pole je povinné."
             label="Nazov zapasu"
             labelPlacement="outside-top"
             name="name"
@@ -79,11 +138,10 @@ export default function NewMatchForm() {
 
           <Select
             isRequired
-            errorMessage="Toto pole je povinné."
             label="Typ zapasu"
             labelPlacement="outside-top"
             name="eventType"
-            value={state.eventType}
+            selectedKeys={state.eventType ? [state.eventType] : undefined}
           >
             <SelectItem key="SINGLES">Singles</SelectItem>
             <SelectItem key="DOUBLES">Doubles</SelectItem>
@@ -91,7 +149,6 @@ export default function NewMatchForm() {
 
           <Input
             isRequired
-            errorMessage="Toto pole je povinné."
             label="Maximalny pocet hracov"
             labelPlacement="outside-top"
             name="maxPlayers"
@@ -108,7 +165,6 @@ export default function NewMatchForm() {
 
           <Input
             isRequired
-            errorMessage="Toto pole je povinné."
             label="Miesto"
             labelPlacement="outside-top"
             name="place"
@@ -119,7 +175,6 @@ export default function NewMatchForm() {
 
           <Input
             isRequired
-            errorMessage="Toto pole je povinné."
             label="Kurt(y)"
             labelPlacement="outside-top"
             name="court"
@@ -128,19 +183,39 @@ export default function NewMatchForm() {
             type="text"
           />
         </div>
-        <div>
+        <div className="space-y-4">
           <Textarea
             label="Popis zapasu"
             labelPlacement="outside-top"
             name="description"
-            placeholder="Popis zapasu"
+            placeholder="Popis zapasu\nnieco"
             defaultValue={state.description}
             minRows={6}
+          />
+
+          <Input
+            isRequired
+            label="Meno organizatora"
+            labelPlacement="outside-top"
+            name="guestName"
+            placeholder="Jozef Novak"
+            defaultValue={state.guestName}
+            type="text"
+          />
+
+          <Input
+            isRequired
+            label="Email organizatora"
+            labelPlacement="outside-top"
+            name="guestEmail"
+            placeholder="jozef.novak@example.com"
+            defaultValue={state.guestEmail}
+            type="text"
           />
         </div>
       </div>
 
-      {state.error !== null ? <Alert color="danger" title={state.error} hideIcon={true} /> : null}
+      {state.error !== null ? <Alert color="danger" className="mt-4" title={state.error} hideIcon={true} /> : null}
 
       <div className="flex justify-center w-full mt-4">
         <Button type="submit" color="primary" size="lg" isLoading={isPending}>
