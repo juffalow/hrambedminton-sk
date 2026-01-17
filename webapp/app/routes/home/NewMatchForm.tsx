@@ -9,29 +9,29 @@ import { z, ZodError } from 'zod';
 export const newMatchFormSchema = z.object({
   name: z
     .string()
-    .min(1, { message: 'Nazov zapasu musi mat aspon 1 znak!' })
-    .max(100, { message: 'Nazov zapasu moze mat maximalne 100 znakov!' }),
-  description: z.string().max(255, { message: 'Popis zapasu moze mat maximalne 255 znakov!' }).optional(),
+    .min(1, { message: 'Názov zápasu musí mať aspoň 1 znak!' })
+    .max(100, { message: 'Názov zápasu môže mať maximálne 100 znakov!' }),
+  description: z.string().max(255, { message: 'Popis zápasu môže mať maximálne 255 znakov!' }).optional(),
   eventType: z.enum(['SINGLES', 'DOUBLES']),
   maxPlayers: z
-    .number()
-    .min(2, { message: 'Maximalny pocet hracov musi byt aspon 2!' })
-    .max(32, { message: 'Maximalny pocet hracov moze byt maximalne 32!' }),
+    .coerce.number()
+    .min(2, { message: 'Maximálny počet hráčov musí byť aspoň 2!' })
+    .max(32, { message: 'Maximálny počet hráčov môže byť maximálne 32!' }),
   date: z.string().min(1).max(10),
   time: z.string().min(1).max(10),
   place: z
     .string()
-    .min(1, { message: 'Miesto musi mat aspon 1 znak!' })
-    .max(128, { message: 'Miesto moze mat maximalne 128 znakov!' }),
+    .min(1, { message: 'Miesto musí mať aspoň 1 znak!' })
+    .max(128, { message: 'Miesto môže mať maximálne 128 znakov!' }),
   court: z
     .string()
-    .min(1, { message: 'Kurt(y) musi mat aspon 1 znak!' })
-    .max(64, { message: 'Kurt(y) moze mat maximalne 64 znakov!' }),
+    .min(1, { message: 'Kurt(y) musí mať aspoň 1 znak!' })
+    .max(64, { message: 'Kurt(y) môže mať maximálne 64 znakov!' }),
   guestName: z
     .string()
-    .min(1, { message: 'Meno organizatora musi mat aspon 1 znak!' })
-    .max(64, { message: 'Meno organizatora moze mat maximalne 64 znakov!' }),
-  guestEmail: z.email({ message: 'Email organizatora musi byt platny email!' }),
+    .min(1, { message: 'Meno organizátora musí mať aspo 1 znak!' })
+    .max(64, { message: 'Meno organizátora môže mať maximálne 64 znakov!' }),
+  guestEmail: z.email({ message: 'Email organizátora musí byť platný email!' }),
 });
 
 const CreateGuestEventMutation = `
@@ -86,11 +86,13 @@ export default function NewMatchForm() {
           court,
           guestName,
           guestEmail,
-          error: 'Formular obsahuje chyby!',
+          error: 'Formulár obsahuje chyby!',
           errors:
             error instanceof ZodError
-              ? error.issues.reduce((obj, current) => ({ ...obj, [current.path[0]]: current.message }), {})
-              : {},
+              ? error.issues.reduce<Record<string, string>>((obj, current) => {
+                obj[current.path[0] as string] = current.message;
+                return obj;
+              }, {}) : {},
         };
       }
 
@@ -230,7 +232,7 @@ export default function NewMatchForm() {
             label="Popis zapasu"
             labelPlacement="outside-top"
             name="description"
-            placeholder="Popis zapasu\nnieco"
+            placeholder="Popis zapasu"
             defaultValue={state.description}
             minRows={6}
           />
@@ -252,7 +254,7 @@ export default function NewMatchForm() {
             name="guestEmail"
             placeholder="jozef.novak@example.com"
             defaultValue={state.guestEmail}
-            type="text"
+            type="email"
           />
         </div>
       </div>
