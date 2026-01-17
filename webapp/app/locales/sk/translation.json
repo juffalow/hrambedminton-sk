@@ -25,7 +25,7 @@
     "footer": {
       "about": "O aplikácii",
       "contact": "Kontakt",
-      "description": "Aplikácia vám pomáha sledovať štatistiky a výkon vášho klubu.",
+      "description": "Aplikácia vám pomáha plánovať bedmintonové zápasy.",
       "home": "Domov",
       "links": "Odkazy",
       "register": "Registrovať",
@@ -34,52 +34,16 @@
     }
   },
   "meta": {
-    "title": "hramBedminton.sk",
+    "title": "HramBedminton.sk",
     "home": {
       "description": ""
     }
   },
   "home": {
-    "title": "Bedmintonove zapasy prehladne a jednoducho",
-    "subtitle": "Začnite plánovať svoje bedmintonové zapasy a majte všetko pod kontrolou!",
+    "title": "Bedmintonové zápasy prehľadne a jednoducho",
+    "subtitle": "Začnite plánovať svoje bedmintonové zápasy a majte všetko pod kontrolou!",
     "signInButton": "Prihlásiť sa",
     "signUpButton": "Registrovať sa"
-  },
-  "connectStrava": {
-    "title": "Pripojiť Strava",
-    "subtitle": "Pripojte svoj účet Strava k vášmu účtu StravaClubStats.com.",
-    "connectButton": "Pripojiť účet Strava",
-    "disconnectStravaInfo": "Svoj účet Strava môžete kedykoľvek odpojiť buď na svojej profilovej stránke, alebo priamo zo Stravy.",
-    "permissionsTitle": "Oprávnenia",
-    "permissionsDescription": "Potrebujeme tieto oprávnenia, aby sme mohli získať údaje o športovcovi a detaily aktivít.",
-    "permissions.read": "čítanie",
-    "permissions.activityRead": "activity:read",
-    "howItWorksTitle": "Ako to funguje",
-    "howItWorksDescription": "Po každej aktivite stiahne detaily aktivity a uložíme ich do našej databázy",
-    "howItWorksStep1": "Po každej aktivite stiahne detaily aktivity a uložíme ich do našej databázy",
-    "howItWorksStep2": "Použijeme detaily aktivity na aktualizáciu štatistík klubu",
-    "howItWorksStep3": "Čakáme 7 dní",
-    "howItWorksStep3Description": "To znamená, že máte nejaký čas\nna úpravu vašej aktivity (názov, popis, skrátenie, atď.)\na ostatní športovci majú čas dať vám Kudos.",
-    "howItWorksStep4": "Stiahne aktivitu znovu a aktualizujeme ju v našej databáze",
-    "howItWorksStep5": "Použijeme detaily aktivity na aktualizáciu štatistík klubu"
-  },
-  "authorizeStrava": {
-    "title": "Autorizácia Strava",
-    "subtitle": "Autorizujte svoj účet Strava, aby ste mohli získať detaily svojich aktivít.",
-    "returnedCode": "Vrátený kód",
-    "returnedScope": "Vrátené oprávnenie/oprávnenia",
-    "echangeCodeForAccessTokenProcess": "Výmena kódu za prístupový token...",
-    "exchangedCodeForAccessToken": "Kód vymenený za prístupový token",
-    "permissionsDescription": "Potrebujeme tieto oprávnenia, aby sme mohli získať údaje o športovcovi a detaily aktivít.",
-    "nextStepsTitle": "Ďalšie kroky",
-    "nextStepsList": [
-      "Vymeníme kód za prístupový token",
-      "Stiahneme údaje o športovcovi",
-      "Stiahneme štatistiky športovca",
-      "Stiahneme kluby športovca",
-      "Stiahneme detaily klubov"
-    ],
-    "nextStepsInfo": "Dokončenie môže trvať niekoľko sekúnd.\nPo dokončení budete môcť vidieť svoje dáta na stránke profilu."
   },
   "signIn": {
     "title": "Prihlásiť sa",
@@ -179,28 +143,11 @@
         "submitButton": "Potvrdiť"
       }
     },
-    "statistics": {
-      "title": "Štatistiky",
-      "yearToDateRideTotals": "Celkové jazdy za rok do dnešného dňa",
-      "numberOfRides": "Počet jázd",
-      "totalDistance": "Celková vzdialenosť",
-      "totalElevationGain": "Celkové prevýšenie",
-      "totalMovingTime": "Celkový čas v pohybe",
-      "yearToDateRunTotals": "Celkové behy za rok do dnešného dňa",
-      "numberOfRuns": "Počet behov"
-    },
     "deleteProfile": {
       "title": "Zmazať účet",
       "subtitle": "Všetky dáta súvisiace s vaším účtom budú zmazané.",
       "submitButton": "Zmazať profil",
       "clarifyingText": "Táto funkcia zatiaľ nie je podporovaná. Ak chcete zmazať svoj účet, kontaktujte nás prosím na nasledujúcej e-mailovej adrese"
-    }
-  },
-  "club": {
-    "detail": {
-      "title": "Detaily klubu",
-      "statistics": "Štatistiky",
-      "months": "Január,Február,Marec,Apríl,Máj,Jún,Júl,August,September,Október,November,December"
     }
   },
   "privacyPolicy": {

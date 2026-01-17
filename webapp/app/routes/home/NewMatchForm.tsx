@@ -173,17 +173,17 @@ export default function NewMatchForm() {
         <div className="space-y-4">
           <Input
             isRequired
-            label="Nazov zapasu"
+            label="Názov zápasu"
             labelPlacement="outside-top"
             name="name"
-            placeholder="Stvrtkove stvorhry"
+            placeholder="Štvrtkové štvorhry"
             defaultValue={state.name}
             type="text"
           />
 
           <Select
             isRequired
-            label="Typ zapasu"
+            label="Typ zápasu"
             labelPlacement="outside-top"
             name="eventType"
             selectedKeys={state.eventType ? [state.eventType] : undefined}
@@ -194,7 +194,7 @@ export default function NewMatchForm() {
 
           <Input
             isRequired
-            label="Maximalny pocet hracov"
+            label="Maximálny počet hráčov"
             labelPlacement="outside-top"
             name="maxPlayers"
             placeholder="4"
@@ -203,9 +203,9 @@ export default function NewMatchForm() {
           />
 
           <div className="grid grid-cols-2 gap-4">
-            <DatePicker isRequired label="Datum zapasu" labelPlacement="outside-top" name="date" defaultValue={null} />
+            <DatePicker isRequired label="Dátum zápasu" labelPlacement="outside-top" name="date" defaultValue={null} />
 
-            <TimeInput isRequired label="Cas zapasu" labelPlacement="outside-top" name="time" hourCycle={24} />
+            <TimeInput isRequired label="Čas zápasu" labelPlacement="outside-top" name="time" hourCycle={24} />
           </div>
 
           <Input
@@ -213,7 +213,7 @@ export default function NewMatchForm() {
             label="Miesto"
             labelPlacement="outside-top"
             name="place"
-            placeholder="Slavia Agrofert, NTC, Retro, ..."
+            placeholder="Slávia Agrofert, NTC, Retro, ..."
             defaultValue={state.place}
             type="text"
           />
@@ -230,27 +230,27 @@ export default function NewMatchForm() {
         </div>
         <div className="space-y-4">
           <Textarea
-            label="Popis zapasu"
+            label="Popis zápasu"
             labelPlacement="outside-top"
             name="description"
-            placeholder="Popis zapasu"
+            placeholder="Popis zápasu"
             defaultValue={state.description}
             minRows={6}
           />
 
           <Input
             isRequired
-            label="Meno organizatora"
+            label="Meno organizátora"
             labelPlacement="outside-top"
             name="guestName"
-            placeholder="Jozef Novak"
+            placeholder="Jozef Novák"
             defaultValue={state.guestName}
             type="text"
           />
 
           <Input
             isRequired
-            label="Email organizatora"
+            label="Email organizátora"
             labelPlacement="outside-top"
             name="guestEmail"
             placeholder="jozef.novak@example.com"
@@ -264,7 +264,7 @@ export default function NewMatchForm() {
 
       <div className="flex justify-center w-full mt-4">
         <Button type="submit" color="primary" size="lg" isLoading={isPending}>
-          Vytvorit zapas
+          Vytvoriť zápas
         </Button>
       </div>
     </Form>
