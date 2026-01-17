@@ -13,8 +13,8 @@ export const newMatchFormSchema = z.object({
     .max(100, { message: 'Názov zápasu môže mať maximálne 100 znakov!' }),
   description: z.string().max(255, { message: 'Popis zápasu môže mať maximálne 255 znakov!' }).optional(),
   eventType: z.enum(['SINGLES', 'DOUBLES']),
-  maxPlayers: z
-    .coerce.number()
+  maxPlayers: z.coerce
+    .number()
     .min(2, { message: 'Maximálny počet hráčov musí byť aspoň 2!' })
     .max(32, { message: 'Maximálny počet hráčov môže byť maximálne 32!' }),
   date: z.string().min(1).max(10),
@@ -90,9 +90,10 @@ export default function NewMatchForm() {
           errors:
             error instanceof ZodError
               ? error.issues.reduce<Record<string, string>>((obj, current) => {
-                obj[current.path[0] as string] = current.message;
-                return obj;
-              }, {}) : {},
+                  obj[current.path[0] as string] = current.message;
+                  return obj;
+                }, {})
+              : {},
         };
       }
 
