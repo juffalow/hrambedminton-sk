@@ -56,12 +56,19 @@ const Detail = ({ id }: Props) => {
   };
 
   const { data } = result;
-  const players = useMemo(() => data?.event?.players.reduce((acc: Record<string, EventPlayer[]>, player: EventPlayer) => {
-    acc[player.team] = [...(acc[player.team] || []), player];
-    return acc;
-  }, {}), [data?.event?.players]);
+  const players = useMemo(
+    () =>
+      data?.event?.players.reduce((acc: Record<string, EventPlayer[]>, player: EventPlayer) => {
+        acc[player.team] = [...(acc[player.team] || []), player];
+        return acc;
+      }, {}),
+    [data?.event?.players]
+  );
   const teammates = useMemo(() => {
-    return data?.event?.players.filter((player: EventPlayer) => !data?.event?.players.some((p: EventPlayer) => p.team === player.team && p.id !== player.id));
+    return data?.event?.players.filter(
+      (player: EventPlayer) =>
+        !data?.event?.players.some((p: EventPlayer) => p.team === player.team && p.id !== player.id)
+    );
   }, [players]);
 
   return (
@@ -101,8 +108,14 @@ const Detail = ({ id }: Props) => {
         <TableBody>
           {[
             ...Object.keys(players || {}).map((team: string, index: number) => (
-              <TableRow key={team} className={index + 1 === Object.keys(players).length ? 'border-t-2 border-t-orange-200' : ''}>
-                <TableCell>{players[team][0].name}{players[team].length > 1 ? ` a ${players[team][1].name}` : ''}</TableCell>
+              <TableRow
+                key={team}
+                className={index + 1 === Object.keys(players).length ? 'border-t-2 border-t-orange-200' : ''}
+              >
+                <TableCell>
+                  {players[team][0].name}
+                  {players[team].length > 1 ? ` a ${players[team][1].name}` : ''}
+                </TableCell>
                 <TableCell>{players[team][0].status === 'confirmed' ? 'Potvrdil(a)' : 'Nepotvrdil(a)'}</TableCell>
                 <TableCell>{formatDate(players[team][0].joinedAt, 'dd. MM. YYYY HH:mm')}</TableCell>
               </TableRow>
