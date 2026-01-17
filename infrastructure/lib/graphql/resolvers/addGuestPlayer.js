@@ -19,8 +19,10 @@ export function request(ctx) {
     util.error('guestName must be between 1 and 64 characters', 'ValidationError');
   }
 
-  if (input.team && (input.team.length < 1 || input.team.length > 32)) {
-    util.error('team must be between 1 and 32 characters', 'ValidationError');
+  if (input.team !== undefined && input.team !== null) {
+    if (input.team.length < 1 || input.team.length > 32) {
+      util.error('team must be between 1 and 32 characters', 'ValidationError');
+    }
   }
 
   // Get event data from previous function in pipeline
@@ -54,8 +56,8 @@ export function request(ctx) {
     joinedAt: { S: now },
   };
 
-  // Add team if provided
-  if (input.team) {
+  // Add team if provided (validated above)
+  if (input.team !== undefined && input.team !== null) {
     attributeValues.team = { S: input.team };
   }
 
@@ -72,7 +74,7 @@ export function request(ctx) {
     },
     attributeValues,
     condition: {
-      expression: 'attribute_not_exists(PK)',
+      expression: 'attribute_not_exists(PK) AND attribute_not_exists(GSI1PK) AND attribute_not_exists(GSI1SK)',
     },
   };
 }
