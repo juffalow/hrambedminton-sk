@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { gql, useQuery, useMutation } from 'urql';
 import { Chip, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Divider } from '@heroui/react';
 import JoinGuestForm from './JoinGuestForm';
@@ -55,6 +56,13 @@ const Detail = ({ id }: Props) => {
   };
 
   const { data } = result;
+  const players = useMemo(() => data?.event?.players.reduce((acc: Record<string, EventPlayer[]>, player: EventPlayer) => {
+    acc[player.team] = [...(acc[player.team] || []), player];
+    return acc;
+  }, {}), [data?.event?.players]);
+  const teammates = useMemo(() => {
+    return data?.event?.players.filter((player: EventPlayer) => !data?.event?.players.some((p: EventPlayer) => p.team === player.team && p.id !== player.id));
+  }, [players]);
 
   return (
     <>
@@ -82,7 +90,7 @@ const Detail = ({ id }: Props) => {
         </Chip>
       </div>
 
-      <p className="text-center text-gray-500 mb-4">{data?.event?.description}</p>
+      <p className="text-center text-gray-500 whitespace-pre mb-4">{data?.event?.description}</p>
 
       <Table aria-label="Example static collection table">
         <TableHeader>
@@ -91,26 +99,25 @@ const Detail = ({ id }: Props) => {
           <TableColumn className="text-base">Pridal sa</TableColumn>
         </TableHeader>
         <TableBody>
-          {data?.event?.players.map((player: any, index: number) => (
-            <TableRow
-              key={player.id}
-              className={index + 1 === data?.event?.maxPlayers ? 'border-t-2 border-t-orange-200' : ''}
-            >
-              <TableCell>{player.name}</TableCell>
-              <TableCell>{player.status}</TableCell>
-              <TableCell>{formatDate(player.joinedAt, 'dd. MM. YYYY HH:mm')}</TableCell>
-            </TableRow>
-          ))}
-          <TableRow>
-            <TableCell colSpan={3}>
-              <Divider className="my-4" />
-              <JoinGuestForm
-                eventType={data?.event?.eventType}
-                players={data?.event?.players}
-                addGuestPlayer={handleAddGuestPlayer}
-              />
-            </TableCell>
-          </TableRow>
+          {[
+            ...Object.keys(players || {}).map((team: string, index: number) => (
+              <TableRow key={team} className={index + 1 === Object.keys(players).length ? 'border-t-2 border-t-orange-200' : ''}>
+                <TableCell>{players[team][0].name}{players[team].length > 1 ? ` a ${players[team][1].name}` : ''}</TableCell>
+                <TableCell>{players[team][0].status === 'confirmed' ? 'Potvrdil(a)' : 'Nepotvrdil(a)'}</TableCell>
+                <TableCell>{formatDate(players[team][0].joinedAt, 'dd. MM. YYYY HH:mm')}</TableCell>
+              </TableRow>
+            )),
+            <TableRow key="join-form">
+              <TableCell colSpan={3}>
+                <Divider className="my-4" />
+                <JoinGuestForm
+                  eventType={data?.event?.eventType}
+                  players={teammates}
+                  addGuestPlayer={handleAddGuestPlayer}
+                />
+              </TableCell>
+            </TableRow>,
+          ]}
         </TableBody>
       </Table>
     </>

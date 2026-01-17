@@ -1,51 +1,31 @@
 type ID = string;
 
-interface ClubStats {
-  activities: number;
-  distance: number;
-  elevation_gain: number;
-  kudos: number;
+interface Player {
+  email: string;
+  name: string;
 }
 
-interface Club {
+interface Guest {
+  email: string;
+  name: string;
+}
+
+interface Event {
   id: ID;
   name: string;
   description: string;
-  country: string;
-  city: string;
-  member_count: number;
-  profile: string;
-  cover_photo: string;
-  profile_medium: string;
-  cover_photo_small: string;
-  yearlyStats: Record<string, ClubStats>;
-  monthlyStats: (Record<string, ClubStats> & { id: ID; sk: ID })[];
-  weeklyStats: (Record<string, ClubStats> & { id: ID; sk: ID })[];
+  date: string;
+  time: string;
+  maxPlayers: number;
 }
 
-interface Athlete {
+interface EventPlayer {
   id: ID;
-  firstname: string;
-  lastname: string;
-  city: string;
-  country: string;
-  sex: 'M' | 'F';
-  stats: {
-    ytd_ride_totals: {
-      count: number;
-      elapsed_time: number;
-      distance: number;
-      elevation_gain: number;
-      moving_time: number;
-    };
-    ytd_run_totals: {
-      count: number;
-      elapsed_time: number;
-      distance: number;
-      elevation_gain: number;
-      moving_time: number;
-    };
-  };
+  name: string;
+  role: string;
+  status: string;
+  team: string;
+  joinedAt: string;
 }
 
 interface User {
@@ -56,18 +36,4 @@ interface User {
   accessToken: string;
   idToken: string;
   meta?: Record<string, string | number | boolean>;
-}
-
-interface Activity {
-  id: ID;
-  name: string;
-  description: string;
-  distance: number;
-  total_elevation_gain: number;
-  kudos: number;
-  start_date: string;
-  start_date_local: string;
-  type: string;
-  sport_type: string;
-  elapsed_time: number;
 }

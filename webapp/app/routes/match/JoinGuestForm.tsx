@@ -77,7 +77,7 @@ export default function JoinGuestForm({ eventType, players, addGuestPlayer }: Pr
       />
 
       {eventType === 'DOUBLES' ? (
-        <Select label="Spoluhrac" labelPlacement="outside-top" name="team" placeholder="Vyberte spoluhraca">
+        <Select label="Spoluhráč" labelPlacement="outside-top" name="team" placeholder="Vyberte spoluhráča">
           {players.map((player) => (
             <SelectItem key={player.team}>{player.name}</SelectItem>
           ))}
@@ -85,7 +85,7 @@ export default function JoinGuestForm({ eventType, players, addGuestPlayer }: Pr
       ) : null}
 
       <Button type="submit" color="primary" fullWidth={true} isLoading={isPending} className="mt-7">
-        Pridat sa
+        Pridať sa
       </Button>
 
       {state.error !== null ? <Alert color="danger" title={state.error} hideIcon={true} /> : null}
