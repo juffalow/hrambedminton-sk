@@ -72,7 +72,7 @@ export default function NewMatchForm() {
           guestName,
           guestEmail,
         });
-      } catch (error: ZodError | unknown) {
+      } catch (error: unknown) {
         logger.error('Error validating new match form', { error });
 
         return {
@@ -112,7 +112,20 @@ export default function NewMatchForm() {
 
       if (result.error) {
         logger.error('Error creating guest event', { error: result.error });
-        return { error: result.error.message };
+        return {
+          name,
+          description,
+          eventType,
+          maxPlayers,
+          date,
+          time,
+          place,
+          court,
+          guestName,
+          guestEmail,
+          error: result.error.message,
+          errors: {},
+        };
       }
 
       setTimeout(
