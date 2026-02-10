@@ -110,7 +110,7 @@ const Detail = ({ id }: Props) => {
             ...Object.keys(players || {}).map((team: string, index: number) => (
               <TableRow
                 key={team}
-                className={index + 1 === Object.keys(players).length ? 'border-t-2 border-t-orange-200' : ''}
+                className={index + 1 === data.event.maxPlayers ? 'border-t-2 border-t-orange-200' : ''}
               >
                 <TableCell>
                   {players[team][0].name}
