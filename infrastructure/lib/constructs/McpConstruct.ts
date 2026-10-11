@@ -1,4 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
+import { Validations } from 'aws-cdk-lib';
 import * as apigwv2 from 'aws-cdk-lib/aws-apigatewayv2';
 import * as apigwv2Integrations from 'aws-cdk-lib/aws-apigatewayv2-integrations';
 import * as appsync from 'aws-cdk-lib/aws-appsync';
@@ -138,6 +139,37 @@ export class McpConstruct extends Construct {
       throttlingRateLimit: 10,
       throttlingBurstLimit: 20,
     };
+
+    // Access logs of the public MCP endpoint, to investigate abuse. They contain client IP addresses,
+    // so they are kept only for two weeks.
+    const accessLogGroup = new logs.LogGroup(this, 'McpHttpApiAccessLogGroup', {
+      retention: logs.RetentionDays.TWO_WEEKS,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+    defaultStage.accessLogSettings = {
+      destinationArn: accessLogGroup.logGroupArn,
+      format: JSON.stringify({
+        requestId: '$context.requestId',
+        ip: '$context.identity.sourceIp',
+        userAgent: '$context.identity.userAgent',
+        requestTime: '$context.requestTime',
+        routeKey: '$context.routeKey',
+        status: '$context.status',
+        responseLength: '$context.responseLength',
+        integrationError: '$context.integrationErrorMessage',
+      }),
+    };
+
+    Validations.of(this.httpApi).acknowledge({
+      id: 'AwsSolutions-APIG4',
+      reason:
+        'The Lambda verifies the Cognito access token of every MCP request: an API Gateway JWT authorizer cannot ' +
+        'return the WWW-Authenticate resource_metadata header MCP clients need. OAuth discovery routes are public.',
+    });
+    Validations.of(mcpServerLambda).acknowledge({
+      id: 'AwsSolutions-IAM4[Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole]',
+      reason: 'AWS managed policy that only allows writing the function logs to CloudWatch.',
+    });
 
     new cdk.CfnOutput(this, 'McpServerUrl', {
       value: `${this.httpApi.apiEndpoint}/mcp`,

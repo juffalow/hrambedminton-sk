@@ -1,4 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
+import { Validations } from 'aws-cdk-lib';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -6,6 +7,7 @@ import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as path from 'path';
 import { Construct } from 'constructs';
 import { getSuffix } from '../utils';
+import { tableIndexesNagFindingId } from './DatabaseConstruct';
 
 export interface AuthConstructProps {
   table: dynamodb.Table;
@@ -70,6 +72,23 @@ export class AuthConstruct extends Construct {
     });
 
     props.table.grantWriteData(postConfirmationLambda);
+
+    Validations.of(postConfirmationLambda).acknowledge({
+      id: 'AwsSolutions-IAM4[Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole]',
+      reason: 'AWS managed policy that only allows writing the function logs to CloudWatch.',
+    });
+    Validations.of(postConfirmationLambda).acknowledge({
+      id: tableIndexesNagFindingId(props.table),
+      reason: 'Added by table.grantWriteData() for the indexes of this table only.',
+    });
+    Validations.of(this.userPool).acknowledge({
+      id: 'AwsSolutions-COG8',
+      reason: 'Deferred: Cognito Plus feature plan (threat protection) is billed per active user. Revisit with more users.',
+    });
+    Validations.of(this.userPool).acknowledge({
+      id: 'AwsSolutions-COG2',
+      reason: 'MFA (TOTP) is optional on purpose: required MFA is too much friction for a casual sports app.',
+    });
 
     this.userPool.addTrigger(cognito.UserPoolOperation.POST_CONFIRMATION, postConfirmationLambda);
 

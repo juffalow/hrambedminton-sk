@@ -92,6 +92,6 @@ export function registerCreateEventTool(server: McpServer, config: GraphQLConfig
       } catch (error) {
         return toToolError(error);
       }
-    },
+    }
   );
 }

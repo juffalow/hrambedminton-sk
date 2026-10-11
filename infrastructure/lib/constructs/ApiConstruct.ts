@@ -1,10 +1,12 @@
 import * as cdk from 'aws-cdk-lib';
+import { Stack, Validations } from 'aws-cdk-lib';
 import * as appsync from 'aws-cdk-lib/aws-appsync';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 import { getSuffix } from '../utils';
+import { tableIndexesNagFindingId } from './DatabaseConstruct';
 
 export interface ApiConstructProps {
   userPool: cognito.UserPool;
@@ -47,6 +49,34 @@ export class ApiConstruct extends Construct {
     });
 
     const tableDataSource = this.api.addDynamoDbDataSource('HBTableDataSource', props.table);
+
+    Validations.of(tableDataSource).acknowledge({
+      id: tableIndexesNagFindingId(props.table),
+      reason: 'Added by the DynamoDB data source grant for the indexes of this table only (resolvers query GSI1, GSI2).',
+    });
+
+    const apiLogsRole = this.api.node.tryFindChild('ApiLogsRole');
+
+    if (apiLogsRole) {
+      Validations.of(apiLogsRole).acknowledge({
+        id: 'AwsSolutions-IAM4[Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs]',
+        reason: 'AWS managed policy that only allows AppSync to write its logs to CloudWatch.',
+      });
+    }
+
+    // CDK's singleton Lambda that sets the retention of the AppSync log group (logConfig.retention)
+    const logRetention = Stack.of(this).node.tryFindChild('LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a');
+
+    if (logRetention) {
+      Validations.of(logRetention).acknowledge({
+        id: 'AwsSolutions-IAM4[Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole]',
+        reason: 'CDK-managed log retention function, uses the AWS managed policy for writing its own logs.',
+      });
+      Validations.of(logRetention).acknowledge({
+        id: 'AwsSolutions-IAM5[Resource::*]',
+        reason: 'CDK-managed log retention function needs to put retention policies on log groups.',
+      });
+    }
 
     tableDataSource.createResolver('MutationCreateGuestEventResolver', {
       typeName: 'Mutation',

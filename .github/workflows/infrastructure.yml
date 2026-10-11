@@ -82,9 +82,31 @@ jobs:
       run: yarn install
     - name: DPDM
       run: yarn run circle
+  # Catches CDK and TypeScript errors, Lambda bundling errors and cdk-nag security findings before deploy.
+  # No AWS credentials needed: account and region come from cdk.context.json.
+  synth:
+    name: Synth
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 1
+    - name: Enable corepack
+      run: corepack enable
+    - uses: actions/setup-node@v6
+      env:
+        yarn: 4.18.1
+      with:
+        node-version: 26
+        cache: 'yarn'
+        cache-dependency-path: './infrastructure/yarn.lock'
+    - name: Install dependencies
+      run: yarn install
+    - name: Synth (with cdk-nag)
+      run: yarn cdk synth --quiet --context stage=development
   deploy_development:
     name: Deploy infrastructure to development
-    needs: [ lint, prettier, circle ]
+    needs: [ lint, prettier, circle, synth ]
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     environment: Development

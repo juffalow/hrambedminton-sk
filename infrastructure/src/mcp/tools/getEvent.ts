@@ -103,6 +103,6 @@ export function registerGetEventTool(server: McpServer, config: GraphQLConfig): 
       return {
         content: [{ type: 'text', text: JSON.stringify(details, null, 2) }],
       };
-    },
+    }
   );
 }

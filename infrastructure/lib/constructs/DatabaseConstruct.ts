@@ -1,7 +1,17 @@
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as cdk from 'aws-cdk-lib';
+import { CfnElement, Stack, Validations } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { getSuffix } from '../utils';
+
+/**
+ * cdk-nag finding for the `<table ARN>/index/*` wildcard that table.grant*() adds so a role can query the indexes
+ */
+export function tableIndexesNagFindingId(table: dynamodb.Table): string {
+  const logicalId = Stack.of(table).getLogicalId(table.node.defaultChild as CfnElement);
+
+  return `AwsSolutions-IAM5[Resource::<${logicalId}.Arn>/index/*]`;
+}
 
 export class DatabaseConstruct extends Construct {
   public readonly table: dynamodb.Table;
@@ -48,6 +58,11 @@ export class DatabaseConstruct extends Construct {
         type: dynamodb.AttributeType.STRING,
       },
       projectionType: dynamodb.ProjectionType.ALL,
+    });
+
+    Validations.of(this.table).acknowledge({
+      id: 'AwsSolutions-DDB3',
+      reason: 'Point-in-time recovery deliberately not enabled yet (decided 2026-10-11). Revisit before real user data.',
     });
 
     new cdk.CfnOutput(this, 'TableName', {

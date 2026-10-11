@@ -7,7 +7,7 @@ export interface GraphQLConfig {
 export class GraphQLRequestError extends Error {
   constructor(
     message: string,
-    public readonly errorType?: string,
+    public readonly errorType?: string
   ) {
     super(message);
     this.name = 'GraphQLRequestError';

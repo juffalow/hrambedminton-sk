@@ -1376,6 +1376,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cdk-nag@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "cdk-nag@npm:3.0.2"
+  peerDependencies:
+    aws-cdk-lib: ^2.257.0
+    constructs: ^10.5.1
+  checksum: 10c0/55395680d6d07d3910b288a13797ffe4aa1e1efdd75934cd48c83462f1e09b5e744b3bf06d0ca7d5e6ef3d418596d03ec033188cda1f90f93b29c3e7d8048c27
+  languageName: node
+  linkType: hard
+
 "chalk@npm:^5.6.2":
   version: 5.6.2
   resolution: "chalk@npm:5.6.2"
@@ -2200,6 +2210,7 @@ __metadata:
     aws-cdk: "npm:^2.1100.1"
     aws-cdk-lib: "npm:^2.233.0"
     aws-jwt-verify: "npm:^5.2.1"
+    cdk-nag: "npm:^3.0.2"
     constructs: "npm:^10.4.4"
     dpdm: "npm:^4.3.0"
     esbuild: "npm:^0.28.2"

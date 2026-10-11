@@ -37,7 +37,9 @@ export function registerListEventsTool(server: McpServer, config: GraphQLConfig)
         from: z.iso
           .datetime({ offset: true })
           .optional()
-          .describe('List events starting at or after this moment (ISO 8601, e.g. 2026-10-12T00:00:00+02:00). Defaults to now'),
+          .describe(
+            'List events starting at or after this moment (ISO 8601, e.g. 2026-10-12T00:00:00+02:00). Defaults to now'
+          ),
         to: z.iso
           .datetime({ offset: true })
           .optional()
@@ -69,6 +71,6 @@ export function registerListEventsTool(server: McpServer, config: GraphQLConfig)
       return {
         content: [{ type: 'text', text: JSON.stringify(connection, null, 2) }],
       };
-    },
+    }
   );
 }

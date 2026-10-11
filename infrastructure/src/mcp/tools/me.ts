@@ -33,6 +33,6 @@ export function registerMeTool(server: McpServer, config: GraphQLConfig): void {
       } catch (error) {
         return toToolError(error);
       }
-    },
+    }
   );
 }

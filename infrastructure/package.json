@@ -11,9 +11,9 @@
     "deploy:all": "cdk deploy --all",
     "lint": "eslint .",
     "lint:appsync": "eslint --config eslint-appsync.config.mjs .",
-    "prettier:check": "prettier --check ./lib",
-    "prettier:write": "prettier --write ./lib",
-    "circle": "dpdm ./src/app.ts --ext .ts,.d.ts,.tsx,.mjs,.js,.jsx,.json --tsconfig ./tsconfig.json --tree false --ignore-skip-warning node_modules ./bin/hrambedminton-sk.ts"
+    "prettier:check": "prettier --check ./bin ./lib ./src",
+    "prettier:write": "prettier --write ./bin ./lib ./src",
+    "circle": "dpdm --exit-code circular:1 --tree false --warning false --ext .ts,.d.ts,.tsx,.mjs,.js,.jsx,.json --tsconfig ./tsconfig.json ./bin/hrambedminton-sk.ts ./src/mcp/index.ts './lib/lambdas/*.ts'"
   },
   "engines": {
     "node": ">=26.0.0 <27.0.0",
@@ -32,6 +32,7 @@
     "@types/node": "^26.1.0",
     "aws-cdk": "^2.1100.1",
     "aws-cdk-lib": "^2.233.0",
+    "cdk-nag": "^3.0.2",
     "constructs": "^10.4.4",
     "dpdm": "^4.3.0",
     "esbuild": "^0.28.2",
