@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   lint:
-    name: Check infrastructure
+    name: Lint
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
