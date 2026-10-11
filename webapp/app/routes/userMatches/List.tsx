@@ -19,7 +19,6 @@ const MatchDetailQuery = gql`
   }
 `;
 
-
 const List = () => {
   const [result] = useQuery({
     query: MatchDetailQuery,
@@ -31,9 +30,7 @@ const List = () => {
     <>
       <h1 className="text-3xl font-bold text-center mb-4">My matches</h1>
 
-      <pre>
-        {JSON.stringify(data, null, 2)}
-      </pre>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </>
   );
 };
