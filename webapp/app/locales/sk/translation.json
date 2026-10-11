@@ -9,7 +9,8 @@
     "profile": "profil",
     "connectStrava": "pripojit-strava",
     "authorizeStrava": "autorizovat-strava",
-    "home": ""
+    "home": "",
+    "mcp": "mcp"
   },
   "components": {
     "menu": {
@@ -20,7 +21,8 @@
       "activities": "Aktivity",
       "subscription": "Predplatné",
       "navbarToggleOpen": "Otvoriť menu",
-      "navbarToggleClose": "Zavrieť menu"
+      "navbarToggleClose": "Zavrieť menu",
+      "language": "Jazyk"
     },
     "footer": {
       "about": "O aplikácii",
@@ -30,7 +32,8 @@
       "links": "Odkazy",
       "register": "Registrovať",
       "privacyPolicy": "Ochrana osobných údajov",
-      "status": "Stav"
+      "status": "Stav",
+      "mcp": "Pre AI asistentov"
     }
   },
   "meta": {
@@ -148,6 +151,78 @@
       "subtitle": "Všetky dáta súvisiace s vaším účtom budú zmazané.",
       "submitButton": "Zmazať profil",
       "clarifyingText": "Táto funkcia zatiaľ nie je podporovaná. Ak chcete zmazať svoj účet, kontaktujte nás prosím na nasledujúcej e-mailovej adrese"
+    }
+  },
+  "mcp": {
+    "title": "HramBedminton pre AI asistentov",
+    "subtitle": "Pripojte HramBedminton.sk k Claude a plánujte zápasy jednoducho konverzáciou.",
+    "copy": "Kopírovať",
+    "copied": "Skopírované",
+    "what": {
+      "title": "Čo je MCP?",
+      "paragraph1": "<strong>Model Context Protocol (MCP)</strong> je otvorený štandard, cez ktorý sa AI asistenti ako Claude pripájajú k aplikáciám. Po pripojení HramBedminton MCP servera môže Claude za vás vyhľadávať zápasy, zobraziť ich detaily a vytvárať nové – stačí napísať, čo potrebujete.",
+      "paragraph2": "Claude koná vo vašom mene, s vaším účtom a vašimi oprávneniami. Môže robiť len to, čo môžete robiť vy v aplikácii."
+    },
+    "tools": {
+      "title": "Čo Claude dokáže",
+      "listEvents": {
+        "name": "Nadchádzajúce zápasy",
+        "description": "Prehľad zápasov podľa termínu – s miestom, kurtom a počtom prihlásených hráčov."
+      },
+      "getEvent": {
+        "name": "Detail zápasu",
+        "description": "Typ, termín, miesto a zoznam prihlásených hráčov."
+      },
+      "myEvents": {
+        "name": "Moje zápasy",
+        "description": "Zápasy, ktoré ste vytvorili, alebo do ktorých ste sa prihlásili."
+      },
+      "createEvent": {
+        "name": "Nový zápas",
+        "description": "Vytvorí dvojhru alebo štvorhru, ktorej organizátorom ste vy."
+      },
+      "me": {
+        "name": "Môj účet",
+        "description": "Zistí, pod akým účtom je Claude prihlásený."
+      }
+    },
+    "requirements": {
+      "title": "Čo potrebujete",
+      "account": "Účet na HramBedminton.sk – <link>zaregistrujte sa</link>, ak ho ešte nemáte.",
+      "client": "Claude Code alebo Claude (claude.ai, desktopová či mobilná aplikácia)."
+    },
+    "connect": {
+      "title": "Ako sa pripojiť",
+      "serverUrl": "Adresa MCP servera",
+      "clientId": "OAuth Client ID",
+      "claudeCode": {
+        "tab": "Claude Code",
+        "step1": "Pridajte server príkazom v termináli:",
+        "step2": "V Claude Code spustite <code>/mcp</code>, vyberte <code>hrambedminton</code> a zvoľte <strong>Authenticate</strong>.",
+        "step3": "V prehliadači sa prihláste svojím účtom HramBedminton.sk. Hotovo!",
+        "note": "Prihlásenie funguje len s portom {{port}} – ten je v príkaze už nastavený."
+      },
+      "claudeAi": {
+        "tab": "claude.ai",
+        "step1": "Otvorte <strong>Nastavenia → Konektory</strong> a zvoľte <strong>Pridať vlastný konektor</strong>.",
+        "step2": "Zadajte názov <strong>HramBedminton</strong> a adresu MCP servera.",
+        "step3": "V časti <strong>Rozšírené nastavenia</strong> vyplňte OAuth Client ID. Client Secret nechajte prázdny.",
+        "step4": "Kliknite na <strong>Pripojiť</strong> a prihláste sa svojím účtom HramBedminton.sk.",
+        "note": "Pridaný konektor môžete používať vo webovej, desktopovej aj mobilnej aplikácii Claude."
+      }
+    },
+    "examples": {
+      "title": "Vyskúšajte napríklad",
+      "thisWeek": "Aké bedmintonové zápasy sú tento týždeň?",
+      "freeSpots": "Ktoré zápasy budúci týždeň ešte majú voľné miesta?",
+      "myEvents": "Ukáž mi moje nadchádzajúce zápasy.",
+      "createEvent": "Vytvor štvorhru v sobotu o 18:00 v Čiernej Vode, kurt 2, pre 4 hráčov.",
+      "players": "Kto je prihlásený na môj najbližší zápas?"
+    },
+    "security": {
+      "title": "Bezpečnosť a súkromie",
+      "paragraph1": "Prihlasujete sa priamo na prihlasovacej stránke HramBedminton.sk – <strong>Claude vaše heslo nikdy nevidí.</strong> Claude dostane len prístupový kľúč platný 1 hodinu, ktorý sa sám obnovuje najviac 30 dní.",
+      "paragraph2": "Prístup môžete kedykoľvek zrušiť odpojením konektora v Claude, v Claude Code cez <code>/mcp</code>."
     }
   },
   "privacyPolicy": {

@@ -1,5 +1,6 @@
 import type { Route } from './+types/Home';
 import { useTranslation } from 'react-i18next';
+import { Separator } from '@heroui/react';
 import NewMatchForm from './home/NewMatchForm';
 
 export function meta({ location }: Route.MetaArgs) {
@@ -34,6 +35,8 @@ export default function Home() {
         <div className="w-full lg:w-3/4 xl:w-2/3 p-4 mt-5">
           <NewMatchForm />
         </div>
+
+        <Separator className="w-full mt-5" />
       </div>
     </div>
   );

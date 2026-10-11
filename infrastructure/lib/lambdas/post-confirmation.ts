@@ -24,6 +24,8 @@ export const handler: PostConfirmationTriggerHandler = async (
         Item: {
           PK: { S: `user#${userId}` },
           SK: { S: `user#${userId}` },
+          GSI1PK: { S: 'type#user' },
+          GSI1SK: { S: `createdAt#${now}` },
           Type: { S: 'User' },
           id: { S: userId },
           email: { S: email },

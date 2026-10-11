@@ -5,7 +5,9 @@ export const ROUTES = {
     signIn: 'prihlasit-sa',
     signUp: 'registracia',
     profile: 'profil',
+    userMatches: 'moje-zapasy',
     match: 'zapas/:id',
     privacyPolicy: 'zasady-ochrany-osobnych-udajov',
+    mcp: 'mcp',
   },
 };

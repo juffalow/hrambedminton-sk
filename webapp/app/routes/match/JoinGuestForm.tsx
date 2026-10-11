@@ -1,5 +1,5 @@
 import { useActionState } from 'react';
-import { Form, Input, Button, Alert, Select, SelectItem } from '@heroui/react';
+import { Form, TextField, Label, Input, FieldError, Button, Spinner, Alert, Select, ListBox } from '@heroui/react';
 
 interface Props {
   eventType: 'SINGLES' | 'DOUBLES';
@@ -54,41 +54,54 @@ export default function JoinGuestForm({ eventType, players, addGuestPlayer }: Pr
       action={formAction}
       className={`grid grid-cols-1 ${eventType === 'DOUBLES' ? 'md:grid-cols-4' : 'md:grid-cols-2'} gap-4 w-full`}
     >
-      <Input
-        isRequired
-        errorMessage="Toto pole je povinné."
-        label="Meno"
-        labelPlacement="outside-top"
-        name="guestName"
-        placeholder="Jozef Novak"
-        defaultValue={state.guestName}
-        type="text"
-      />
+      <TextField isRequired name="guestName" defaultValue={state.guestName} type="text">
+        <Label>Meno</Label>
+        <Input placeholder="Jozef Novak" />
+        <FieldError>Toto pole je povinné.</FieldError>
+      </TextField>
 
-      <Input
-        isRequired
-        errorMessage="Toto pole je povinné."
-        label="Email"
-        labelPlacement="outside-top"
-        name="guestEmail"
-        placeholder="jozef.novak@example.com"
-        defaultValue={state.guestEmail}
-        type="text"
-      />
+      <TextField isRequired name="guestEmail" defaultValue={state.guestEmail} type="text">
+        <Label>Email</Label>
+        <Input placeholder="jozef.novak@example.com" />
+        <FieldError>Toto pole je povinné.</FieldError>
+      </TextField>
 
       {eventType === 'DOUBLES' ? (
-        <Select label="Spoluhráč" labelPlacement="outside-top" name="team" placeholder="Vyberte spoluhráča">
-          {players.map((player) => (
-            <SelectItem key={player.team}>{player.name}</SelectItem>
-          ))}
+        <Select name="team" placeholder="Vyberte spoluhráča" fullWidth>
+          <Label>Spoluhráč</Label>
+          <Select.Trigger>
+            <Select.Value />
+            <Select.Indicator />
+          </Select.Trigger>
+          <Select.Popover>
+            <ListBox>
+              {players.map((player) => (
+                <ListBox.Item key={player.team} id={player.team} textValue={player.name}>
+                  {player.name}
+                  <ListBox.ItemIndicator />
+                </ListBox.Item>
+              ))}
+            </ListBox>
+          </Select.Popover>
         </Select>
       ) : null}
 
-      <Button type="submit" color="primary" fullWidth={true} isLoading={isPending} className="mt-7">
-        Pridať sa
+      <Button type="submit" fullWidth={true} isPending={isPending} className="mt-7">
+        {({ isPending }) => (
+          <>
+            {isPending ? <Spinner color="current" size="sm" /> : null}
+            Pridať sa
+          </>
+        )}
       </Button>
 
-      {state.error !== null ? <Alert color="danger" title={state.error} hideIcon={true} /> : null}
+      {state.error !== null ? (
+        <Alert status="danger">
+          <Alert.Content>
+            <Alert.Title>{state.error}</Alert.Title>
+          </Alert.Content>
+        </Alert>
+      ) : null}
     </Form>
   );
 }

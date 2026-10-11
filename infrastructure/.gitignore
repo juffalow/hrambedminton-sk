@@ -1,6 +1,7 @@
 *.js
 !jest.config.js
 !lib/graphql/resolvers/*.js
+!lib/graphql/resolvers/functions/*.js
 *.d.ts
 .yarn
 node_modules

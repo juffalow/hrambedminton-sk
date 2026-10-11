@@ -1,7 +1,7 @@
 import { useActionState } from 'react';
 import type { FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Form, InputOtp, Button, Alert } from '@heroui/react';
+import { Form, InputOTP, Label, Button, Alert } from '@heroui/react';
 import logger from '../../logger';
 
 interface Props {
@@ -34,11 +34,29 @@ const ConfirmForm: FunctionComponent<Props> = ({ onConfirmSubmit }: Props) => {
 
   return (
     <Form action={formAction} className="space-y-6">
-      {state.error !== null ? <Alert color="danger" description={state.error} hideIcon={true} /> : null}
+      {state.error !== null ? (
+        <Alert status="danger">
+          <Alert.Content>
+            <Alert.Description>{state.error}</Alert.Description>
+          </Alert.Content>
+        </Alert>
+      ) : null}
 
-      <InputOtp isRequired errorMessage={t('requiredField')} label={t('code')} name="code" length={6} />
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="code">{t('code')}</Label>
+        <InputOTP id="code" required name="code" maxLength={6}>
+          <InputOTP.Group>
+            <InputOTP.Slot index={0} />
+            <InputOTP.Slot index={1} />
+            <InputOTP.Slot index={2} />
+            <InputOTP.Slot index={3} />
+            <InputOTP.Slot index={4} />
+            <InputOTP.Slot index={5} />
+          </InputOTP.Group>
+        </InputOTP>
+      </div>
 
-      <Button type="submit" color="primary" fullWidth={true} isDisabled={isPending}>
+      <Button type="submit" fullWidth={true} isDisabled={isPending}>
         {t('confirmSignUpButton')}
       </Button>
     </Form>

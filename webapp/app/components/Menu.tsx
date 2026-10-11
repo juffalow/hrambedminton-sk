@@ -1,21 +1,6 @@
 import { useState } from 'react';
-import type { MouseEvent } from 'react';
-import {
-  Image,
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem,
-  Link,
-  Button,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-} from '@heroui/react';
+import { Link, Button, Dropdown, Label, buttonVariants, linkVariants } from '@heroui/react';
+import type { Key } from '@heroui/react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useLocation, useNavigate, matchPath } from 'react-router';
 import useAuth from '../hooks/useAuth';
@@ -28,8 +13,8 @@ export default function menu() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const onChangeLang = (e: MouseEvent) => {
-    const code = (e.target as HTMLElement).getAttribute('data-lang') || 'sk';
+  const handleChangeLang = (key: Key) => {
+    const code = String(key);
     const pathname = location.pathname;
 
     const route = Object.keys(ROUTES[i18n.language as keyof typeof ROUTES]).find((key) => {
@@ -58,168 +43,149 @@ export default function menu() {
 
   const lang = i18n.language === 'sk' ? <>&#x1F1F8;&#x1F1F0; SK</> : <>&#x1F1F8;&#x1F1F0; SK</>;
 
+  const routePrefix = `/${t('prefix', { keyPrefix: 'routes' })}`;
+  const routes = ROUTES[i18n.language as keyof typeof ROUTES];
+  const linkClassName = linkVariants().base();
+  const mobileLinkClassName = `${linkClassName} w-full text-lg text-foreground`;
+
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} isMenuOpen={isMenuOpen} position="static" maxWidth="full" isBordered>
-      <NavbarContent>
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? t('navbarToggleClose') : t('navbarToggleOpen')}
-          className="sm:hidden"
-          as={'a'}
-          role="button"
-        />
-        <NavbarBrand>
-          <Link
-            as={RouterLink}
-            to={`/${t('prefix', { keyPrefix: 'routes' })}`}
-            className="font-bold text-inherit"
+    <nav className="w-full border-b border-separator">
+      <header className="flex h-16 items-center justify-between gap-4 px-6">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            className="sm:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? t('navbarToggleClose') : t('navbarToggleOpen')}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+          >
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              {isMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+          <RouterLink
+            to={routePrefix}
+            className={`${linkClassName} font-bold text-inherit`}
             data-tracking-id="desktop_menu_home_click"
           >
-            <Image src="/favicon.png" alt="HramBedminton.sk" width={32} height={32} />
+            <img src="/favicon.png" alt="HramBedminton.sk" width={32} height={32} />
             <span className="ms-2">HramBedminton.sk</span>
-          </Link>
-        </NavbarBrand>
-      </NavbarContent>
+          </RouterLink>
+        </div>
 
-      {user !== null ? (
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
-          <NavbarItem>
-            <Link
-              as={RouterLink}
-              to={`/${t('prefix', { keyPrefix: 'routes' })}${ROUTES[i18n.language as keyof typeof ROUTES].profile}`}
-              color="foreground"
-              data-tracking-id="desktop_menu_profile_click"
-            >
-              {t('profile')}
-            </Link>
-          </NavbarItem>
-          {/* <NavbarItem>
-            <Link
-              as={RouterLink}
-              to={`/${t('prefix', { keyPrefix: 'routes' })}${ROUTES[i18n.language as keyof typeof ROUTES].matches}`}
-              color="foreground"
-              data-tracking-id="desktop_menu_matches_click"
-            >
-              {t('matches')}
-            </Link>
-          </NavbarItem> */}
-        </NavbarContent>
-      ) : null}
-
-      <NavbarContent justify="end">
-        {user === null ? (
-          <>
-            <NavbarItem className="hidden sm:flex">
-              <Link
-                as={RouterLink}
-                to={`/${t('prefix', { keyPrefix: 'routes' })}${ROUTES[i18n.language as keyof typeof ROUTES].signIn}`}
-                data-tracking-id="desktop_menu_sign_in_click"
-              >
-                {t('signIn')}
-              </Link>
-            </NavbarItem>
-            <NavbarItem className="hidden sm:flex">
-              <Button
-                as={RouterLink}
-                to={`/${t('prefix', { keyPrefix: 'routes' })}${ROUTES[i18n.language as keyof typeof ROUTES].signUp}`}
-                color="primary"
-                variant="flat"
-                data-tracking-id="desktop_menu_sign_up_click"
-              >
-                {t('signUp')}
-              </Button>
-            </NavbarItem>
-          </>
-        ) : (
-          <NavbarItem className="hidden sm:flex">
-            <Button color="primary" variant="flat" onPress={signOut} data-tracking-id="desktop_menu_sign_out_click">
-              {t('signOut')}
-            </Button>
-          </NavbarItem>
-        )}
-        <Dropdown>
-          <NavbarItem>
-            <DropdownTrigger>
-              <Button
-                disableRipple
-                className="p-0 bg-transparent data-[hover=true]:bg-transparent"
-                radius="sm"
-                variant="light"
-              >
-                {lang}
-              </Button>
-            </DropdownTrigger>
-          </NavbarItem>
-          <DropdownMenu
-            aria-label="ACME features"
-            itemClasses={{
-              base: 'gap-4',
-            }}
-          >
-            <DropdownItem key="sk" onClick={onChangeLang} data-lang="sk" className="cursor-pointer">
-              &#x1F1F8;&#x1F1F0; SK
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      </NavbarContent>
-      <NavbarMenu>
         {user !== null ? (
-          <>
-            <NavbarMenuItem>
-              <Link
-                as={RouterLink}
-                className="w-full"
-                color="foreground"
-                to={`/${t('prefix', { keyPrefix: 'routes' })}${ROUTES[i18n.language as keyof typeof ROUTES].profile}`}
-                onClick={() => setIsMenuOpen(false)}
-                size="lg"
-                data-tracking-id="mobile_menu_profile_click"
+          <ul className="hidden sm:flex gap-4">
+            <li>
+              <RouterLink
+                to={`${routePrefix}${routes.profile}`}
+                className={`${linkClassName} text-foreground`}
+                data-tracking-id="desktop_menu_profile_click"
               >
                 {t('profile')}
-              </Link>
-            </NavbarMenuItem>
-            <NavbarMenuItem>
-              <Link
-                className="w-full"
-                color="danger"
-                size="lg"
-                onPress={signOut}
-                data-tracking-id="mobile_menu_sign_out_click"
-              >
+              </RouterLink>
+            </li>
+          </ul>
+        ) : null}
+
+        <ul className="flex items-center gap-4">
+          {user === null ? (
+            <>
+              <li className="hidden sm:flex">
+                <RouterLink
+                  to={`${routePrefix}${routes.signIn}`}
+                  className={linkClassName}
+                  data-tracking-id="desktop_menu_sign_in_click"
+                >
+                  {t('signIn')}
+                </RouterLink>
+              </li>
+              <li className="hidden sm:flex">
+                <RouterLink
+                  to={`${routePrefix}${routes.signUp}`}
+                  className={buttonVariants({ variant: 'tertiary' })}
+                  data-tracking-id="desktop_menu_sign_up_click"
+                >
+                  {t('signUp')}
+                </RouterLink>
+              </li>
+            </>
+          ) : (
+            <li className="hidden sm:flex">
+              <Button variant="tertiary" onPress={signOut} data-tracking-id="desktop_menu_sign_out_click">
                 {t('signOut')}
-              </Link>
-            </NavbarMenuItem>
-          </>
-        ) : (
-          <>
-            <NavbarMenuItem>
-              <Link
-                as={RouterLink}
-                className="w-full"
-                color="foreground"
-                to={`/${t('prefix', { keyPrefix: 'routes' })}${ROUTES[i18n.language as keyof typeof ROUTES].signIn}`}
-                onClick={() => setIsMenuOpen(false)}
-                size="lg"
-                data-tracking-id="mobile_menu_sign_in_click"
-              >
-                {t('signIn')}
-              </Link>
-            </NavbarMenuItem>
-            <NavbarMenuItem>
-              <Link
-                as={RouterLink}
-                className="w-full"
-                color="foreground"
-                to={`/${t('prefix', { keyPrefix: 'routes' })}${ROUTES[i18n.language as keyof typeof ROUTES].signUp}`}
-                onClick={() => setIsMenuOpen(false)}
-                size="lg"
-                data-tracking-id="mobile_menu_sign_up_click"
-              >
-                {t('signUp')}
-              </Link>
-            </NavbarMenuItem>
-          </>
-        )}
-      </NavbarMenu>
-    </Navbar>
+              </Button>
+            </li>
+          )}
+          <li>
+            <Dropdown>
+              <Dropdown.Trigger className="p-0 bg-transparent">{lang}</Dropdown.Trigger>
+              <Dropdown.Popover>
+                <Dropdown.Menu aria-label={t('language')} onAction={handleChangeLang}>
+                  <Dropdown.Item id="sk" textValue="SK" className="gap-4 cursor-pointer">
+                    <Label>&#x1F1F8;&#x1F1F0; SK</Label>
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown.Popover>
+            </Dropdown>
+          </li>
+        </ul>
+      </header>
+
+      {isMenuOpen ? (
+        <ul id="mobile-menu" className="flex flex-col gap-2 px-6 pb-4 sm:hidden">
+          {user !== null ? (
+            <>
+              <li>
+                <RouterLink
+                  to={`${routePrefix}${routes.profile}`}
+                  className={mobileLinkClassName}
+                  onClick={() => setIsMenuOpen(false)}
+                  data-tracking-id="mobile_menu_profile_click"
+                >
+                  {t('profile')}
+                </RouterLink>
+              </li>
+              <li>
+                <Link
+                  className="w-full text-lg text-danger"
+                  onPress={signOut}
+                  data-tracking-id="mobile_menu_sign_out_click"
+                >
+                  {t('signOut')}
+                </Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <RouterLink
+                  to={`${routePrefix}${routes.signIn}`}
+                  className={mobileLinkClassName}
+                  onClick={() => setIsMenuOpen(false)}
+                  data-tracking-id="mobile_menu_sign_in_click"
+                >
+                  {t('signIn')}
+                </RouterLink>
+              </li>
+              <li>
+                <RouterLink
+                  to={`${routePrefix}${routes.signUp}`}
+                  className={mobileLinkClassName}
+                  onClick={() => setIsMenuOpen(false)}
+                  data-tracking-id="mobile_menu_sign_up_click"
+                >
+                  {t('signUp')}
+                </RouterLink>
+              </li>
+            </>
+          )}
+        </ul>
+      ) : null}
+    </nav>
   );
 }

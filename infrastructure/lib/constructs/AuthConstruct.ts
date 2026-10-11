@@ -3,22 +3,24 @@ import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
-import { Construct } from 'constructs';
 import * as path from 'path';
+import { Construct } from 'constructs';
+import { getSuffix } from '../utils';
 
-export interface AuthStackProps extends cdk.StackProps {
+export interface AuthConstructProps {
   table: dynamodb.Table;
 }
 
-export class AuthStack extends cdk.Stack {
+export class AuthConstruct extends Construct {
   public readonly userPool: cognito.UserPool;
   public readonly userPoolClient: cognito.UserPoolClient;
+  public readonly userPoolDomain: cognito.UserPoolDomain;
 
-  constructor(scope: Construct, id: string, props: AuthStackProps) {
-    super(scope, id, props);
+  constructor(scope: Construct, id: string, props: AuthConstructProps) {
+    super(scope, id);
 
     this.userPool = new cognito.UserPool(this, 'HramBedmintonUserPool', {
-      userPoolName: 'HramBedmintonUserPool',
+      userPoolName: `HBUserPool-${getSuffix(this)}`,
       selfSignUpEnabled: true,
       signInAliases: {
         email: true,
@@ -58,7 +60,7 @@ export class AuthStack extends cdk.Stack {
       this,
       'PostConfirmationLambda',
       {
-        functionName: 'HramBedmintonPostConfirmation',
+        functionName: `HBPostConfirmation-${getSuffix(this)}`,
         runtime: lambda.Runtime.NODEJS_24_X,
         architecture: lambda.Architecture.ARM_64,
         memorySize: 256,
@@ -78,14 +80,22 @@ export class AuthStack extends cdk.Stack {
       postConfirmationLambda,
     );
 
-    this.userPoolClient = this.userPool.addClient('HramBedmintonUserPoolClient', {
-      userPoolClientName: 'HramBedmintonWebApp',
+    this.userPoolClient = this.userPool.addClient('HBUserPoolClient', {
+      userPoolClientName: `HBWebApp-${getSuffix(this)}`,
       authFlows: {
         userPassword: true,
         userSrp: true,
       },
       generateSecret: false,
       preventUserExistenceErrors: true,
+    });
+
+    // Hosted sign-in page used by OAuth clients (MCP clients, see McpConstruct), the webapp keeps its own sign-in form
+    this.userPoolDomain = this.userPool.addDomain('HBUserPoolDomain', {
+      cognitoDomain: {
+        domainPrefix: `hrambedminton-${getSuffix(this)}`,
+      },
+      managedLoginVersion: cognito.ManagedLoginVersion.NEWER_MANAGED_LOGIN,
     });
   }
 }

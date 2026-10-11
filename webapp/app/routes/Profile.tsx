@@ -2,7 +2,8 @@ import { useEffect, Suspense, useState } from 'react';
 import type { Route } from './+types/Profile';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { Accordion, AccordionItem } from '@heroui/accordion';
+import { Accordion } from '@heroui/react';
+import type { Key } from '@heroui/react';
 import ProfileLoader from './profile/loader';
 import Detail from './profile/detail';
 import ChangePassword from './profile/changePassword';
@@ -34,8 +35,8 @@ export default function Profile() {
     setUserPromise(getUser());
   }, [getUser]);
 
-  const onTabChange = (keys: 'all' | Set<React.Key>) => {
-    if (keys instanceof Set && keys.size === 0) {
+  const onTabChange = (keys: Set<Key>) => {
+    if (keys.size === 0) {
       navigate('', { replace: true });
     } else {
       navigate(`#${Array.from(keys)[0]}`, { replace: true });
@@ -46,37 +47,50 @@ export default function Profile() {
     <ErrorBoundary>
       {userPromise ? (
         <Accordion
-          keepContentMounted={true}
-          onSelectionChange={onTabChange}
-          defaultSelectedKeys={window.location.hash.length === 0 ? [] : [window.location.hash.slice(1)]}
+          onExpandedChange={onTabChange}
+          defaultExpandedKeys={window.location.hash.length === 0 ? [] : [window.location.hash.slice(1)]}
         >
-          <AccordionItem
-            key="detail"
-            aria-label={t('detail.title')}
-            title={t('detail.title')}
-            classNames={{ title: 'text-xl font-medium' }}
-            href="#detail"
-          >
-            <Suspense fallback={<p>Loading detail...</p>}>
-              <Detail getCurrentUserPromise={userPromise as any} />
-            </Suspense>
-          </AccordionItem>
-          <AccordionItem
-            key="change-password"
-            aria-label={t('changePassword.title')}
-            title={t('changePassword.title')}
-            classNames={{ title: 'text-xl font-medium' }}
-          >
-            <ChangePassword />
-          </AccordionItem>
-          <AccordionItem
-            key="delete-profile"
-            aria-label={t('deleteProfile.title')}
-            title={t('deleteProfile.title')}
-            classNames={{ title: 'text-xl font-medium' }}
-          >
-            <DeleteProfile />
-          </AccordionItem>
+          <Accordion.Item id="detail">
+            <Accordion.Heading>
+              <Accordion.Trigger className="text-xl font-medium">
+                {t('detail.title')}
+                <Accordion.Indicator />
+              </Accordion.Trigger>
+            </Accordion.Heading>
+            <Accordion.Panel>
+              <Accordion.Body>
+                <Suspense fallback={<p>Loading detail...</p>}>
+                  <Detail getCurrentUserPromise={userPromise as any} />
+                </Suspense>
+              </Accordion.Body>
+            </Accordion.Panel>
+          </Accordion.Item>
+          <Accordion.Item id="change-password">
+            <Accordion.Heading>
+              <Accordion.Trigger className="text-xl font-medium">
+                {t('changePassword.title')}
+                <Accordion.Indicator />
+              </Accordion.Trigger>
+            </Accordion.Heading>
+            <Accordion.Panel>
+              <Accordion.Body>
+                <ChangePassword />
+              </Accordion.Body>
+            </Accordion.Panel>
+          </Accordion.Item>
+          <Accordion.Item id="delete-profile">
+            <Accordion.Heading>
+              <Accordion.Trigger className="text-xl font-medium">
+                {t('deleteProfile.title')}
+                <Accordion.Indicator />
+              </Accordion.Trigger>
+            </Accordion.Heading>
+            <Accordion.Panel>
+              <Accordion.Body>
+                <DeleteProfile />
+              </Accordion.Body>
+            </Accordion.Panel>
+          </Accordion.Item>
         </Accordion>
       ) : (
         <ProfileLoader />

@@ -1,5 +1,21 @@
 import { useActionState } from 'react';
-import { Form, Input, Textarea, DatePicker, TimeInput, Button, Alert, Select, SelectItem } from '@heroui/react';
+import {
+  Form,
+  TextField,
+  Label,
+  Input,
+  TextArea,
+  FieldError,
+  DatePicker,
+  DateField,
+  Calendar,
+  TimeField,
+  Button,
+  Spinner,
+  Alert,
+  Select,
+  ListBox,
+} from '@heroui/react';
 import { useMutation } from 'urql';
 import { useNavigate, generatePath } from 'react-router';
 import { ROUTES } from '../../constants';
@@ -27,23 +43,18 @@ export const newMatchFormSchema = z.object({
     .string()
     .min(1, { message: 'Kurt(y) musí mať aspoň 1 znak!' })
     .max(64, { message: 'Kurt(y) môže mať maximálne 64 znakov!' }),
-  guestName: z
-    .string()
-    .min(1, { message: 'Meno organizátora musí mať aspo 1 znak!' })
-    .max(64, { message: 'Meno organizátora môže mať maximálne 64 znakov!' }),
-  guestEmail: z.email({ message: 'Email organizátora musí byť platný email!' }),
 });
 
-const CreateGuestEventMutation = `
-  mutation CreateGuestEvent($input: CreateGuestEventInput!) {
-    createGuestEvent(input: $input) {
+const CreateEventMutation = `
+  mutation CreateEvent($input: CreateEventInput!) {
+    createEvent(input: $input) {
       id
     }
   }
 `;
 
 export default function NewMatchForm() {
-  const [, createGuestEvent] = useMutation(CreateGuestEventMutation);
+  const [, createEvent] = useMutation(CreateEventMutation);
   const navigate = useNavigate();
 
   const [state, formAction, isPending] = useActionState(
@@ -56,8 +67,6 @@ export default function NewMatchForm() {
       const time = state.get('time') as string;
       const place = state.get('place') as string;
       const court = state.get('court') as string;
-      const guestName = state.get('guestName') as string;
-      const guestEmail = state.get('guestEmail') as string;
 
       try {
         newMatchFormSchema.parse({
@@ -69,8 +78,6 @@ export default function NewMatchForm() {
           time,
           place,
           court,
-          guestName,
-          guestEmail,
         });
       } catch (error: unknown) {
         logger.error('Error validating new match form', { error });
@@ -84,8 +91,6 @@ export default function NewMatchForm() {
           time,
           place,
           court,
-          guestName,
-          guestEmail,
           error: 'Formulár obsahuje chyby!',
           errors:
             error instanceof ZodError
@@ -105,12 +110,13 @@ export default function NewMatchForm() {
         time,
         place,
         court,
-        guestName,
-        guestEmail,
       });
 
-      const result = await createGuestEvent({
-        input: { name, description, eventType, maxPlayers, date, time, place, court, guestEmail, guestName },
+      // Assume the organizer is in the same time zone as the venue
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      const result = await createEvent({
+        input: { name, description, eventType, maxPlayers, date, time, timeZone, place, court },
       });
 
       if (result.error) {
@@ -124,8 +130,6 @@ export default function NewMatchForm() {
           time,
           place,
           court,
-          guestName,
-          guestEmail,
           error: result.error.message,
           errors: {},
         };
@@ -145,8 +149,6 @@ export default function NewMatchForm() {
         time,
         place,
         court,
-        guestName,
-        guestEmail,
         error: null,
         errors: {},
       };
@@ -160,8 +162,6 @@ export default function NewMatchForm() {
       time: '',
       place: '',
       court: '',
-      guestName: '',
-      guestEmail: '',
       error: null,
       errors: {},
     }
@@ -171,100 +171,116 @@ export default function NewMatchForm() {
     <Form action={formAction} validationErrors={state.errors}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
         <div className="space-y-4">
-          <Input
-            isRequired
-            label="Názov zápasu"
-            labelPlacement="outside-top"
-            name="name"
-            placeholder="Štvrtkové štvorhry"
-            defaultValue={state.name}
-            type="text"
-          />
+          <TextField isRequired name="name" defaultValue={state.name} type="text">
+            <Label>Názov zápasu</Label>
+            <Input placeholder="Štvrtkové štvorhry" />
+            <FieldError />
+          </TextField>
 
-          <Select
-            isRequired
-            label="Typ zápasu"
-            labelPlacement="outside-top"
-            name="eventType"
-            selectedKeys={state.eventType ? [state.eventType] : undefined}
-          >
-            <SelectItem key="SINGLES">Singles</SelectItem>
-            <SelectItem key="DOUBLES">Doubles</SelectItem>
+          <Select isRequired name="eventType" defaultValue={state.eventType || undefined} fullWidth>
+            <Label>Typ zápasu</Label>
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Indicator />
+            </Select.Trigger>
+            <Select.Popover>
+              <ListBox>
+                <ListBox.Item id="SINGLES" textValue="Singles">
+                  Singles
+                  <ListBox.ItemIndicator />
+                </ListBox.Item>
+                <ListBox.Item id="DOUBLES" textValue="Doubles">
+                  Doubles
+                  <ListBox.ItemIndicator />
+                </ListBox.Item>
+              </ListBox>
+            </Select.Popover>
+            <FieldError />
           </Select>
 
-          <Input
-            isRequired
-            label="Maximálny počet hráčov"
-            labelPlacement="outside-top"
-            name="maxPlayers"
-            placeholder="4"
-            defaultValue={String(state.maxPlayers)}
-            type="number"
-          />
-
-          <div className="grid grid-cols-2 gap-4">
-            <DatePicker isRequired label="Dátum zápasu" labelPlacement="outside-top" name="date" defaultValue={null} />
-
-            <TimeInput isRequired label="Čas zápasu" labelPlacement="outside-top" name="time" hourCycle={24} />
-          </div>
-
-          <Input
-            isRequired
-            label="Miesto"
-            labelPlacement="outside-top"
-            name="place"
-            placeholder="Slávia Agrofert, NTC, Retro, ..."
-            defaultValue={state.place}
-            type="text"
-          />
-
-          <Input
-            isRequired
-            label="Kurt(y)"
-            labelPlacement="outside-top"
-            name="court"
-            placeholder="1, 2, 3, ..."
-            defaultValue={state.court}
-            type="text"
-          />
+          <TextField isRequired name="maxPlayers" defaultValue={String(state.maxPlayers)} type="number">
+            <Label>Maximálny počet hráčov</Label>
+            <Input placeholder="4" />
+            <FieldError />
+          </TextField>
         </div>
         <div className="space-y-4">
-          <Textarea
-            label="Popis zápasu"
-            labelPlacement="outside-top"
-            name="description"
-            placeholder="Popis zápasu"
-            defaultValue={state.description}
-            minRows={6}
-          />
+          <div className="grid grid-cols-2 gap-4">
+            <DatePicker isRequired name="date">
+              <Label>Dátum zápasu</Label>
+              <DateField.Group>
+                <DateField.Input>{(segment) => <DateField.Segment segment={segment} />}</DateField.Input>
+                <DateField.Suffix>
+                  <DatePicker.Trigger>
+                    <DatePicker.TriggerIndicator />
+                  </DatePicker.Trigger>
+                </DateField.Suffix>
+              </DateField.Group>
+              <FieldError />
+              <DatePicker.Popover>
+                <Calendar aria-label="Dátum zápasu">
+                  <Calendar.Header>
+                    <Calendar.Heading />
+                    <Calendar.NavButton slot="previous" />
+                    <Calendar.NavButton slot="next" />
+                  </Calendar.Header>
+                  <Calendar.Grid>
+                    <Calendar.GridHeader>
+                      {(day) => <Calendar.HeaderCell>{day}</Calendar.HeaderCell>}
+                    </Calendar.GridHeader>
+                    <Calendar.GridBody>{(date) => <Calendar.Cell date={date} />}</Calendar.GridBody>
+                  </Calendar.Grid>
+                </Calendar>
+              </DatePicker.Popover>
+            </DatePicker>
 
-          <Input
-            isRequired
-            label="Meno organizátora"
-            labelPlacement="outside-top"
-            name="guestName"
-            placeholder="Jozef Novák"
-            defaultValue={state.guestName}
-            type="text"
-          />
+            <TimeField isRequired name="time" hourCycle={24}>
+              <Label>Čas zápasu</Label>
+              <TimeField.Group>
+                <TimeField.Input>{(segment) => <TimeField.Segment segment={segment} />}</TimeField.Input>
+              </TimeField.Group>
+              <FieldError />
+            </TimeField>
+          </div>
 
-          <Input
-            isRequired
-            label="Email organizátora"
-            labelPlacement="outside-top"
-            name="guestEmail"
-            placeholder="jozef.novak@example.com"
-            defaultValue={state.guestEmail}
-            type="email"
-          />
+          <TextField isRequired name="place" defaultValue={state.place} type="text">
+            <Label>Miesto</Label>
+            <Input placeholder="Slávia Agrofert, NTC, Retro, ..." />
+            <FieldError />
+          </TextField>
+
+          <TextField isRequired name="court" defaultValue={state.court} type="text">
+            <Label>Kurt(y)</Label>
+            <Input placeholder="1, 2, 3, ..." />
+            <FieldError />
+          </TextField>
         </div>
       </div>
 
-      {state.error !== null ? <Alert color="danger" className="mt-4" title={state.error} hideIcon={true} /> : null}
+      <div className="mt-4">
+        <TextField name="description" defaultValue={state.description}>
+          <Label>Popis zápasu</Label>
+          <TextArea placeholder="Popis zápasu" rows={6} />
+          <FieldError />
+        </TextField>
+      </div>
+
+      {state.error !== null ? (
+        <Alert status="danger" className="mt-4">
+          <Alert.Content>
+            <Alert.Title>{state.error}</Alert.Title>
+          </Alert.Content>
+        </Alert>
+      ) : null}
 
       <div className="flex justify-center w-full mt-4">
-        <Button type="submit" color="primary" size="lg" isLoading={isPending}>
-          Vytvoriť zápas
+        <Button type="submit" size="lg" isPending={isPending}>
+          {({ isPending }) => (
+            <>
+              {isPending ? <Spinner color="current" size="sm" /> : null}
+              Vytvoriť zápas
+            </>
+          )}
         </Button>
       </div>
     </Form>

@@ -5,7 +5,7 @@ export default function Footer() {
   const { t } = useTranslation('', { keyPrefix: 'components.footer' });
 
   return (
-    <footer className="bg-white dark:bg-gray-900">
+    <footer className="dark:bg-gray-900">
       <div className="mx-auto w-full p-4 py-6 lg:py-8">
         <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
         <div className="md:flex md:justify-between">
@@ -47,6 +47,15 @@ export default function Footer() {
                 <li className="mb-4">
                   <Link
                     className="nav-link text-light"
+                    to={`${t('prefix', { keyPrefix: 'routes' })}${t('mcp', { keyPrefix: 'routes' })}`}
+                    data-tracking-id="footer_link_mcp_click"
+                  >
+                    {t('mcp')}
+                  </Link>
+                </li>
+                <li className="mb-4">
+                  <Link
+                    className="nav-link text-light"
                     to={`${t('prefix', { keyPrefix: 'routes' })}${t('privacyPolicy', { keyPrefix: 'routes' })}`}
                     data-tracking-id="footer_link_privacypolicy_click"
                   >
@@ -61,10 +70,10 @@ export default function Footer() {
                 <li>
                   <a
                     className="nav-link text-light"
-                    href="mailto:matej.jellus@gmail.com"
+                    href="mailto:matej@jellus.it"
                     data-tracking-id="footer_link_email_click"
                   >
-                    matej.jellus@gmail.com
+                    matej@jellus.it
                   </a>
                 </li>
               </ul>

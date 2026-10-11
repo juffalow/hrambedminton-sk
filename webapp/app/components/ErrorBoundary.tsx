@@ -50,8 +50,12 @@ class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <Alert color="warning">
-          <h1>Error not found</h1>
+        <Alert status="warning">
+          <Alert.Content>
+            <Alert.Title>
+              <h1>Error not found</h1>
+            </Alert.Title>
+          </Alert.Content>
         </Alert>
       );
     }

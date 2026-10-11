@@ -9,6 +9,8 @@ export default [
     route(ROUTES.sk.signUp, 'routes/SignUp.tsx', { id: 'sk-sign-up' }),
     route(ROUTES.sk.profile, 'routes/Profile.tsx', { id: 'sk-profile' }),
     route(ROUTES.sk.match, 'routes/Match.tsx', { id: 'sk-match' }),
+    route(ROUTES.sk.userMatches, 'routes/UserMatches.tsx', { id: 'sk-user-matches' }),
     route(ROUTES.sk.privacyPolicy, 'routes/PrivacyPolicy.tsx', { id: 'sk-privacy-policy' }),
+    route(ROUTES.sk.mcp, 'routes/MCP.tsx', { id: 'sk-mcp' }),
   ]),
 ] satisfies RouteConfig;

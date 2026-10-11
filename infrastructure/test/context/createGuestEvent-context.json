@@ -12,7 +12,7 @@
       "guestName": "Test User"
     }
   },
-  "stash": {
-    "tableName": "HramBedmintonTable"
+  "env": {
+    "TABLE_NAME": "HramBedmintonTable"
   }
 }

@@ -28,12 +28,16 @@
     ]
   },
   "dependencies": {
-    "@heroui/react": "^2.8.2",
+    "@heroui/react": "^3.2.6",
+    "@heroui/styles": "^3.2.6",
+    "@internationalized/date": "^3.12.4",
+    "@react-aria/ssr": "^3.10.1",
+    "@react-aria/utils": "^3.34.1",
     "@react-router/node": "^7.7.1",
     "@react-router/serve": "^7.7.1",
     "@sentry/react": "^10.10.0",
+    "@urql/exchange-auth": "^3.0.0",
     "aws-amplify": "^6.15.4",
-    "framer-motion": "^12.23.11",
     "i18next": "^25.3.2",
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-http-backend": "^3.0.2",
@@ -41,6 +45,8 @@
     "loglevel": "^1.9.2",
     "p-retry": "^6.2.1",
     "react": "^19.1.0",
+    "react-aria": "^3.52.1",
+    "react-aria-components": "^1.21.1",
     "react-dom": "^19.1.0",
     "react-i18next": "^15.6.1",
     "react-icons": "^5.5.0",
@@ -64,5 +70,5 @@
     "vite": "^6.3.3",
     "vite-tsconfig-paths": "^5.1.4"
   },
-  "packageManager": "yarn@4.12.0"
+  "packageManager": "yarn@4.18.1"
 }

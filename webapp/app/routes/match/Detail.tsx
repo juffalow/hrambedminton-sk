@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { gql, useQuery, useMutation } from 'urql';
-import { Chip, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Divider } from '@heroui/react';
+import { Chip, Table, Separator } from '@heroui/react';
 import JoinGuestForm from './JoinGuestForm';
 import { formatDate } from '../../utils/functions';
 
@@ -99,39 +99,39 @@ const Detail = ({ id }: Props) => {
 
       <p className="text-center text-gray-500 whitespace-pre mb-4">{data?.event?.description}</p>
 
-      <Table aria-label="Example static collection table">
-        <TableHeader>
-          <TableColumn className="text-base">Meno</TableColumn>
-          <TableColumn className="text-base">Status</TableColumn>
-          <TableColumn className="text-base">Pridal sa</TableColumn>
-        </TableHeader>
-        <TableBody>
-          {[
-            ...Object.keys(players || {}).map((team: string, index: number) => (
-              <TableRow
-                key={team}
-                className={index + 1 === data.event.maxPlayers ? 'border-t-2 border-t-orange-200' : ''}
-              >
-                <TableCell>
-                  {players[team][0].name}
-                  {players[team].length > 1 ? ` a ${players[team][1].name}` : ''}
-                </TableCell>
-                <TableCell>{players[team][0].status === 'confirmed' ? 'Potvrdil(a)' : 'Nepotvrdil(a)'}</TableCell>
-                <TableCell>{formatDate(players[team][0].joinedAt, 'dd. MM. YYYY HH:mm')}</TableCell>
-              </TableRow>
-            )),
-            <TableRow key="join-form">
-              <TableCell colSpan={3}>
-                <Divider className="my-4" />
-                <JoinGuestForm
-                  eventType={data?.event?.eventType}
-                  players={teammates}
-                  addGuestPlayer={handleAddGuestPlayer}
-                />
-              </TableCell>
-            </TableRow>,
-          ]}
-        </TableBody>
+      <Table>
+        <Table.ScrollContainer>
+          <Table.Content aria-label="Hráči">
+            <Table.Header>
+              <Table.Column isRowHeader className="text-base">
+                Meno
+              </Table.Column>
+              <Table.Column className="text-base">Status</Table.Column>
+              <Table.Column className="text-base">Pridal sa</Table.Column>
+            </Table.Header>
+            <Table.Body>
+              {Object.keys(players || {}).map((team: string, index: number) => (
+                <Table.Row
+                  key={team}
+                  id={team}
+                  className={index + 1 === data.event.maxPlayers ? 'border-t-2 border-t-orange-200' : ''}
+                >
+                  <Table.Cell>
+                    {players[team][0].name}
+                    {players[team].length > 1 ? ` a ${players[team][1].name}` : ''}
+                  </Table.Cell>
+                  <Table.Cell>{players[team][0].status === 'confirmed' ? 'Potvrdil(a)' : 'Nepotvrdil(a)'}</Table.Cell>
+                  <Table.Cell>{formatDate(players[team][0].joinedAt, 'dd. MM. YYYY HH:mm')}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table.Content>
+        </Table.ScrollContainer>
+        {/* Outside Table.Content: the table is a keyboard-navigable grid, which would capture typing in the form */}
+        <Table.Footer className="block">
+          <Separator className="my-4" />
+          <JoinGuestForm eventType={data?.event?.eventType} players={teammates} addGuestPlayer={handleAddGuestPlayer} />
+        </Table.Footer>
       </Table>
     </>
   );

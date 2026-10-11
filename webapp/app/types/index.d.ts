@@ -16,6 +16,8 @@ interface Event {
   description: string;
   date: string;
   time: string;
+  timeZone: string;
+  startsAt: string;
   maxPlayers: number;
 }
 

@@ -1,5 +1,25 @@
 {
   "acknowledged-issue-numbers": [
     34892
-  ]
+  ],
+  "environment": {
+    "development": {
+      "account": {
+        "id": "793033584233",
+        "region": "eu-central-1"
+      },
+      "oidc": {
+        "GitHubProviderArn": "arn:aws:iam::793033584233:oidc-provider/token.actions.githubusercontent.com"
+      }
+    },
+    "production": {
+      "account": {
+        "id": "139397500068",
+        "region": "eu-central-1"
+      },
+      "oidc": {
+        "GitHubProviderArn": "arn:aws:iam::139397500068:oidc-provider/token.actions.githubusercontent.com"
+      }
+    }
+  }
 }

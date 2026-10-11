@@ -1,5 +1,5 @@
 import { useActionState } from 'react';
-import { Form, InputOtp, Button, Alert } from '@heroui/react';
+import { Form, InputOTP, Button, Spinner, Alert } from '@heroui/react';
 import { useTranslation } from 'react-i18next';
 
 export default function SignInTOTP({
@@ -15,12 +15,32 @@ export default function SignInTOTP({
 
   return (
     <Form action={formAction} className="space-y-6">
-      <InputOtp isRequired errorMessage={t('requiredField')} name="totpCode" length={6} />
+      <InputOTP required name="totpCode" maxLength={6}>
+        <InputOTP.Group>
+          <InputOTP.Slot index={0} />
+          <InputOTP.Slot index={1} />
+          <InputOTP.Slot index={2} />
+          <InputOTP.Slot index={3} />
+          <InputOTP.Slot index={4} />
+          <InputOTP.Slot index={5} />
+        </InputOTP.Group>
+      </InputOTP>
 
-      {state.error !== null ? <Alert color="danger" title={state.error} hideIcon={true} /> : null}
+      {state.error !== null ? (
+        <Alert status="danger">
+          <Alert.Content>
+            <Alert.Title>{state.error}</Alert.Title>
+          </Alert.Content>
+        </Alert>
+      ) : null}
 
-      <Button type="submit" color="primary" fullWidth={true} isLoading={isPending}>
-        {t('confirmSignInButton')}
+      <Button type="submit" fullWidth={true} isPending={isPending}>
+        {({ isPending }) => (
+          <>
+            {isPending ? <Spinner color="current" size="sm" /> : null}
+            {t('confirmSignInButton')}
+          </>
+        )}
       </Button>
     </Form>
   );

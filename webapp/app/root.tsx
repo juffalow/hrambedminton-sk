@@ -1,8 +1,8 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from 'react-router';
 import { I18nextProvider } from 'react-i18next';
-import { HeroUIProvider } from '@heroui/react';
 import * as Sentry from '@sentry/react';
 import { Client, Provider, cacheExchange, fetchExchange } from 'urql';
+import { authExchange } from '@urql/exchange-auth';
 import { AuthProvider } from './hooks/useAuth';
 import { TrackingProvider } from './hooks/useTracking';
 import type { Route } from './+types/root';
@@ -10,6 +10,7 @@ import Menu from './components/Menu';
 import Footer from './components/Footer';
 import i18n from './i18n';
 import './app.css';
+import { getUserIDToken } from './api/auth';
 
 if (typeof import.meta.env.VITE_SENTRY_DSN === 'string')
   Sentry.init({
@@ -27,12 +28,42 @@ export const links: Route.LinksFunction = () => [
 const client = new Client({
   url: import.meta.env.VITE_GRAPHQL_API_URL,
   suspense: true,
-  exchanges: [cacheExchange, fetchExchange],
-  fetchOptions: () => {
-    return {
-      headers: { 'x-api-key': import.meta.env.VITE_GRAPHQL_API_KEY },
-    };
-  },
+  preferGetMethod: false,
+  exchanges: [
+    cacheExchange,
+    authExchange(async (utils) => {
+      let token = await getUserIDToken();
+
+      return {
+        // Signed-in users call AppSync with their Cognito ID token (raw JWT, no "Bearer"), others with the API key
+        addAuthToOperation(operation) {
+          return utils.appendHeaders(
+            operation,
+            token ? { Authorization: token } : { 'x-api-key': import.meta.env.VITE_GRAPHQL_API_KEY }
+          );
+        },
+        // Re-read the session before every operation: the user may have signed in or out since the last one.
+        // fetchAuthSession is served from Amplify's local cache and refreshes the token only when it has expired.
+        willAuthError() {
+          return true;
+        },
+        didAuthError(error) {
+          return (
+            error.response?.status === 401 ||
+            error.graphQLErrors.some(
+              (graphQLError) =>
+                (graphQLError.originalError as { errorType?: string } | undefined)?.errorType ===
+                'UnauthorizedException'
+            )
+          );
+        },
+        async refreshAuth() {
+          token = await getUserIDToken();
+        },
+      };
+    }),
+    fetchExchange,
+  ],
 });
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -44,7 +75,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <html lang={language}>
+    <html lang={language} className="light" data-theme="light">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -67,19 +98,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </>
         )}
       </head>
-      <body>
+      <body className="bg-background text-foreground">
         <I18nextProvider i18n={i18n}>
           <AuthProvider>
             <TrackingProvider>
-              <HeroUIProvider className="flex flex-col min-h-svh">
-                <Provider value={client}>
+              <Provider value={client}>
+                <div className="flex flex-col min-h-svh">
                   <Menu />
 
-                  <main className="light flex-grow container mx-auto pt-8 pb-8 px-2 md:px-0">{children}</main>
+                  <main className="flex-grow container mx-auto pt-8 pb-8 px-2 md:px-0">{children}</main>
 
                   <Footer />
-                </Provider>
-              </HeroUIProvider>
+                </div>
+              </Provider>
             </TrackingProvider>
           </AuthProvider>
         </I18nextProvider>

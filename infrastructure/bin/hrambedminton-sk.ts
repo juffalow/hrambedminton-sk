@@ -1,18 +1,37 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
 import { Tags } from 'aws-cdk-lib';
-import { ApiStack } from '../lib/stacks/ApiStack';
-import { AuthStack } from '../lib/stacks/AuthStack';
-import { DatabaseStack } from '../lib/stacks/DatabaseStack';
+import { HBBackend } from '../lib/stacks/HBBackend';
+import { HBWebapp } from '../lib/stacks/HBWebapp';
+import { HBCiCd } from '../lib/stacks/HBCiCd';
 
 const app = new cdk.App();
-const databaseStack = new DatabaseStack(app, 'HBDatabaseStack', {});
-const authStack = new AuthStack(app, 'HBAuthStack', {
-  table: databaseStack.table,
+
+const stage = app.node.tryGetContext('stage') as string;
+
+const env = {
+  account: app.node.tryGetContext('environment')[stage].account.id,
+  region: app.node.tryGetContext('environment')[stage].account.region,
+};
+
+new HBBackend(app, 'HBBackendStack', {
+  env,
+  description: 'Hram Bedminton Backend Stack',
+  stage,
 });
-new ApiStack(app, 'HBApiStack', {
-  userPool: authStack.userPool,
-  table: databaseStack.table,
+
+const webapp = new HBWebapp(app, 'HBWebappStack', {
+  env,
+  description: 'Hram Bedminton Webapp Stack',
+  stage,
+});
+
+new HBCiCd(app, 'HBCiCdStack', {
+  env,
+  description: 'Hram Bedminton CI/CD Stack',
+  githubOidcProviderArn: app.node.tryGetContext('environment')[stage].oidc.GitHubProviderArn,
+  webappConstruct: webapp.webapp,
 });
 
 Tags.of(app).add('project', 'hrambedminton-sk');
+Tags.of(app).add('stage', stage);

@@ -1,9 +1,9 @@
-enum EventType @aws_api_key {
+enum EventType @aws_api_key @aws_cognito_user_pools {
   SINGLES
   DOUBLES
 }
 
-type Player @aws_api_key {
+type Player @aws_api_key @aws_cognito_user_pools {
   id: ID!
   name: String!
   email: AWSEmail!
@@ -13,7 +13,7 @@ type Player @aws_api_key {
   joinedAt: AWSDateTime!
 }
 
-type Event @aws_api_key {
+type Event @aws_api_key @aws_cognito_user_pools {
   id: ID!
   _id: ID!
   eventType: EventType!
@@ -21,6 +21,8 @@ type Event @aws_api_key {
   description: String
   date: AWSDate!
   time: AWSTime!
+  timeZone: String!
+  startsAt: AWSDateTime!
   maxPlayers: Int!
   place: String!
   court: String!
@@ -29,17 +31,68 @@ type Event @aws_api_key {
   players: [Player!]!
 }
 
+enum UserEventsFilter @aws_cognito_user_pools {
+  "Events the user created."
+  OWNED
+  "Events the user joined as a player, without the ones they own."
+  JOINED
+}
+
+type User @aws_cognito_user_pools {
+  id: ID!
+  email: AWSEmail!
+  name: String!
+  createdAt: AWSDateTime!
+  """
+  Events the user owns or joined (see filter), sorted by start time, earliest first, with forward-only
+  Relay cursor pagination (first/after, 20 per page by default, at most 100). Without from, only upcoming
+  events are returned. from and to are inclusive and compared with the event start (startsAt).
+  Cursors are only valid for the filter they were returned for.
+  """
+  events(filter: UserEventsFilter!, from: AWSDateTime, to: AWSDateTime, first: Int, after: String): EventConnection!
+}
+
+type PageInfo @aws_api_key @aws_cognito_user_pools {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type EventEdge @aws_api_key @aws_cognito_user_pools {
+  cursor: String!
+  node: Event!
+}
+
+type EventConnection @aws_api_key @aws_cognito_user_pools {
+  edges: [EventEdge!]!
+  pageInfo: PageInfo!
+}
+
 input CreateGuestEventInput {
   eventType: EventType!
   name: String!
   description: String
   date: AWSDate!
   time: AWSTime!
+  timeZone: String
   maxPlayers: Int!
   place: String!
   court: String!
   guestEmail: AWSEmail!
   guestName: String!
+}
+
+input CreateEventInput {
+  eventType: EventType!
+  name: String!
+  description: String
+  date: AWSDate!
+  time: AWSTime!
+  timeZone: String
+  maxPlayers: Int!
+  place: String!
+  court: String!
 }
 
 input AddGuestPlayerInput {
@@ -55,11 +108,23 @@ type AddGuestPlayerResponse @aws_api_key {
 }
 
 type Query {
-  event(id: ID!): Event! @aws_api_key
+  "The signed-in user."
+  me: User! @aws_cognito_user_pools
+  event(id: ID!): Event! @aws_api_key @aws_cognito_user_pools
+  """
+  Events sorted by start time, earliest first, with forward-only Relay cursor pagination (first/after,
+  20 per page by default, at most 100). Without from, only upcoming events are returned.
+  from and to are inclusive and compared with the event start (startsAt).
+  """
+  events(from: AWSDateTime, to: AWSDateTime, first: Int, after: String): EventConnection!
+    @aws_api_key
+    @aws_cognito_user_pools
   placeholder: String
 }
 
 type Mutation {
+  "Creates an event owned by the signed-in user, who joins it as the first confirmed player."
+  createEvent(input: CreateEventInput!): Event! @aws_cognito_user_pools
   createGuestEvent(input: CreateGuestEventInput!): Event! @aws_api_key
   addGuestPlayer(input: AddGuestPlayerInput!): AddGuestPlayerResponse! @aws_api_key
 }

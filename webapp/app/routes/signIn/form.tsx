@@ -1,5 +1,5 @@
 import { useActionState } from 'react';
-import { Form, Input, Button, Alert } from '@heroui/react';
+import { Form, TextField, Label, Input, FieldError, Button, Spinner, Alert } from '@heroui/react';
 import { useTranslation } from 'react-i18next';
 
 export default function SignInForm({
@@ -16,35 +16,46 @@ export default function SignInForm({
 
   return (
     <Form action={formAction} className="space-y-6">
-      <Input
+      <TextField
         isRequired
-        errorMessage={t('requiredField')}
-        label={t('email')}
-        labelPlacement="outside"
         name="email"
-        placeholder={t('emailPlaceholder')}
         defaultValue={state.email}
         type="text"
         autoComplete="email"
         className="autofill:!bg-yellow-200"
-      />
+      >
+        <Label>{t('email')}</Label>
+        <Input placeholder={t('emailPlaceholder')} />
+        <FieldError>{t('requiredField')}</FieldError>
+      </TextField>
 
-      <Input
+      <TextField
         isRequired
-        errorMessage={t('requiredField')}
-        label={t('password')}
-        labelPlacement="outside"
         name="password"
-        placeholder={t('passwordPlaceholder')}
         defaultValue={state.password}
         type="password"
         autoComplete="current-password"
-      />
+      >
+        <Label>{t('password')}</Label>
+        <Input placeholder={t('passwordPlaceholder')} />
+        <FieldError>{t('requiredField')}</FieldError>
+      </TextField>
 
-      {state.error !== null ? <Alert color="danger" title={state.error} hideIcon={true} /> : null}
+      {state.error !== null ? (
+        <Alert status="danger">
+          <Alert.Content>
+            <Alert.Title>{state.error}</Alert.Title>
+          </Alert.Content>
+        </Alert>
+      ) : null}
 
-      <Button type="submit" color="primary" fullWidth={true} isLoading={isPending}>
-        {t('signInButton')}
+      <Button type="submit" fullWidth={true} isPending={isPending}>
+        {({ isPending }) => (
+          <>
+            {isPending ? <Spinner color="current" size="sm" /> : null}
+            {t('signInButton')}
+          </>
+        )}
       </Button>
     </Form>
   );

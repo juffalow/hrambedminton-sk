@@ -48,6 +48,8 @@ export function response(ctx) {
     description: item.description || '',
     date: item.date,
     time: item.time,
+    timeZone: item.timeZone,
+    startsAt: item.startsAt,
     maxPlayers: item.maxPlayers,
     place: item.place,
     court: item.court,
