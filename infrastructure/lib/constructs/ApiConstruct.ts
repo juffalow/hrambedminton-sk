@@ -52,7 +52,8 @@ export class ApiConstruct extends Construct {
 
     Validations.of(tableDataSource).acknowledge({
       id: tableIndexesNagFindingId(props.table),
-      reason: 'Added by the DynamoDB data source grant for the indexes of this table only (resolvers query GSI1, GSI2).',
+      reason:
+        'Added by the DynamoDB data source grant for the indexes of this table only (resolvers query GSI1, GSI2).',
     });
 
     const apiLogsRole = this.api.node.tryFindChild('ApiLogsRole');

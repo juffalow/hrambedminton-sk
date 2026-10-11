@@ -83,7 +83,8 @@ export class AuthConstruct extends Construct {
     });
     Validations.of(this.userPool).acknowledge({
       id: 'AwsSolutions-COG8',
-      reason: 'Deferred: Cognito Plus feature plan (threat protection) is billed per active user. Revisit with more users.',
+      reason:
+        'Deferred: Cognito Plus feature plan (threat protection) is billed per active user. Revisit with more users.',
     });
     Validations.of(this.userPool).acknowledge({
       id: 'AwsSolutions-COG2',

@@ -73,7 +73,8 @@ export class WebappConstruct extends Construct {
 
     Validations.of(this.bucket).acknowledge({
       id: 'AwsSolutions-S1',
-      reason: 'Deferred: no S3 server access logs yet (cost, and they contain IP addresses). Revisit with CloudFront logs.',
+      reason:
+        'Deferred: no S3 server access logs yet (cost, and they contain IP addresses). Revisit with CloudFront logs.',
     });
     Validations.of(this.distribution).acknowledge({
       id: 'AwsSolutions-CFR1',

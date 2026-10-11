@@ -62,7 +62,8 @@ export class DatabaseConstruct extends Construct {
 
     Validations.of(this.table).acknowledge({
       id: 'AwsSolutions-DDB3',
-      reason: 'Point-in-time recovery deliberately not enabled yet (decided 2026-10-11). Revisit before real user data.',
+      reason:
+        'Point-in-time recovery deliberately not enabled yet (decided 2026-10-11). Revisit before real user data.',
     });
 
     new cdk.CfnOutput(this, 'TableName', {
