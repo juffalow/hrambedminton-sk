@@ -20,8 +20,8 @@ permissions:
   contents: read
 
 jobs:
-  check:
-    name: Check application
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
@@ -40,11 +40,56 @@ jobs:
       run: yarn install
     - name: Lint
       run: yarn run lint
+  prettier:
+    name: Prettier
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 1
+    - name: Enable corepack
+      run: corepack enable
+    - uses: actions/setup-node@v6
+      env:
+        yarn: 4.18.1
+      with:
+        node-version: 26
+        cache: 'yarn'
+        cache-dependency-path: './webapp/yarn.lock'
+    - name: Install dependencies
+      run: yarn install
     - name: Prettier check
       run: yarn run prettier:check
+  licenses:
+    name: Licenses
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 1
+    - name: Enable corepack
+      run: corepack enable
+    - uses: actions/setup-node@v6
+      env:
+        yarn: 4.18.1
+      with:
+        node-version: 26
+        cache: 'yarn'
+        cache-dependency-path: './webapp/yarn.lock'
+    - name: Install dependencies
+      run: yarn install
+    # Production dependencies are bundled and shipped to browsers, so only permissive licenses are allowed.
+    # Anything else fails the job: copyleft (GPL, LGPL, AGPL), source-available or commercial licenses
+    # (BUSL, SSPL, Elastic, PolyForm, ...), UNLICENSED and unknown licenses.
+    - name: Check production dependency licenses
+      run: yarn run licenses:check
+    # Build tooling is not distributed, so weak copyleft and attribution licenses are fine, but anything
+    # paid, unlicensed or unknown still fails the job.
+    - name: Check development dependency licenses
+      run: yarn run licenses:check:dev
   deploy_webapp_development:
     name: Deploy web application to development
-    needs: [ check ]
+    needs: [ lint, prettier, licenses ]
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     environment: Development
@@ -70,6 +115,9 @@ jobs:
       run: yarn install
     - name: Build
       run: yarn run build --mode development
+    # MIT, BSD and Apache-2.0 require keeping copyright and license notices when distributing the code
+    - name: Generate third-party license notices
+      run: yarn run licenses:notices
     - name: Sync build folder with S3
       run: aws s3 sync ./build/client s3://${{ secrets.AWS_S3_BUCKET }}/
     - name: Invalidate CloudFront cache
