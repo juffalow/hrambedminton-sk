@@ -1,6 +1,5 @@
 import { Suspense } from 'react';
 import type { Route } from './+types/Match';
-import { useParams } from 'react-router';
 import List from './userMatches/List';
 
 export function meta({ location }: Route.MetaArgs) {
@@ -20,8 +19,6 @@ export function links() {
 }
 
 export default function UserMatches() {
-  const params = useParams();
-
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <List />
