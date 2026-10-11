@@ -53,7 +53,7 @@ export function request(ctx) {
   const startsAtMillis = util.time.parseFormattedToEpochMilliSeconds(
     `${input.date} ${time}`,
     'yyyy-MM-dd HH:mm:ss',
-    timeZone,
+    timeZone
   );
 
   // Validate date and time are in the future

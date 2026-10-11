@@ -6,7 +6,7 @@ const client = new DynamoDBClient({});
 const TABLE_NAME = process.env.TABLE_NAME;
 
 export const handler: PostConfirmationTriggerHandler = async (
-  event: PostConfirmationTriggerEvent,
+  event: PostConfirmationTriggerEvent
 ): Promise<PostConfirmationTriggerEvent> => {
   if (!TABLE_NAME) {
     throw new Error('TABLE_NAME environment variable is not set');
@@ -33,7 +33,7 @@ export const handler: PostConfirmationTriggerHandler = async (
           createdAt: { S: now },
         },
         ConditionExpression: 'attribute_not_exists(PK)',
-      }),
+      })
     );
 
     console.log(`User ${userId} synced to DynamoDB`);

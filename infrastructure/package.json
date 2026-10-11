@@ -10,7 +10,10 @@
     "cdk": "cdk",
     "deploy:all": "cdk deploy --all",
     "lint": "eslint .",
-    "lint:appsync": "eslint --config eslint-appsync.config.mjs ."
+    "lint:appsync": "eslint --config eslint-appsync.config.mjs .",
+    "prettier:check": "prettier --check ./lib",
+    "prettier:write": "prettier --write ./lib",
+    "circle": "dpdm ./src/app.ts --ext .ts,.d.ts,.tsx,.mjs,.js,.jsx,.json --tsconfig ./tsconfig.json --tree false --ignore-skip-warning node_modules ./bin/hrambedminton-sk.ts"
   },
   "engines": {
     "node": ">=26.0.0 <27.0.0",
@@ -30,8 +33,10 @@
     "aws-cdk": "^2.1100.1",
     "aws-cdk-lib": "^2.233.0",
     "constructs": "^10.4.4",
+    "dpdm": "^4.3.0",
     "esbuild": "^0.28.2",
     "eslint": "^10.8.1",
+    "prettier": "^3.9.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.52.0"

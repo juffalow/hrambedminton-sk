@@ -104,7 +104,7 @@ export class CiCdConstruct extends Construct {
             new iam.PolicyStatement({
               effect: iam.Effect.ALLOW,
               actions: ['cloudfront:CreateInvalidation'],
-              resources: [props.webappConstruct.distribution.distributionArn]
+              resources: [props.webappConstruct.distribution.distributionArn],
             }),
           ],
         }),

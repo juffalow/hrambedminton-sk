@@ -56,29 +56,22 @@ export class AuthConstruct extends Construct {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
 
-    const postConfirmationLambda = new lambdaNodejs.NodejsFunction(
-      this,
-      'PostConfirmationLambda',
-      {
-        functionName: `HBPostConfirmation-${getSuffix(this)}`,
-        runtime: lambda.Runtime.NODEJS_24_X,
-        architecture: lambda.Architecture.ARM_64,
-        memorySize: 256,
-        timeout: cdk.Duration.seconds(10),
-        entry: path.join(__dirname, '../lambdas/post-confirmation.ts'),
-        handler: 'handler',
-        environment: {
-          TABLE_NAME: props.table.tableName,
-        },
+    const postConfirmationLambda = new lambdaNodejs.NodejsFunction(this, 'PostConfirmationLambda', {
+      functionName: `HBPostConfirmation-${getSuffix(this)}`,
+      runtime: lambda.Runtime.NODEJS_24_X,
+      architecture: lambda.Architecture.ARM_64,
+      memorySize: 256,
+      timeout: cdk.Duration.seconds(10),
+      entry: path.join(__dirname, '../lambdas/post-confirmation.ts'),
+      handler: 'handler',
+      environment: {
+        TABLE_NAME: props.table.tableName,
       },
-    );
+    });
 
     props.table.grantWriteData(postConfirmationLambda);
 
-    this.userPool.addTrigger(
-      cognito.UserPoolOperation.POST_CONFIRMATION,
-      postConfirmationLambda,
-    );
+    this.userPool.addTrigger(cognito.UserPoolOperation.POST_CONFIRMATION, postConfirmationLambda);
 
     this.userPoolClient = this.userPool.addClient('HBUserPoolClient', {
       userPoolClientName: `HBWebApp-${getSuffix(this)}`,

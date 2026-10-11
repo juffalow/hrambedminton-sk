@@ -57,7 +57,7 @@ export function request(ctx) {
   const startsAtMillis = util.time.parseFormattedToEpochMilliSeconds(
     `${input.date} ${time}`,
     'yyyy-MM-dd HH:mm:ss',
-    timeZone,
+    timeZone
   );
   const startsAt = util.time.epochMilliSecondsToISO8601(startsAtMillis);
 
