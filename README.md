@@ -1,5 +1,8 @@
 # HramBedminton.sk
 
+[![WebApp](https://github.com/juffalow/hrambedminton-sk/actions/workflows/webapp.yml/badge.svg?branch=main&event=push)](https://github.com/juffalow/hrambedminton-sk/actions/workflows/webapp.yml?query=branch%3Amain)
+[![Infrastructure](https://github.com/juffalow/hrambedminton-sk/actions/workflows/infrastructure.yml/badge.svg?branch=main&event=push)](https://github.com/juffalow/hrambedminton-sk/actions/workflows/infrastructure.yml?query=branch%3Amain)
+
 ## Database
 
 ### Entities
