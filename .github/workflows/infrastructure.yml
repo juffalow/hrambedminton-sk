@@ -15,6 +15,10 @@ defaults:
   run:
     working-directory: ./infrastructure
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   check:
     name: Check infrastructure
@@ -36,3 +40,31 @@ jobs:
       run: yarn install
     - name: Lint
       run: yarn run lint
+  deploy_development:
+    name: Deploy infrastructure to development
+    needs: [ lint, prettier ]
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: Development
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 1
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v6.0.0
+      with:
+        role-to-assume: ${{ secrets.AWS_CDK_DEPLOYMENT_ROLE }}
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: ${{ secrets.AWS_REGION }}
+        audience: sts.amazonaws.com
+    - name: Enable corepack
+      run: corepack enable
+    - uses: actions/setup-node@v6
+      with:
+        node-version: 26
+        cache: 'yarn'
+        cache-dependency-path: './infrastructure/yarn.lock'
+    - name: Install dependencies
+      run: yarn install
+    - name: Deploy
+      run: yarn cdk deploy --all --context stage=development --require-approval never
