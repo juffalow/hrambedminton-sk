@@ -1,5 +1,6 @@
 {
   "name": "hrambedminton-sk",
+  "private": true,
   "packageManager": "yarn@4.18.1",
   "version": "0.1.0",
   "bin": "bin/hrambedminton-sk.js",
@@ -13,6 +14,7 @@
     "lint:appsync": "eslint --config eslint-appsync.config.mjs .",
     "prettier:check": "prettier --check ./bin ./lib ./src",
     "prettier:write": "prettier --write ./bin ./lib ./src",
+    "licenses:report": "node ../scripts/licenses-report.mjs",
     "circle": "dpdm --exit-code circular:1 --tree false --warning false --ext .ts,.d.ts,.tsx,.mjs,.js,.jsx,.json --tsconfig ./tsconfig.json ./bin/hrambedminton-sk.ts ./src/mcp/index.ts './lib/lambdas/*.ts'"
   },
   "engines": {
@@ -37,6 +39,7 @@
     "dpdm": "^4.3.0",
     "esbuild": "^0.28.2",
     "eslint": "^10.8.1",
+    "license-checker-rseidelsohn": "^5.0.1",
     "prettier": "^3.9.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
