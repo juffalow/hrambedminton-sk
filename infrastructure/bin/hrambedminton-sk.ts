@@ -3,6 +3,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Tags, Validations } from 'aws-cdk-lib';
 import { AwsSolutionsChecks } from 'cdk-nag';
 import { HBBackend } from '../lib/stacks/HBBackend';
+import { HBCertificate } from '../lib/stacks/HBCertificate';
 import { HBWebapp } from '../lib/stacks/HBWebapp';
 import { HBCiCd } from '../lib/stacks/HBCiCd';
 
@@ -21,10 +22,25 @@ new HBBackend(app, 'HBBackendStack', {
   stage,
 });
 
+const certificateStack =
+  stage === 'production'
+    ? new HBCertificate(app, 'HBCertificateStack', {
+        env: {
+          account: env.account,
+          region: 'us-east-1',
+        },
+        crossRegionReferences: true,
+        description: 'HramBedminton Certificate Stack (us-east-1, required by CloudFront)',
+        domainName: 'hrambedminton.sk',
+        subjectAlternativeNames: ['www.hrambedminton.sk'],
+      })
+    : undefined;
+
 const webapp = new HBWebapp(app, 'HBWebappStack', {
   env,
   description: 'Hram Bedminton Webapp Stack',
   stage,
+  certificate: certificateStack?.webappCertificate,
 });
 
 new HBCiCd(app, 'HBCiCdStack', {

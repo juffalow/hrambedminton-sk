@@ -8,9 +8,6 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 import { getSuffix } from '../utils';
 
-export const PRODUCTION_DOMAIN_NAME = 'pentest-tool-lite.com';
-export const PRODUCTION_WWW_DOMAIN_NAME = `www.${PRODUCTION_DOMAIN_NAME}`;
-
 interface WebAppConstructProps {
   stage?: string;
   certificate?: acm.ICertificate;
@@ -64,8 +61,8 @@ export class WebappConstruct extends Construct {
         },
       ],
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
-      comment: `PTLWebApp-${getSuffix(this)}`,
-      domainNames: isProduction ? [PRODUCTION_DOMAIN_NAME, PRODUCTION_WWW_DOMAIN_NAME] : undefined,
+      comment: `HBWebApp-${getSuffix(this)}`,
+      domainNames: isProduction ? ['hrambedminton.sk', 'www.hrambedminton.sk'] : undefined,
       certificate: isProduction ? props.certificate : undefined,
       // Only configurable with a custom certificate, the default *.cloudfront.net certificate allows TLS 1.0+
       minimumProtocolVersion: isProduction ? cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021 : undefined,

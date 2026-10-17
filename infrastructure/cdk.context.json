@@ -21,5 +21,9 @@
         "GitHubProviderArn": "arn:aws:iam::139397500068:oidc-provider/token.actions.githubusercontent.com"
       }
     }
+  },
+  "hosted-zone:account=139397500068:domainName=hrambedminton.sk:region=us-east-1": {
+    "Id": "/hostedzone/Z0258974SVRGD0WKSA12",
+    "Name": "hrambedminton.sk."
   }
 }
